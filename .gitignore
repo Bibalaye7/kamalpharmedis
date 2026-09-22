@@ -1,0 +1,12 @@
+# Variables d'environnement (racine, utilisées par docker-compose)
+.env
+
+# Dépendances et builds (chaque sous-projet a aussi son propre .gitignore)
+node_modules/
+vendor/
+.next/
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+.claude/

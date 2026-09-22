@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --blue-deep: #1a3a8f;
+  --blue-main: #2454c7;
+  --green-main: #2ea138;
+  --green-pale: #e0f3e5;
+}
+
+body {
+  color: #1f2937;
+  background-color: #f7f9fc;
+}
+
+@layer components {
+  /* Bouton principal, dégradé bleu de la marque */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-blue-main px-6 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-blue-deep disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-blue-main px-6 py-3 text-sm font-semibold text-blue-main transition hover:bg-blue-main hover:text-white;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-green-main px-6 py-3 text-sm font-semibold text-white shadow-card transition hover:bg-green-700;
+  }
+
+  .input-field {
+    @apply w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm text-gray-900 outline-none transition focus:border-blue-main focus:ring-2 focus:ring-blue-main/20;
+  }
+
+  .card {
+    @apply rounded-xl2 border border-gray-100 bg-white shadow-card;
+  }
+
+  .section {
+    @apply mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8;
+  }
+
+  .badge {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold;
+  }
+}
+
+.container-page {
+  @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+}
