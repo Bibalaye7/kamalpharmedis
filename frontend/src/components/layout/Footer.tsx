@@ -74,7 +74,7 @@ export default function Footer() {
         <div>
           <p className="text-xs font-bold text-white">Contact</p>
           <ul className="mt-4 space-y-2.5 text-[11px] text-[#8CA6D9]">
-            <li>KamalPharMédis@gmail.com</li>
+            <li>kamalpharmedis@gmail.com</li>
             <li>+221 75 661 62 62</li>
             <li>+221 70 464 12 81</li>
             <li>Ouest-Foire, Cité DIOR WARÉ N°14, Dakar</li>

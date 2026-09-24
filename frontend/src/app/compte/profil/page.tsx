@@ -176,7 +176,7 @@ export default function ProfilePage() {
       </div>
 
       <button
-        onClick={() => alert("Pour supprimer votre compte, contactez notre support à KamalPharMédis@gmail.com.")}
+        onClick={() => alert("Pour supprimer votre compte, contactez notre support à kamalpharmedis@gmail.com.")}
         className="flex h-10 items-center rounded-full border border-status-danger bg-[#FFE5E5] px-5 text-xs text-status-danger"
       >
         Supprimer mon compte

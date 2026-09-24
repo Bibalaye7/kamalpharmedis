@@ -25,6 +25,21 @@ class AuthController extends Controller
             'password' => ['required', 'confirmed', Password::min(8)],
         ]);
 
+        // Confirmation par email désactivée (EMAIL_VERIFICATION_REQUIRED=false) : le compte est
+        // actif immédiatement et le client est connecté à son espace.
+        if (! config('app.require_email_verification')) {
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'phone' => $data['phone'] ?? null,
+                'password' => $data['password'],
+                'role_id' => Role::where('name', Role::CLIENT)->value('id'),
+            ]);
+            $user->forceFill(['email_verified_at' => now(), 'last_login_at' => now()])->save();
+
+            return $this->respondWithToken(auth('api')->login($user), $user->fresh(), 201);
+        }
+
         $token = Str::random(64);
 
         $user = User::create([
@@ -37,10 +52,19 @@ class AuthController extends Controller
             'email_verification_expires_at' => now()->addMinutes(60),
         ]);
 
-        Mail::to($user->email)->send(new VerifyEmailMail($user, $token));
+        // Un compte ne doit jamais exister sans qu'un email de confirmation soit parti :
+        // si l'envoi échoue, l'inscription est annulée pour que le client puisse réessayer.
+        if (! $this->sendMail($user->email, new VerifyEmailMail($user, $token))) {
+            $user->delete();
+
+            return response()->json([
+                'message' => "Nous n'avons pas pu envoyer l'email de confirmation. Votre compte n'a pas été créé : réessayez dans quelques instants ou contactez-nous.",
+            ], 503);
+        }
 
         return response()->json([
             'message' => 'Compte créé ! Consultez votre boîte email pour confirmer votre adresse avant de vous connecter.',
+            'email_sent' => true,
         ], 201);
     }
 
@@ -63,7 +87,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Ce compte est désactivé. Contactez-nous.'], 403);
         }
 
-        if (! $user->email_verified_at) {
+        if (config('app.require_email_verification') && ! $user->email_verified_at) {
             auth('api')->logout();
 
             return response()->json([
@@ -126,7 +150,7 @@ class AuthController extends Controller
             'email_verification_expires_at' => now()->addMinutes(60),
         ])->save();
 
-        Mail::to($user->email)->send(new VerifyEmailMail($user, $token));
+        $this->sendMail($user->email, new VerifyEmailMail($user, $token));
 
         return response()->json(['message' => 'Si ce compte existe et n\'est pas encore confirmé, un email vient d\'être envoyé.']);
     }
@@ -146,7 +170,7 @@ class AuthController extends Controller
                 ['token' => hash('sha256', $token), 'created_at' => now()]
             );
 
-            Mail::to($user->email)->send(new ResetPasswordMail($user, $token));
+            $this->sendMail($user->email, new ResetPasswordMail($user, $token));
         }
 
         // Réponse identique que l'email existe ou non, pour ne pas divulguer les comptes inscrits.
@@ -229,6 +253,20 @@ class AuthController extends Controller
         $request->user()->update(['password' => $data['password']]);
 
         return response()->json(['message' => 'Mot de passe modifié.']);
+    }
+
+    /** Envoie un email sans jamais faire échouer la requête : l'erreur est journalisée. */
+    private function sendMail(string $to, \Illuminate\Contracts\Mail\Mailable $mailable): bool
+    {
+        try {
+            Mail::to($to)->send($mailable);
+
+            return true;
+        } catch (\Throwable $e) {
+            report($e);
+
+            return false;
+        }
     }
 
     private function respondWithToken(string $token, User $user, int $status = 200): JsonResponse

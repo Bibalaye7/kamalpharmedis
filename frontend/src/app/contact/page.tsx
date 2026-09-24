@@ -6,7 +6,7 @@ import { api, ApiError } from "@/lib/api";
 const INFO_ITEMS = [
   { icon: "📍", label: "Adresse", value: "Ouest-Foire, Cité DIOR WARÉ N°14, Dakar (Sénégal)" },
   { icon: "📞", label: "Téléphone", value: "+221 75 661 62 62 / +221 70 464 12 81" },
-  { icon: "✉️", label: "Email", value: "KamalPharMédis@gmail.com" },
+  { icon: "✉️", label: "Email", value: "kamalpharmedis@gmail.com" },
   { icon: "💬", label: "WhatsApp", value: "+221 70 464 12 81" },
 ];
 

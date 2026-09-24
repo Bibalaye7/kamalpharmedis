@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Providers from "./providers";
 import SiteChrome from "./SiteChrome";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+// Police Inter (licence OFL) embarquée dans le projet : la compilation ne dépend plus du réseau.
+const inter = localFont({ src: "./fonts/inter-latin-wght-normal.woff2", weight: "100 900", variable: "--font-inter", display: "swap" });
 
 export const metadata: Metadata = {
   title: {

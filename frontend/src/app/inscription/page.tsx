@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { api, ApiError } from "@/lib/api";
 
@@ -33,6 +33,7 @@ function passwordStrength(password: string): { percent: number; label: string; c
 
 function RegisterForm() {
   const { register } = useAuth();
+  const router = useRouter();
   const searchParams = useSearchParams();
 
   const [form, setForm] = useState({
@@ -46,6 +47,7 @@ function RegisterForm() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [registered, setRegistered] = useState(false);
+  const [emailSent, setEmailSent] = useState(true);
 
   const strength = passwordStrength(form.password);
 
@@ -58,13 +60,18 @@ function RegisterForm() {
     setLoading(true);
     setError(null);
     try {
-      await register({
+      const result = await register({
         name: `${form.name} ${form.lastName}`.trim(),
         email: form.email,
         phone: form.phone,
         password: form.password,
         password_confirmation: form.password,
       });
+      if (result.access_token) {
+        router.push(searchParams.get("redirect") || "/compte");
+        return;
+      }
+      setEmailSent(result.email_sent !== false);
       setRegistered(true);
     } catch (err) {
       if (err instanceof ApiError) {
@@ -112,10 +119,17 @@ function RegisterForm() {
             <div className="py-6 text-center">
               <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-mist text-3xl">📧</span>
               <h1 className="mt-5 text-xl font-bold text-blue-deep">Vérifiez votre boîte email</h1>
-              <p className="mt-3 text-sm leading-relaxed text-gray-600">
-                Nous avons envoyé un lien de confirmation à <strong>{form.email}</strong>. Cliquez dessus pour activer
-                votre compte et accéder à votre espace client.
-              </p>
+              {emailSent ? (
+                <p className="mt-3 text-sm leading-relaxed text-gray-600">
+                  Nous avons envoyé un lien de confirmation à <strong>{form.email}</strong>. Cliquez dessus pour activer
+                  votre compte et accéder à votre espace client.
+                </p>
+              ) : (
+                <p className="mt-3 rounded-lg bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-800">
+                  Votre compte est créé, mais nous n&apos;avons pas pu envoyer l&apos;email de confirmation à{" "}
+                  <strong>{form.email}</strong> pour le moment. Réessayez avec le bouton ci-dessous, ou contactez-nous.
+                </p>
+              )}
               <ResendVerification email={form.email} />
               <Link href="/connexion" className="mt-6 inline-block text-sm font-semibold text-blue-main">← Retour à la connexion</Link>
             </div>

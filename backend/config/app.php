@@ -69,6 +69,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Confirmation de l'adresse email à l'inscription
+    |--------------------------------------------------------------------------
+    |
+    | false : le client est connecté dès son inscription (aucun email envoyé).
+    | true  : le compte reste bloqué tant que le lien reçu par email n'est pas cliqué
+    |         (nécessite un envoi d'emails fonctionnel pour tous les destinataires).
+    |
+    */
+
+    'require_email_verification' => (bool) env('EMAIL_VERIFICATION_REQUIRED', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
     |

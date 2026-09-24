@@ -35,6 +35,10 @@ export default function ForgotPasswordPage() {
               Si un compte existe avec l&apos;adresse <strong>{email}</strong>, un lien de réinitialisation vient de
               lui être envoyé. Le lien expire dans 60 minutes.
             </p>
+            <p className="mt-4 rounded-lg bg-blue-frost px-4 py-3 text-xs leading-relaxed text-gray-600">
+              Vous ne recevez rien ? Contactez-nous : <strong>kamalpharmedis@gmail.com</strong> ou{" "}
+              <strong>+221 75 661 62 62</strong>, nous réinitialiserons votre mot de passe.
+            </p>
           </>
         ) : (
           <>

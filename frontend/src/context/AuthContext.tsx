@@ -17,11 +17,18 @@ interface RegisterPayload {
   password_confirmation: string;
 }
 
+export interface RegisterResponse {
+  message?: string;
+  email_sent?: boolean;
+  access_token?: string;
+  user?: User;
+}
+
 interface AuthContextValue {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<User>;
-  register: (payload: RegisterPayload) => Promise<{ message: string }>;
+  register: (payload: RegisterPayload) => Promise<RegisterResponse>;
   applySession: (data: AuthResponse) => void;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
@@ -66,7 +73,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const register = useCallback(async (payload: RegisterPayload) => {
-    return api.post<{ message: string }>("/auth/register", payload, { auth: false });
+    const data = await api.post<RegisterResponse>("/auth/register", payload, { auth: false });
+    // Confirmation d'email désactivée côté serveur : l'inscription connecte directement le client.
+    if (data.access_token && data.user) {
+      setToken(data.access_token);
+      setUser(data.user);
+    }
+    return data;
   }, []);
 
   const applySession = useCallback((data: AuthResponse) => {
