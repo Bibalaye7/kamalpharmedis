@@ -57,9 +57,9 @@ function FeaturedCard({ product, colorClass }: { product: Product; colorClass: s
 
   return (
     <div className="relative flex flex-col overflow-hidden rounded-[22px] bg-white shadow-soft transition hover:-translate-y-1 hover:shadow-lifted">
-      <Link href={`/produits/${product.slug}`} className={`relative flex h-[184px] items-center justify-center ${colorClass}`}>
+      <Link href={`/produits/${product.slug}`} className={`relative flex aspect-square w-full items-center justify-center ${product.image ? "bg-white" : colorClass}`}>
         {product.image ? (
-          <Image src={product.image} alt={product.name} fill className="object-contain p-8" />
+          <Image src={product.image} alt={product.name} fill className="object-cover" />
         ) : (
           <span className="text-7xl">💊</span>
         )}
@@ -68,7 +68,7 @@ function FeaturedCard({ product, colorClass }: { product: Product; colorClass: s
       <button
         onClick={handleWishlist}
         aria-label="Ajouter aux favoris"
-        className={`absolute right-3.5 top-[148px] flex h-8 w-8 items-center justify-center rounded-2xl bg-white shadow-soft ${wishlisted ? "text-red-500" : "text-gray-500"}`}
+        className={`absolute right-3.5 top-3 flex h-8 w-8 items-center justify-center rounded-2xl bg-white shadow-soft ${wishlisted ? "text-red-500" : "text-gray-500"}`}
       >
         {wishlisted ? "♥" : "♡"}
       </button>

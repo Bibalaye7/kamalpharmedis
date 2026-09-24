@@ -72,7 +72,7 @@ export default function AdminProductsPage() {
                   <td className="flex items-center gap-3 px-5 py-3">
                     <div className="relative h-9 w-9 shrink-0 overflow-hidden rounded-[10px] bg-blue-mist">
                       {product.image ? (
-                        <Image src={product.image} alt={product.name} fill className="object-contain p-1" />
+                        <Image src={product.image} alt={product.name} fill className="object-cover" />
                       ) : (
                         <div className="flex h-full items-center justify-center text-base">💊</div>
                       )}
@@ -133,7 +133,7 @@ export default function AdminProductsPage() {
         <ProductFormModal
           categories={categories}
           product={modalProduct === "new" ? null : modalProduct}
-          onClose={() => setModalProduct(null)}
+          onClose={() => { setModalProduct(null); load(); }}
           onSaved={() => { setModalProduct(null); load(); }}
         />
       )}

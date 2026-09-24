@@ -101,7 +101,7 @@ export default function AccountDashboardPage() {
                 <div key={product.id} className="flex items-center gap-3 rounded-xl p-2">
                   <div className="relative flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-lg bg-blue-mist">
                     {product.image ? (
-                      <Image src={product.image} alt={product.name} fill className="rounded-lg object-contain p-1.5" />
+                      <Image src={product.image} alt={product.name} fill className="rounded-lg object-cover" />
                     ) : (
                       <span className="text-xl">💊</span>
                     )}
@@ -130,7 +130,7 @@ export default function AccountDashboardPage() {
               <div key={product.id} className="flex items-center gap-3 rounded-2xl bg-blue-frost p-3">
                 <div className="relative flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full bg-blue-mist">
                   {product.image ? (
-                    <Image src={product.image} alt={product.name} fill className="rounded-full object-contain p-1.5" />
+                    <Image src={product.image} alt={product.name} fill className="rounded-full object-cover" />
                   ) : (
                     <span className="text-xl">💊</span>
                   )}

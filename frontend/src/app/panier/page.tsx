@@ -51,7 +51,7 @@ export default function CartPage() {
               <div key={item.id} className="card flex items-center gap-4 p-4">
                 <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-green-pale/40">
                   {item.product.image ? (
-                    <Image src={item.product.image} alt={item.product.name} fill className="object-contain p-2" />
+                    <Image src={item.product.image} alt={item.product.name} fill className="object-cover" />
                   ) : (
                     <div className="flex h-full items-center justify-center text-2xl">💊</div>
                   )}

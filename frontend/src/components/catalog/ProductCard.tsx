@@ -66,9 +66,9 @@ export default function ProductCard({ product, colorIndex = 0 }: { product: Prod
 
   return (
     <div className="flex flex-col overflow-hidden rounded-[20px] bg-white shadow-soft transition hover:-translate-y-1 hover:shadow-lifted">
-      <Link href={`/produits/${product.slug}`} className={`relative flex h-[126px] items-center justify-center ${topColor}`}>
+      <Link href={`/produits/${product.slug}`} className={`relative flex aspect-square w-full items-center justify-center ${product.image ? "bg-white" : topColor}`}>
         {product.image ? (
-          <Image src={product.image} alt={product.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-contain p-6" />
+          <Image src={product.image} alt={product.name} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover" />
         ) : (
           <span className="text-5xl">💊</span>
         )}
@@ -76,7 +76,7 @@ export default function ProductCard({ product, colorIndex = 0 }: { product: Prod
         <button
           onClick={handleWishlist}
           aria-label="Ajouter aux favoris"
-          className={`absolute right-3.5 top-[88px] flex h-8 w-8 items-center justify-center rounded-2xl bg-white shadow-soft ${wishlisted ? "text-red-500" : "text-gray-500"}`}
+          className={`absolute bottom-3 right-3.5 flex h-8 w-8 items-center justify-center rounded-2xl bg-white shadow-soft ${wishlisted ? "text-red-500" : "text-gray-500"}`}
         >
           {wishlisted ? "♥" : "♡"}
         </button>

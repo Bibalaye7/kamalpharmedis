@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class ProductSeeder extends Seeder
 {
@@ -12,110 +13,251 @@ class ProductSeeder extends Seeder
     {
         $cat = Category::pluck('id', 'slug');
 
+        // Prix (FCFA) et stocks indicatifs : à ajuster depuis l'espace admin > Produits.
         $products = [
             [
-                'sku' => 'KPM-TENS-001',
-                'category' => 'materiel-medical',
-                'name' => 'Tensiomètre électronique au bras',
-                'short_description' => 'Mesure automatique de la tension artérielle et du pouls, écran LCD large.',
-                'description' => "Tensiomètre électronique au bras, simple d'utilisation et fiable pour le suivi quotidien de votre tension.\n\n• Écran LCD rétroéclairé, grands chiffres\n• Détection de l'arythmie cardiaque\n• Mémoire de 2 x 90 mesures avec date et heure\n• Brassard adulte 22–42 cm\n• Fonctionne sur piles ou adaptateur secteur",
-                'price' => 35000,
-                'old_price' => 42000,
-                'stock' => 25,
+                'sku' => 'KPM-BLOU-001',
+                'category' => 'protection-hygiene',
+                'name' => 'Blouse chirurgicale bleue non tissée',
+                'short_description' => 'Blouse jetable à manches longues, poignets élastiques et fermeture dans le dos.',
+                'description' => "Blouse chirurgicale à usage unique en non-tissé bleu.\n\n• Manches longues à poignets élastiques\n• Encolure élastiquée et fermeture par liens dans le dos\n• Légère et confortable, adaptée aux soins et à la protection du personnel",
+                'price' => 2500,
+                'stock' => 120,
                 'is_featured' => true,
+                'images' => ['blouse-chirurgicale-1.jpg', 'blouse-chirurgicale-2.jpg'],
             ],
             [
-                'sku' => 'KPM-GLUC-002',
-                'category' => 'materiel-medical',
-                'name' => 'Glucomètre + 50 bandelettes',
-                'short_description' => 'Lecteur de glycémie rapide (5 secondes) avec 50 bandelettes et autopiqueur.',
-                'description' => "Kit complet d'autosurveillance de la glycémie pour les personnes diabétiques.\n\n• Résultat en 5 secondes, goutte de sang de 0,6 µL\n• Mémoire de 500 résultats et moyennes sur 7/14/30 jours\n• Livré avec 50 bandelettes, 10 lancettes, autopiqueur et étui\n• Étalonnage automatique, aucun code à saisir",
-                'price' => 28500,
-                'old_price' => null,
-                'stock' => 18,
+                'sku' => 'KPM-SURC-002',
+                'category' => 'protection-hygiene',
+                'name' => 'Sur-chaussures jetables bleues',
+                'short_description' => 'Couvre-chaussures à usage unique avec élastique de maintien.',
+                'description' => "Sur-chaussures jetables en plastique bleu pour protéger les chaussures et limiter la contamination des locaux.\n\n• Élastique de maintien confortable\n• Usage unique\n• Idéales pour blocs, cabinets, laboratoires et visiteurs",
+                'price' => 3000,
+                'stock' => 300,
                 'is_featured' => true,
+                'images' => ['sur-chaussures-1.jpg'],
             ],
             [
-                'sku' => 'KPM-VITA-003',
-                'category' => 'vitamines-complements',
-                'name' => 'Complexe multivitamines & minéraux (60 gélules)',
-                'short_description' => '13 vitamines et 10 minéraux essentiels pour tonus et immunité au quotidien.',
-                'description' => "Formule complète pour couvrir vos besoins quotidiens en vitamines et minéraux.\n\n• Vitamines A, B, C, D, E, K + zinc, fer, magnésium, sélénium\n• Soutient les défenses immunitaires et réduit la fatigue\n• Cure de 2 mois : 1 gélule par jour au cours du repas\n\nCompléments alimentaires : ne se substituent pas à une alimentation variée.",
-                'price' => 9500,
-                'old_price' => 11000,
+                'sku' => 'KPM-RACH-003',
+                'category' => 'aiguilles-prelevement',
+                'name' => 'Aiguilles de rachianesthésie',
+                'short_description' => 'Aiguilles spinales à embase transparente et code couleur selon le calibre.',
+                'description' => "Aiguilles de rachianesthésie (aiguilles spinales) à usage unique.\n\n• Embase transparente permettant de visualiser le reflux\n• Code couleur de l'embase selon le calibre\n• Réservées à un usage par des professionnels de santé",
+                'price' => 12000,
                 'stock' => 60,
                 'is_featured' => true,
+                'images' => ['rachianesthesie-1.jpg', 'rachianesthesie-2.jpg'],
             ],
             [
-                'sku' => 'KPM-URGE-004',
-                'category' => 'premiers-secours',
-                'name' => "Kit de premiers secours d'urgence (85 pièces)",
-                'short_description' => 'Trousse complète pour la maison, le bureau et le véhicule.',
-                'description' => "Trousse de secours robuste et compacte, conforme aux besoins courants de la maison, du bureau et de la voiture.\n\n• Compresses stériles, bandes, pansements assortis, sparadrap\n• Ciseaux, pince à écharde, couverture de survie\n• Solution antiseptique, gants, masque de réanimation\n• Guide des gestes de premiers secours inclus",
-                'price' => 15000,
-                'old_price' => null,
-                'stock' => 32,
-                'is_featured' => true,
-            ],
-            [
-                'sku' => 'KPM-THER-005',
-                'category' => 'materiel-medical',
-                'name' => 'Thermomètre infrarouge sans contact',
-                'short_description' => 'Température frontale en 1 seconde, silencieux, alarme de fièvre.',
-                'description' => "Thermomètre frontal sans contact, idéal pour toute la famille, y compris les bébés.\n\n• Mesure en 1 seconde à 3–5 cm\n• Alarme sonore et rétroéclairage rouge en cas de fièvre\n• Mémoire des 32 dernières mesures\n• Précision ±0,2 °C",
-                'price' => 12500,
-                'old_price' => 15000,
-                'stock' => 40,
-                'is_featured' => false,
-            ],
-            [
-                'sku' => 'KPM-PHYT-006',
-                'category' => 'phytotherapie',
-                'name' => 'Moringa bio en gélules (90 gélules)',
-                'short_description' => 'Poudre de feuilles de moringa 100 % naturelle, source de fer et d\'antioxydants.',
-                'description' => "Le moringa, « arbre miracle », est riche en protéines végétales, fer, calcium et antioxydants.\n\n• 500 mg de poudre de feuilles par gélule\n• Cultivé sans pesticides, séché à basse température\n• Recommandé : 2 gélules par jour avec un verre d'eau\n\nÀ consulter avec un professionnel de santé en cas de traitement en cours.",
+                'sku' => 'KPM-PREL-004',
+                'category' => 'aiguilles-prelevement',
+                'name' => 'Aiguilles de prélèvement sanguin multi-prélèvements',
+                'short_description' => 'Aiguilles à code couleur, compatibles avec les supports de prélèvement sous vide.',
+                'description' => "Aiguilles stériles de prélèvement sanguin à usage unique.\n\n• Code couleur selon le calibre (noir, vert, jaune, bleu…)\n• Adaptées aux supports de prélèvement sous vide standard\n• Capuchon de protection de l'aiguille",
                 'price' => 7500,
-                'old_price' => null,
-                'stock' => 8,
+                'stock' => 200,
+                'is_featured' => false,
+                'images' => ['aiguilles-prelevement-1.jpg', 'aiguilles-prelevement-2.jpg', 'aiguilles-prelevement-3.jpg'],
+            ],
+            [
+                'sku' => 'KPM-SECU-005',
+                'category' => 'aiguilles-prelevement',
+                'name' => 'Aiguille de prélèvement de sécurité avec support',
+                'short_description' => 'Aiguille avec dispositif de sécurité à rabat et support de prélèvement transparent.',
+                'description' => "Aiguille de prélèvement sanguin avec dispositif de sécurité pour limiter les risques de piqûre accidentelle.\n\n• Protection à rabat rabattable après usage\n• Support (holder) transparent fourni\n• Usage unique",
+                'price' => 15000,
+                'stock' => 80,
+                'is_featured' => false,
+                'images' => ['aiguille-securite-1.jpg'],
+            ],
+            [
+                'sku' => 'KPM-GAZE-006',
+                'category' => 'pansements-bandes',
+                'name' => 'Bande de gaze extensible',
+                'short_description' => 'Bande souple et respirante pour la fixation des pansements.',
+                'description' => "Bande de gaze extensible pour le maintien des pansements et compresses.\n\n• Souple, respirante et facile à ajuster\n• Se conforme aux contours du corps\n• Sous emballage individuel",
+                'price' => 500,
+                'stock' => 500,
+                'is_featured' => false,
+                'images' => ['gaze-extensible-1.jpg', 'gaze-extensible-2.jpg'],
+            ],
+            [
+                'sku' => 'KPM-GBLE-007',
+                'category' => 'pansements-bandes',
+                'name' => 'Bande de gaze à bords bleus',
+                'short_description' => 'Bande de gaze tricotée à lisières bleues pour pansements et maintien.',
+                'description' => "Bande de gaze tricotée à lisières bleues.\n\n• Bords renforcés qui évitent l'effilochage\n• Maintien confortable des pansements\n• Usage courant en soins et premiers secours",
+                'price' => 800,
+                'stock' => 400,
+                'is_featured' => false,
+                'images' => ['gaze-bords-bleus-1.jpg', 'gaze-bords-bleus-2.jpg'],
+            ],
+            [
+                'sku' => 'KPM-CREP-008',
+                'category' => 'pansements-bandes',
+                'name' => 'Bande de crêpe à bords bleus',
+                'short_description' => 'Bande de crêpe souple pour maintien et légère contention.',
+                'description' => "Bande de crêpe en coton à lisières bleues.\n\n• Élasticité modérée pour le maintien et la légère contention\n• Tissu doux et respirant\n• Réutilisable après lavage",
+                'price' => 1200,
+                'stock' => 300,
+                'is_featured' => false,
+                'images' => ['crepe-bords-bleus-1.jpg'],
+            ],
+            [
+                'sku' => 'KPM-ELAS-009',
+                'category' => 'pansements-bandes',
+                'name' => 'Bande élastique de contention avec agrafes',
+                'short_description' => 'Bande élastique livrée avec agrafes métalliques de fixation.',
+                'description' => "Bande élastique de contention pour entorses, foulures et maintien articulaire.\n\n• Lisières rouges, tissu extensible\n• Livrée avec deux agrafes métalliques de fixation\n• Réutilisable après lavage",
+                'price' => 1800,
+                'stock' => 250,
+                'is_featured' => false,
+                'images' => ['bande-elastique-1.jpg'],
+            ],
+            [
+                'sku' => 'KPM-PLAT-010',
+                'category' => 'pansements-bandes',
+                'name' => 'Bandes plâtrées',
+                'short_description' => 'Bandes plâtrées pour immobilisation orthopédique.',
+                'description' => "Bandes plâtrées pour la réalisation de plâtres et d'attelles d'immobilisation.\n\n• Prise rapide après immersion dans l'eau\n• Modelables avant durcissement\n• Réservées à un usage par des professionnels de santé",
+                'price' => 2500,
+                'stock' => 150,
                 'is_featured' => true,
+                'images' => ['bandes-platrees-1.jpg', 'bandes-platrees-2.jpg'],
             ],
             [
-                'sku' => 'KPM-STET-007',
-                'category' => 'materiel-medical',
-                'name' => 'Stéthoscope professionnel double pavillon',
-                'short_description' => 'Acoustique haute fidélité, pavillon en acier inoxydable, tubulure anti-friction.',
-                'description' => "Stéthoscope double pavillon pour professionnels de santé et étudiants en médecine.\n\n• Pavillon en acier inoxydable, membrane et cloche\n• Tubulure en PVC sans latex, anti-parasites\n• Olives souples interchangeables\n• Livré avec accessoires et pochette de rangement",
-                'price' => 22000,
-                'old_price' => null,
-                'stock' => 14,
+                'sku' => 'KPM-BRAC-011',
+                'category' => 'identification-patient',
+                'name' => "Bracelets d'identification patient adulte",
+                'short_description' => "Bracelets d'identification avec zone d'écriture pour les informations du patient.",
+                'description' => "Bracelets d'identification hospitaliers pour adultes, disponibles en plusieurs couleurs.\n\n• Zone dédiée aux informations du patient (nom, service, médecin, numéro)\n• Fermeture sécurisée par bouton pression\n• Matière souple et confortable",
+                'price' => 6000,
+                'stock' => 100,
                 'is_featured' => false,
+                'images' => ['bracelets-adulte-1.jpg', 'bracelets-adulte-2.jpg', 'bracelets-adulte-3.jpg'],
             ],
             [
-                'sku' => 'KPM-MASK-008',
+                'sku' => 'KPM-BRNN-012',
+                'category' => 'identification-patient',
+                'name' => "Bracelets d'identification nouveau-né",
+                'short_description' => 'Bracelets rose et bleu à compléter (nom, sexe, lit, date).',
+                'description' => "Bracelets d'identification pour nouveau-nés, en rose et en bleu.\n\n• Champs à compléter : nom, sexe, lit, date\n• Fermeture par bouton pression\n• Matière souple et légère",
+                'price' => 5000,
+                'stock' => 100,
+                'is_featured' => false,
+                'images' => ['bracelets-nouveau-ne-1.jpg'],
+            ],
+            [
+                'sku' => 'KPM-BAND-013',
+                'category' => 'diagnostic',
+                'name' => 'Bandelettes urinaires (flacon de 100)',
+                'short_description' => "Bandelettes réactives pour l'analyse d'urine, lecture par comparaison de couleurs.",
+                'description' => "Flacon de 100 bandelettes réactives pour l'analyse urinaire.\n\n• Lecture visuelle par comparaison avec l'échelle de couleurs du flacon\n• Plusieurs paramètres sur une même bandelette (leucocytes, nitrites, protéines, pH, sang, glucose, cétones…)\n• Conserver le flacon bien fermé, à l'abri de l'humidité",
+                'price' => 8500,
+                'stock' => 90,
+                'is_featured' => true,
+                'images' => ['bandelettes-urinaires-1.jpg', 'bandelettes-urinaires-2.jpg', 'bandelettes-urinaires-3.jpg', 'bandelettes-urinaires-4.jpg'],
+            ],
+            [
+                'sku' => 'KPM-OXYG-014',
+                'category' => 'urgence-reanimation',
+                'name' => 'Lunettes à oxygène (canules nasales)',
+                'short_description' => 'Canules nasales pour oxygénothérapie : nourrisson, enfant et adulte.',
+                'description' => "Lunettes à oxygène (canules nasales) à usage unique pour l'administration d'oxygène.\n\n• Tailles disponibles : nourrisson, enfant, adulte\n• Embouts souples et confortables\n• Tubulure transparente",
+                'price' => 1500,
+                'stock' => 200,
+                'is_featured' => true,
+                'images' => ['lunettes-oxygene-1.jpg', 'lunettes-oxygene-2.jpg'],
+            ],
+            [
+                'sku' => 'KPM-DEFA-015',
+                'category' => 'urgence-reanimation',
+                'name' => 'Électrodes de défibrillation adulte',
+                'short_description' => 'Électrodes autocollantes pour défibrillateur — garantie 30 mois.',
+                'description' => "Paire d'électrodes de défibrillation autocollantes pour adulte.\n\n• Garantie 30 mois\n• Câble avec connecteur intégré\n• Vérifiez la compatibilité avec la référence de votre défibrillateur avant commande",
+                'price' => 45000,
+                'stock' => 25,
+                'is_featured' => true,
+                'images' => ['electrodes-defibrillation-adulte-1.jpg'],
+            ],
+            [
+                'sku' => 'KPM-DEFP-016',
+                'category' => 'urgence-reanimation',
+                'name' => 'Électrodes de défibrillation pédiatriques',
+                'short_description' => 'Électrodes autocollantes pédiatriques pour défibrillateur.',
+                'description' => "Paire d'électrodes de défibrillation autocollantes pour enfant (pédiatrique).\n\n• Format adapté aux enfants\n• Câble avec connecteur intégré, sous pochette individuelle\n• Vérifiez la compatibilité avec la référence de votre défibrillateur avant commande",
+                'price' => 48000,
+                'stock' => 20,
+                'is_featured' => false,
+                'images' => ['electrodes-defibrillation-pediatriques-1.jpg'],
+            ],
+            [
+                'sku' => 'KPM-COTO-017',
+                'category' => 'pansements-bandes',
+                'name' => 'Coton hydrophile (rouleau de 1 kg)',
+                'short_description' => 'Rouleau de coton hydrophile de 1000 g pour soins et nettoyage.',
+                'description' => "Rouleau de coton hydrophile de 1000 g.\n\n• Très absorbant et doux\n• À découper selon le besoin pour soins, nettoyage et protection\n• Sous emballage papier",
+                'price' => 6500,
+                'stock' => 100,
+                'is_featured' => true,
+                'images' => ['coton-hydrophile-1.jpg'],
+            ],
+            [
+                'sku' => 'KPM-DOIG-018',
                 'category' => 'protection-hygiene',
-                'name' => 'Masques chirurgicaux 3 plis (boîte de 50)',
-                'short_description' => 'Masques à usage médical, filtration bactérienne ≥ 98 %, élastiques confortables.',
-                'description' => "Masques chirurgicaux de type IIR à trois couches, adaptés à un usage médical et quotidien.\n\n• Filtration bactérienne (BFE) ≥ 98 %\n• Pince-nez intégré, élastiques souples\n• Sans latex, boîte de 50 masques",
-                'price' => 4500,
-                'old_price' => 5500,
-                'stock' => 5,
+                'name' => 'Doigtiers en latex (sachet de 100)',
+                'short_description' => 'Doigtiers roulés en latex à usage unique, taille Medium, légèrement poudrés.',
+                'description' => "Sachet de 100 doigtiers roulés en latex à usage unique.\n\n• Taille Medium (Gr3), légèrement poudrés\n• Protègent un doigt lors des soins et examens\n• Garder à l'abri de tout rayonnement et au sec",
+                'price' => 2500,
+                'stock' => 150,
                 'is_featured' => false,
+                'images' => ['doigtiers-latex-1.jpg'],
             ],
         ];
 
-        foreach ($products as $p) {
-            $category = $p['category'];
-            unset($p['category']);
+        foreach ($products as $data) {
+            $category = $data['category'];
+            $files = $data['images'];
+            unset($data['category'], $data['images']);
 
-            Product::withTrashed()->updateOrCreate(
-                ['sku' => $p['sku']],
-                $p + [
-                    'category_id' => $cat[$category],
-                    'slug' => Product::uniqueSlug($p['name']),
-                    'images' => [],
-                    'is_active' => true,
-                ]
-            );
+            $product = Product::withTrashed()->firstOrNew(['sku' => $data['sku']]);
+
+            if (! $product->exists) {
+                $product->slug = Product::uniqueSlug($data['name']);
+                $product->is_active = true;
+            }
+
+            $product->fill($data);
+            $product->category_id = $cat[$category];
+
+            // Les photos ne sont (ré)installées que pour un produit neuf ou sans photo,
+            // afin de ne jamais écraser celles modifiées depuis l'espace admin.
+            if (! $product->exists || empty($product->rawImages())) {
+                $product->images = $this->storeImages($files);
+            }
+
+            $product->save();
         }
+    }
+
+    /** Copie les photos du catalogue vers le disque public et renvoie leurs chemins. */
+    private function storeImages(array $files): array
+    {
+        $directory = database_path('seeders/product-images');
+        $paths = [];
+
+        foreach ($files as $file) {
+            $source = "{$directory}/{$file}";
+
+            if (! is_file($source)) {
+                continue;
+            }
+
+            $target = "products/{$file}";
+            Storage::disk('public')->put($target, file_get_contents($source));
+            $paths[] = $target;
+        }
+
+        return $paths;
     }
 }

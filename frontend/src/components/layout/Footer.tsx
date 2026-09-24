@@ -6,10 +6,10 @@ const COLUMNS = [
     title: "Boutique",
     links: [
       { label: "Tous les produits", href: "/catalogue" },
-      { label: "Diagnostic", href: "/catalogue?category=materiel-medical" },
-      { label: "Vitamines & compléments", href: "/catalogue?category=vitamines-complements" },
-      { label: "Phytothérapie", href: "/catalogue?category=phytotherapie" },
-      { label: "Premiers secours", href: "/catalogue?category=premiers-secours" },
+      { label: "Aiguilles & prélèvement", href: "/catalogue?category=aiguilles-prelevement" },
+      { label: "Pansements & bandes", href: "/catalogue?category=pansements-bandes" },
+      { label: "Protection & hygiène", href: "/catalogue?category=protection-hygiene" },
+      { label: "Urgence & réanimation", href: "/catalogue?category=urgence-reanimation" },
     ],
   },
   {

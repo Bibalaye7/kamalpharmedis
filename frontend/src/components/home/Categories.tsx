@@ -7,6 +7,10 @@ const ICONS: Record<string, string> = {
   leaf: "🌿",
   cross: "🩹",
   shield: "😷",
+  syringe: "💉",
+  flask: "🧪",
+  heart: "🫀",
+  tag: "🏷️",
 };
 
 // Palette pastel de la maquette Figma, appliquée en cycle aux catégories du catalogue

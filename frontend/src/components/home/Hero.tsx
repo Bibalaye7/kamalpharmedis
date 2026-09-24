@@ -47,9 +47,9 @@ function FeaturedCard({ product }: { product: Product }) {
 
   return (
     <div className="relative overflow-hidden rounded-[26px] bg-white shadow-2xl">
-      <Link href={`/produits/${product.slug}`} className="relative flex h-[190px] items-center justify-center bg-green-pale">
+      <Link href={`/produits/${product.slug}`} className={`relative flex aspect-square w-full items-center justify-center ${product.image ? "bg-white" : "bg-green-pale"}`}>
         {product.image ? (
-          <Image src={product.image} alt={product.name} fill className="object-contain p-8" />
+          <Image src={product.image} alt={product.name} fill className="object-cover" />
         ) : (
           <span className="text-7xl">🩺</span>
         )}
@@ -57,7 +57,7 @@ function FeaturedCard({ product }: { product: Product }) {
       </Link>
       <button
         onClick={handleWishlist}
-        className={`absolute right-4 top-[172px] flex h-[34px] w-[34px] items-center justify-center rounded-full bg-white shadow-soft ${wishlisted ? "text-red-500" : "text-gray-500"}`}
+        className={`absolute right-4 top-[324px] flex h-[34px] w-[34px] items-center justify-center rounded-full bg-white shadow-soft ${wishlisted ? "text-red-500" : "text-gray-500"}`}
         aria-label="Ajouter aux favoris"
       >
         ♡

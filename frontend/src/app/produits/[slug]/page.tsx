@@ -94,9 +94,9 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
       <div className="mt-6 grid grid-cols-1 gap-12 lg:grid-cols-2">
         {/* Galerie */}
         <div>
-          <div className="relative aspect-[558/476] overflow-hidden rounded-[24px] bg-green-pale shadow-soft">
+          <div className="relative aspect-square overflow-hidden rounded-[24px] bg-white shadow-soft">
             {images[activeImage] ? (
-              <Image src={images[activeImage] as string} alt={product.name} fill className="object-contain p-14" />
+              <Image src={images[activeImage] as string} alt={product.name} fill className="object-cover" />
             ) : (
               <div className="flex h-full items-center justify-center text-[140px]">💊</div>
             )}
@@ -111,7 +111,7 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
                     activeImage === i ? "border-blue-main bg-blue-mist" : "border-transparent bg-blue-frost"
                   }`}
                 >
-                  {img ? <Image src={img} alt="" fill className="object-contain p-2" /> : null}
+                  {img ? <Image src={img} alt="" fill className="object-cover" /> : null}
                 </button>
               ))}
             </div>
@@ -192,7 +192,7 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
             {product.related.map((p) => (
               <Link key={p.id} href={`/produits/${p.slug}`} className="flex items-center gap-4 rounded-2xl bg-white p-3 shadow-soft transition hover:-translate-y-0.5">
                 <div className="relative flex h-[90px] w-[90px] shrink-0 items-center justify-center rounded-xl bg-blue-mist">
-                  {p.image ? <Image src={p.image} alt={p.name} fill className="rounded-xl object-contain p-2.5" /> : <span className="text-3xl">💊</span>}
+                  {p.image ? <Image src={p.image} alt={p.name} fill className="rounded-xl object-cover" /> : <span className="text-3xl">💊</span>}
                 </div>
                 <div className="flex-1">
                   <p className="text-[13px] font-bold text-blue-deep">{p.name}</p>

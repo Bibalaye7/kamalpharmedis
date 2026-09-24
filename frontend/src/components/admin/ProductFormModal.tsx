@@ -41,9 +41,21 @@ export default function ProductFormModal({ categories, product, onClose, onSaved
         }
       : EMPTY_FORM
   );
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [images, setImages] = useState<string[]>(product?.images ?? []);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+
+  async function handleRemoveImage(index: number) {
+    if (!product || !confirm("Supprimer cette photo ?")) return;
+    setError(null);
+    try {
+      await api.delete(`/products/${product.id}/images`, { json: { index } });
+      setImages((current) => current.filter((_, i) => i !== index));
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Impossible de supprimer la photo.");
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -68,14 +80,23 @@ export default function ProductFormModal({ categories, product, onClose, onSaved
         ? await api.put<Product>(`/products/${product.id}`, payload)
         : await api.post<Product>("/products", payload);
 
-      if (imageFile) {
+      for (const file of imageFiles) {
         const formData = new FormData();
-        formData.append("image", imageFile);
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api"}/products/${saved.id}/images`, {
-          method: "POST",
-          headers: { Authorization: `Bearer ${window.localStorage.getItem("kpm_token")}` },
-          body: formData,
-        });
+        formData.append("image", file);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api"}/products/${saved.id}/images`,
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${window.localStorage.getItem("kpm_token")}`,
+            },
+            body: formData,
+          }
+        );
+        if (!response.ok) {
+          throw new ApiError(`La photo « ${file.name} » n'a pas pu être envoyée (image de 4 Mo maximum).`, response.status);
+        }
       }
 
       onSaved();
@@ -172,8 +193,42 @@ export default function ProductFormModal({ categories, product, onClose, onSaved
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">Image du produit</label>
-            <input type="file" accept="image/*" className="input-field" onChange={(e) => setImageFile(e.target.files?.[0] ?? null)} />
+            <label className="mb-1 block text-sm font-medium text-gray-700">Photos du produit</label>
+
+            {images.length > 0 && (
+              <div className="mb-3 flex flex-wrap gap-3">
+                {images.map((url, index) => (
+                  <div key={url} className="relative h-20 w-20 overflow-hidden rounded-xl border border-gray-200 bg-blue-frost">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={url} alt={`Photo ${index + 1}`} className="h-full w-full object-contain p-1" />
+                    {index === 0 && (
+                      <span className="absolute bottom-0 left-0 right-0 bg-blue-main/80 py-0.5 text-center text-[9px] font-semibold text-white">
+                        Principale
+                      </span>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveImage(index)}
+                      aria-label="Supprimer cette photo"
+                      className="absolute right-1 top-1 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[10px] text-status-danger shadow-soft hover:bg-status-danger hover:text-white"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              className="input-field"
+              onChange={(e) => setImageFiles(Array.from(e.target.files ?? []))}
+            />
+            <p className="mt-1 text-[11px] text-gray-500">
+              Vous pouvez choisir plusieurs photos (4 Mo maximum chacune). La première photo est celle affichée dans le catalogue.
+            </p>
           </div>
 
           <div className="flex gap-6">

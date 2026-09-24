@@ -10,11 +10,12 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['Matériel médical', 'materiel-medical', 'Appareils de mesure et dispositifs médicaux pour le suivi de votre santé.', 'stethoscope'],
-            ['Vitamines & compléments', 'vitamines-complements', 'Vitamines, minéraux et compléments alimentaires pour votre vitalité.', 'pill'],
-            ['Phytothérapie', 'phytotherapie', 'Solutions naturelles à base de plantes médicinales.', 'leaf'],
-            ['Premiers secours', 'premiers-secours', 'Trousses et consommables pour faire face aux urgences.', 'cross'],
-            ['Protection & hygiène', 'protection-hygiene', 'Masques, gants et produits de protection individuelle.', 'shield'],
+            ['Aiguilles & prélèvement', 'aiguilles-prelevement', 'Aiguilles de prélèvement sanguin, de rachianesthésie et dispositifs de sécurité.', 'syringe'],
+            ['Pansements & bandes', 'pansements-bandes', 'Bandes de gaze, de crêpe, élastiques, plâtrées et coton hydrophile.', 'cross'],
+            ['Protection & hygiène', 'protection-hygiene', 'Blouses, sur-chaussures, doigtiers et protection individuelle.', 'shield'],
+            ['Diagnostic', 'diagnostic', 'Bandelettes et consommables pour le diagnostic et l\'analyse.', 'flask'],
+            ['Urgence & réanimation', 'urgence-reanimation', 'Électrodes de défibrillation et matériel d\'oxygénothérapie.', 'heart'],
+            ['Identification patient', 'identification-patient', 'Bracelets d\'identification pour adultes et nouveau-nés.', 'tag'],
         ];
 
         foreach ($categories as [$name, $slug, $description, $icon]) {

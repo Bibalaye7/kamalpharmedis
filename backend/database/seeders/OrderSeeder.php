@@ -19,12 +19,12 @@ class OrderSeeder extends Seeder
 
         // [client, statut, paiement, méthode, jours écoulés, [[sku, quantité], ...]]
         $orders = [
-            ['aminata@email.com', 'delivered', 'paid', 'mobile_money', 95, [['KPM-TENS-001', 1], ['KPM-MASK-008', 2]]],
-            ['aminata@email.com', 'delivered', 'paid', 'cash_on_delivery', 48, [['KPM-VITA-003', 2], ['KPM-PHYT-006', 1]]],
-            ['moussa@email.com', 'shipped', 'unpaid', 'cash_on_delivery', 6, [['KPM-GLUC-002', 1]]],
-            ['aminata@email.com', 'processing', 'paid', 'card', 3, [['KPM-URGE-004', 1], ['KPM-THER-005', 1]]],
-            ['fatou@email.com', 'pending', 'unpaid', 'mobile_money', 1, [['KPM-STET-007', 1]]],
-            ['aminata@email.com', 'cancelled', 'unpaid', 'cash_on_delivery', 20, [['KPM-MASK-008', 5]]],
+            ['aminata@email.com', 'delivered', 'paid', 'mobile_money', 95, [['KPM-BLOU-001', 4], ['KPM-SURC-002', 2]]],
+            ['aminata@email.com', 'delivered', 'paid', 'cash_on_delivery', 48, [['KPM-BAND-013', 2], ['KPM-COTO-017', 1]]],
+            ['moussa@email.com', 'shipped', 'unpaid', 'cash_on_delivery', 6, [['KPM-OXYG-014', 3]]],
+            ['aminata@email.com', 'processing', 'paid', 'card', 3, [['KPM-PLAT-010', 2], ['KPM-GAZE-006', 4]]],
+            ['fatou@email.com', 'pending', 'unpaid', 'mobile_money', 1, [['KPM-DEFA-015', 1]]],
+            ['aminata@email.com', 'cancelled', 'unpaid', 'cash_on_delivery', 20, [['KPM-DOIG-018', 3]]],
         ];
 
         foreach ($orders as $n => [$email, $status, $payment, $method, $daysAgo, $lines]) {
@@ -74,6 +74,6 @@ class OrderSeeder extends Seeder
 
         // Favoris d'Aminata
         $aminata = User::where('email', 'aminata@email.com')->first();
-        $aminata->wishlist()->syncWithoutDetaching([$products['KPM-GLUC-002'], $products['KPM-PHYT-006'], $products['KPM-STET-007']]);
+        $aminata->wishlist()->syncWithoutDetaching([$products['KPM-BAND-013'], $products['KPM-OXYG-014'], $products['KPM-DEFA-015']]);
     }
 }
