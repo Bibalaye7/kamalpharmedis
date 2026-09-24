@@ -90,41 +90,46 @@ function UsersContent() {
           <table className="w-full text-sm">
             <thead className="bg-blue-frost text-left text-[11px] font-bold uppercase text-gray-500">
               <tr>
-                <th className="px-5 py-3.5">Utilisateur</th>
-                <th className="px-5 py-3.5">Email</th>
-                <th className="px-5 py-3.5">Téléphone</th>
-                <th className="px-5 py-3.5">Rôle</th>
-                <th className="px-5 py-3.5">Statut</th>
-                <th className="px-5 py-3.5 text-right">Actions</th>
+                <th className="px-3 py-3.5 sm:px-5">Utilisateur</th>
+                <th className="hidden px-5 py-3.5 md:table-cell">Email</th>
+                <th className="hidden px-5 py-3.5 lg:table-cell">Téléphone</th>
+                <th className="hidden px-5 py-3.5 sm:table-cell">Rôle</th>
+                <th className="px-3 py-3.5 sm:px-5">Statut</th>
+                <th className="px-3 py-3.5 text-right sm:px-5">Actions</th>
               </tr>
             </thead>
             <tbody>
               {users.data.map((u, i) => (
                 <tr key={u.id} className={i % 2 === 1 ? "bg-blue-frost" : "bg-white"}>
-                  <td className="px-5 py-3">
+                  <td className="px-3 py-3 sm:px-5">
                     <div className="flex items-center gap-2.5">
-                      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-main text-sm font-bold text-white">
+                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-main text-sm font-bold text-white">
                         {u.name.charAt(0).toUpperCase()}
                       </span>
-                      <p className="font-semibold text-gray-900">{u.name}</p>
+                      <div className="min-w-0">
+                        <p className="font-semibold text-gray-900">{u.name}</p>
+                        <p className="break-all text-[11px] text-gray-500 md:hidden">
+                          {ROLE_BADGE[u.role_name].label} · {u.email}
+                        </p>
+                      </div>
                     </div>
                   </td>
-                  <td className="px-5 py-3 text-gray-500">{u.email}</td>
-                  <td className="px-5 py-3 text-gray-500">{u.phone ?? "—"}</td>
-                  <td className="px-5 py-3">
+                  <td className="hidden px-5 py-3 text-gray-500 md:table-cell">{u.email}</td>
+                  <td className="hidden px-5 py-3 text-gray-500 lg:table-cell">{u.phone ?? "—"}</td>
+                  <td className="hidden px-5 py-3 sm:table-cell">
                     <span className={`badge ${ROLE_BADGE[u.role_name].className}`}>{ROLE_BADGE[u.role_name].icon} {ROLE_BADGE[u.role_name].label}</span>
                   </td>
-                  <td className="px-5 py-3">
+                  <td className="px-3 py-3 sm:px-5">
                     <span className={`badge ${u.is_active ? "bg-green-pale text-green-dark" : "bg-[#FFE5E5] text-status-danger"}`}>
                       {u.is_active ? "✅ Actif" : "❌ Inactif"}
                     </span>
                   </td>
-                  <td className="px-5 py-3 text-right">
-                    <button onClick={() => setModalUser(u)} className="mr-2 inline-flex h-8 w-8 items-center justify-center rounded-[9px] bg-blue-mist text-blue-main">
+                  <td className="whitespace-nowrap px-3 py-3 text-right sm:px-5">
+                    <button onClick={() => setModalUser(u)} aria-label="Modifier" className="mr-2 inline-flex h-9 w-9 items-center justify-center rounded-[9px] bg-blue-mist text-blue-main">
                       ✏️
                     </button>
                     {u.id !== currentUser?.id && (
-                      <button onClick={() => handleDelete(u)} className="inline-flex h-8 w-8 items-center justify-center rounded-[9px] bg-[#FFE5E5] text-status-danger">
+                      <button onClick={() => handleDelete(u)} aria-label="Supprimer" className="inline-flex h-9 w-9 items-center justify-center rounded-[9px] bg-[#FFE5E5] text-status-danger">
                         🗑️
                       </button>
                     )}

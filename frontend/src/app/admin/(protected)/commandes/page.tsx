@@ -76,20 +76,23 @@ export default function AdminOrdersPage() {
           <table className="w-full text-sm">
             <thead className="bg-blue-frost text-left text-[11px] font-bold uppercase text-gray-500">
               <tr>
-                <th className="px-5 py-3.5">ID</th>
-                <th className="px-5 py-3.5">Client</th>
-                <th className="px-5 py-3.5">Produits</th>
-                <th className="px-5 py-3.5">Total</th>
-                <th className="px-5 py-3.5">Date</th>
-                <th className="px-5 py-3.5">Statut</th>
-                <th className="px-5 py-3.5 text-right">Actions</th>
+                <th className="px-2 py-3.5 sm:px-5">ID</th>
+                <th className="hidden px-5 py-3.5 md:table-cell">Client</th>
+                <th className="hidden px-5 py-3.5 lg:table-cell">Produits</th>
+                <th className="px-2 py-3.5 sm:px-5">Total</th>
+                <th className="hidden px-5 py-3.5 md:table-cell">Date</th>
+                <th className="px-2 py-3.5 sm:px-5">Statut</th>
+                <th className="px-2 py-3.5 text-right sm:px-5">Actions</th>
               </tr>
             </thead>
             <tbody>
               {orders.data.map((order, i) => (
                 <tr key={order.id} className={i % 2 === 1 ? "bg-blue-frost" : "bg-white"}>
-                  <td className="px-5 py-3.5 font-semibold text-blue-main">{order.reference}</td>
-                  <td className="px-5 py-3.5">
+                  <td className="px-2 py-3.5 sm:px-5">
+                    <p className="text-xs font-semibold text-blue-main sm:text-sm">{order.reference}</p>
+                    <p className="mt-0.5 truncate text-[11px] text-gray-500 md:hidden">{order.user?.name}</p>
+                  </td>
+                  <td className="hidden px-5 py-3.5 md:table-cell">
                     <div className="flex items-center gap-2.5">
                       <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-main text-[11px] font-bold text-white">
                         {order.user?.name.charAt(0).toUpperCase()}
@@ -97,16 +100,16 @@ export default function AdminOrdersPage() {
                       <span className="font-semibold text-gray-900">{order.user?.name}</span>
                     </div>
                   </td>
-                  <td className="px-5 py-3.5 text-gray-500">
+                  <td className="hidden px-5 py-3.5 text-gray-500 lg:table-cell">
                     {order.items[0]?.product_name}
                     {order.items.length > 1 ? ` +${order.items.length - 1}` : ""}
                   </td>
-                  <td className="px-5 py-3.5 font-bold text-gray-900">{formatPrice(order.total)}</td>
-                  <td className="px-5 py-3.5 text-gray-500">{formatDate(order.created_at)}</td>
-                  <td className="px-5 py-3.5">
+                  <td className="whitespace-nowrap px-2 py-3.5 text-xs font-bold text-gray-900 sm:px-5 sm:text-sm">{formatPrice(order.total)}</td>
+                  <td className="hidden px-5 py-3.5 text-gray-500 md:table-cell">{formatDate(order.created_at)}</td>
+                  <td className="px-2 py-3.5 sm:px-5">
                     <span className={`badge ${ORDER_STATUS_STYLES[order.status]}`}>{ORDER_STATUS_LABELS[order.status]}</span>
                   </td>
-                  <td className="px-5 py-3.5 text-right">
+                  <td className="px-2 py-3.5 text-right sm:px-5">
                     <Link href={`/admin/commandes/${order.id}`} className="badge bg-blue-mist text-blue-main">Voir</Link>
                   </td>
                 </tr>

@@ -82,15 +82,22 @@ class Product extends Model
 
     public function scopeSearch(Builder $query, ?string $term): Builder
     {
-        if (! $term) {
-            return $query;
+        $words = preg_split('/\s+/', trim((string) $term), -1, PREG_SPLIT_NO_EMPTY);
+
+        // Chaque mot doit être trouvé (nom, référence, description courte ou catégorie),
+        // dans n'importe quel ordre : « bande gaze » trouve « Bande de gaze extensible ».
+        foreach ($words as $word) {
+            $like = '%'.addcslashes($word, '%_\\').'%';
+
+            $query->where(function (Builder $q) use ($like) {
+                $q->where('name', 'like', $like)
+                    ->orWhere('sku', 'like', $like)
+                    ->orWhere('short_description', 'like', $like)
+                    ->orWhereHas('category', fn (Builder $c) => $c->where('name', 'like', $like));
+            });
         }
 
-        return $query->where(function (Builder $q) use ($term) {
-            $q->where('name', 'like', "%{$term}%")
-                ->orWhere('sku', 'like', "%{$term}%")
-                ->orWhere('short_description', 'like', "%{$term}%");
-        });
+        return $query;
     }
 
     /** Slug unique à partir du nom. */

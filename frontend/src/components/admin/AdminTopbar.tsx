@@ -21,7 +21,11 @@ export default function AdminTopbar({ onMenuClick }: { onMenuClick?: () => void 
   return (
     <div className="flex h-[62px] items-center justify-between border-b border-blue-soft bg-white px-4 sm:px-6">
       <div className="flex items-center gap-3">
-        <button onClick={onMenuClick} className="text-xl text-gray-900 lg:hidden" aria-label="Ouvrir le menu">
+        <button
+          onClick={onMenuClick}
+          className="-ml-2 flex h-11 w-11 items-center justify-center rounded-lg text-xl text-gray-900 active:bg-blue-mist lg:hidden"
+          aria-label="Ouvrir le menu"
+        >
           ☰
         </button>
         <p className="text-base font-bold text-blue-deep sm:text-[19px]">{title}</p>

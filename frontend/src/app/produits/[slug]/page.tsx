@@ -153,9 +153,9 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <div className="flex h-[52px] items-center rounded-2xl border border-gray-300 bg-blue-frost">
-              <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="w-10 text-lg font-bold text-gray-500">−</button>
+              <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="h-full w-11 text-lg font-bold text-gray-500">−</button>
               <span className="w-8 text-center font-semibold">{quantity}</span>
-              <button onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))} className="w-10 text-lg font-bold text-blue-main">+</button>
+              <button onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))} className="h-full w-11 text-lg font-bold text-blue-main">+</button>
             </div>
             <button
               onClick={handleAdd}
