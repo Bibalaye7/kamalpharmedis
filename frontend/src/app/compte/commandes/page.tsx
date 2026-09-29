@@ -91,44 +91,91 @@ export default function OrdersPage() {
         {filtered.length === 0 ? (
           <EmptyState title="Aucune commande" description="Vos commandes apparaîtront ici." actionLabel="Voir le catalogue" actionHref="/catalogue" />
         ) : (
-          <div className="overflow-x-auto rounded-[18px] bg-white shadow-soft">
-            <table className="w-full text-sm">
-              <thead className="bg-blue-frost text-left text-[11px] font-bold uppercase text-gray-500">
-                <tr>
-                  <th className="px-5 py-3.5">N° Commande</th>
-                  <th className="px-5 py-3.5">Produits</th>
-                  <th className="px-5 py-3.5">Date</th>
-                  <th className="px-5 py-3.5">Total</th>
-                  <th className="px-5 py-3.5">Statut</th>
-                  <th className="px-5 py-3.5 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((order, i) => (
-                  <tr key={order.id} className={i % 2 === 1 ? "bg-blue-frost" : "bg-white"}>
-                    <td className="px-5 py-3.5 font-semibold text-blue-main">{order.reference}</td>
-                    <td className="px-5 py-3.5">
-                      <p className="text-gray-900">{order.items[0]?.product_name}{order.items.length > 1 ? ` (+${order.items.length - 1})` : ""}</p>
-                      <p className="text-[10px] text-gray-500">{order.items.length} article(s)</p>
-                    </td>
-                    <td className="px-5 py-3.5 text-gray-500">{formatDate(order.created_at)}</td>
-                    <td className="px-5 py-3.5 font-bold text-gray-900">{formatPrice(order.total)}</td>
-                    <td className="px-5 py-3.5">
-                      <span className={`badge ${ORDER_STATUS_STYLES[order.status]}`}>{ORDER_STATUS_LABELS[order.status]}</span>
-                    </td>
-                    <td className="px-5 py-3.5 text-right">
-                      <Link href={`/compte/commandes/${order.id}`} className="badge mr-2 bg-blue-mist text-blue-main">Voir détail</Link>
-                      {order.status === "delivered" && (
-                        <button onClick={() => handleReorder(order)} disabled={reordering === order.id} className="badge bg-green-pale text-green-dark">
-                          {reordering === order.id ? "..." : "Réacheter"}
-                        </button>
-                      )}
-                    </td>
+          <>
+            {/* Ordinateur / tablette : tableau */}
+            <div className="hidden overflow-x-auto rounded-[18px] bg-white shadow-soft md:block">
+              <table className="w-full text-sm">
+                <thead className="bg-blue-frost text-left text-[11px] font-bold uppercase text-gray-500">
+                  <tr>
+                    <th className="px-4 py-3.5">Commande</th>
+                    <th className="px-4 py-3.5">Produits</th>
+                    <th className="px-4 py-3.5">Total</th>
+                    <th className="px-4 py-3.5">Statut</th>
+                    <th className="px-4 py-3.5 text-right">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {filtered.map((order, i) => (
+                    <tr key={order.id} className={i % 2 === 1 ? "bg-blue-frost" : "bg-white"}>
+                      <td className="whitespace-nowrap px-4 py-3.5">
+                        <p className="font-semibold text-blue-main">{order.reference}</p>
+                        <p className="text-[11px] text-gray-500">{formatDate(order.created_at)}</p>
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <p className="text-gray-900">{order.items[0]?.product_name}{order.items.length > 1 ? ` (+${order.items.length - 1})` : ""}</p>
+                        <p className="text-[10px] text-gray-500">{order.items.length} article(s)</p>
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-3.5 font-bold text-gray-900">{formatPrice(order.total)}</td>
+                      <td className="px-4 py-3.5">
+                        <span className={`badge whitespace-nowrap ${ORDER_STATUS_STYLES[order.status]}`}>{ORDER_STATUS_LABELS[order.status]}</span>
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <div className="flex items-center justify-end gap-2">
+                        <Link href={`/compte/commandes/${order.id}`} className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-full bg-blue-mist px-4 text-xs font-semibold text-blue-main transition hover:bg-blue-main hover:text-white">
+                          Voir détail
+                        </Link>
+                        {order.status === "delivered" && (
+                          <button
+                            onClick={() => handleReorder(order)}
+                            disabled={reordering === order.id}
+                            className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-full bg-green-pale px-4 text-xs font-semibold text-green-dark transition hover:bg-green-main hover:text-white disabled:opacity-50"
+                          >
+                            {reordering === order.id ? "..." : "Réacheter"}
+                          </button>
+                        )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Téléphone : cartes */}
+            <ul className="space-y-3 md:hidden">
+              {filtered.map((order) => (
+                <li key={order.id} className="rounded-[18px] bg-white p-4 shadow-soft">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="font-semibold text-blue-main">{order.reference}</p>
+                      <p className="text-xs text-gray-500">{formatDate(order.created_at)}</p>
+                    </div>
+                    <span className={`badge shrink-0 whitespace-nowrap ${ORDER_STATUS_STYLES[order.status]}`}>{ORDER_STATUS_LABELS[order.status]}</span>
+                  </div>
+                  <p className="mt-3 text-sm text-gray-900">
+                    {order.items[0]?.product_name}{order.items.length > 1 ? ` (+${order.items.length - 1})` : ""}
+                  </p>
+                  <div className="mt-3 flex items-center justify-between gap-3">
+                    <p className="text-base font-bold text-gray-900">{formatPrice(order.total)}</p>
+                    <div className="flex gap-2">
+                        <Link href={`/compte/commandes/${order.id}`} className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-full bg-blue-mist px-4 text-xs font-semibold text-blue-main transition hover:bg-blue-main hover:text-white">
+                          Voir détail
+                        </Link>
+                        {order.status === "delivered" && (
+                          <button
+                            onClick={() => handleReorder(order)}
+                            disabled={reordering === order.id}
+                            className="inline-flex h-9 items-center justify-center whitespace-nowrap rounded-full bg-green-pale px-4 text-xs font-semibold text-green-dark transition hover:bg-green-main hover:text-white disabled:opacity-50"
+                          >
+                            {reordering === order.id ? "..." : "Réacheter"}
+                          </button>
+                        )}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </>
         )}
       </div>
     </div>

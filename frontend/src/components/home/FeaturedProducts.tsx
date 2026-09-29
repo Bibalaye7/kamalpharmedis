@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Product } from "@/types";
+import StarRating from "@/components/ui/StarRating";
+import Reveal from "@/components/ui/Reveal";
 import { api, formatPrice } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
@@ -56,10 +58,10 @@ function FeaturedCard({ product, colorClass }: { product: Product; colorClass: s
   }
 
   return (
-    <div className="relative flex flex-col overflow-hidden rounded-[22px] bg-white shadow-soft transition hover:-translate-y-1 hover:shadow-lifted">
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-[22px] bg-white shadow-soft transition duration-300 hover:-translate-y-1.5 hover:shadow-lifted">
       <Link href={`/produits/${product.slug}`} className={`relative flex aspect-square w-full items-center justify-center ${product.image ? "bg-white" : colorClass}`}>
         {product.image ? (
-          <Image src={product.image} alt={product.name} fill className="object-cover" />
+          <Image src={product.image} alt={product.name} fill className="object-cover transition duration-500 group-hover:scale-105" />
         ) : (
           <span className="text-7xl">💊</span>
         )}
@@ -78,6 +80,13 @@ function FeaturedCard({ product, colorClass }: { product: Product; colorClass: s
         <Link href={`/produits/${product.slug}`} className="mt-1 line-clamp-1 block text-sm font-bold text-blue-deep hover:underline">
           {product.name}
         </Link>
+
+        {(product.reviews_count ?? 0) > 0 && (
+          <div className="mt-1 flex items-center gap-1.5">
+            <StarRating value={product.reviews_avg_rating ?? 0} size="sm" />
+            <span className="text-[10px] text-gray-500">({product.reviews_count})</span>
+          </div>
+        )}
 
         <div className="mt-2.5 flex items-baseline gap-2">
           <span className="text-lg font-bold text-blue-deep">{formatPrice(product.price)}</span>
@@ -119,7 +128,7 @@ export default function FeaturedProducts({ products }: { products: Product[] }) 
 
   return (
     <section className="section bg-blue-frost !py-14">
-      <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+      <Reveal className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
         <div>
           <p className="text-[30px] font-bold text-blue-deep">Nos produits phares</p>
           <p className="mt-1 text-[13px] text-gray-500">Les plus commandés par nos clients</p>
@@ -127,11 +136,13 @@ export default function FeaturedProducts({ products }: { products: Product[] }) 
         <Link href="/catalogue" className="rounded-full border border-gray-300 bg-white px-5 py-2 text-xs text-gray-500 hover:border-blue-main hover:text-blue-main">
           Voir tout →
         </Link>
-      </div>
+      </Reveal>
 
       <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
         {products.map((product, i) => (
-          <FeaturedCard key={product.id} product={product} colorClass={TOP_COLORS[i % TOP_COLORS.length]} />
+          <Reveal key={product.id} delay={(i % 4) * 90}>
+            <FeaturedCard product={product} colorClass={TOP_COLORS[i % TOP_COLORS.length]} />
+          </Reveal>
         ))}
       </div>
 

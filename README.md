@@ -8,10 +8,10 @@ Plateforme e-commerce de vente de matériel médical et de promotion des médica
 |-----------------|---------------------------------------|
 | Frontend        | Next.js 14 (App Router) + TypeScript + Tailwind CSS |
 | Backend         | Laravel 11 (API REST) + JWT (php-open-source-saver/jwt-auth) |
-| Base de données | MySQL 8                               |
+| Base de données | PostgreSQL 16                         |
 | Cache           | Redis 7                               |
 | Reverse proxy   | Nginx                                 |
-| Admin BDD       | phpMyAdmin                            |
+| Admin BDD       | Adminer                               |
 
 ## Structure du projet
 
@@ -38,8 +38,8 @@ kamalpharmedis/
    - **Site public** : http://localhost (via Nginx)
    - **Frontend direct** : http://localhost:3000
    - **API backend** : http://localhost:8000/api/health
-   - **phpMyAdmin** : http://localhost:8080
-   - **MySQL** : localhost:3306
+   - **Adminer** : http://localhost:8080 (système « PostgreSQL », serveur `postgres`)
+   - **PostgreSQL** : localhost:5432
    - **Redis** : localhost:6379
 
 Au premier démarrage, le conteneur `backend` exécute automatiquement les migrations et les seeders (données de démonstration) via `docker/entrypoint.sh`.

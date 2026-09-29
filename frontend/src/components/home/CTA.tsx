@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Reveal from "@/components/ui/Reveal";
 
 export default function CTA() {
   const [email, setEmail] = useState("");
@@ -14,9 +15,9 @@ export default function CTA() {
 
   return (
     <section className="relative overflow-hidden bg-blue-mist py-16">
-      <div className="pointer-events-none absolute -left-24 -top-24 h-[500px] w-[500px] rounded-full bg-white/40" />
+      <div className="pointer-events-none absolute -left-24 -top-24 h-[500px] w-[500px] animate-drift rounded-full bg-white/40" />
 
-      <div className="container-page relative">
+      <Reveal className="container-page relative">
         <p className="max-w-2xl text-[34px] font-extrabold leading-tight text-blue-deep">
           Rejoignez 10 000+ clients satisfaits
         </p>
@@ -34,16 +35,17 @@ export default function CTA() {
           />
           <button
             type="submit"
-            className="flex h-[52px] items-center justify-center rounded-full bg-blue-main px-7 text-sm font-bold text-white shadow-lifted transition hover:bg-blue-deep"
+            className="group relative flex h-[52px] items-center justify-center overflow-hidden rounded-full bg-blue-main px-7 text-sm font-bold text-white shadow-lifted transition hover:-translate-y-0.5 hover:bg-blue-deep"
           >
-            Créer mon compte →
+            <span className="pointer-events-none absolute inset-y-0 left-0 w-1/3 animate-shine bg-white/25" aria-hidden />
+            <span className="relative">Créer mon compte <span className="inline-block transition group-hover:translate-x-1">→</span></span>
           </button>
         </form>
 
         <p className="mt-4 text-xs text-gray-500">
           ✓ Gratuit &nbsp;·&nbsp; ✓ Sans engagement &nbsp;·&nbsp; ✓ 10% de réduction à l&apos;inscription
         </p>
-      </div>
+      </Reveal>
     </section>
   );
 }

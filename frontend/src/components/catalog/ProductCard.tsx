@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { Product } from "@/types";
+import StarRating from "@/components/ui/StarRating";
 import { api, formatPrice } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
@@ -87,6 +88,13 @@ export default function ProductCard({ product, colorIndex = 0 }: { product: Prod
         <Link href={`/produits/${product.slug}`} className="mt-1.5 line-clamp-1 block text-sm font-bold text-blue-deep hover:underline">
           {product.name}
         </Link>
+
+        {(product.reviews_count ?? 0) > 0 && (
+          <div className="mt-1 flex items-center gap-1.5">
+            <StarRating value={product.reviews_avg_rating ?? 0} size="sm" />
+            <span className="text-[10px] text-gray-500">({product.reviews_count})</span>
+          </div>
+        )}
 
         <div className="mt-2 flex items-baseline gap-2">
           <span className="text-base font-bold text-blue-deep">{formatPrice(product.price)}</span>

@@ -47,7 +47,7 @@ class OrderController extends Controller
             'shipping_phone' => ['required_without:address_id', 'nullable', 'string', 'max:30'],
             'shipping_address' => ['required_without:address_id', 'nullable', 'string', 'max:255'],
             'shipping_city' => ['required_without:address_id', 'nullable', 'string', 'max:80'],
-            'payment_method' => ['required', Rule::in(Order::PAYMENT_METHODS)],
+            'payment_method' => ['required', Rule::in(Order::availablePaymentMethods())],
             'notes' => ['nullable', 'string', 'max:1000'],
             'items' => ['nullable', 'array', 'min:1', 'max:50'],
             'items.*.product_id' => ['required_with:items', 'integer'],
@@ -161,6 +161,32 @@ class OrderController extends Controller
         Cache::tags(['catalog'])->flush();
 
         return response()->json($order->fresh('items'));
+    }
+
+    /**
+     * Paiement manuel Wave / Orange Money : le client déclare l'identifiant de sa transaction.
+     * La commande reste « non payée » jusqu'à vérification par l'équipe.
+     */
+    public function declarePayment(Request $request, Order $order): JsonResponse
+    {
+        abort_unless($order->user_id === $request->user()->id, 404);
+
+        if ($order->payment_method !== 'mobile_money' || $order->payment_status === 'paid' || $order->status === 'cancelled') {
+            return response()->json(['message' => 'Aucun paiement à déclarer pour cette commande.'], 422);
+        }
+
+        $data = $request->validate(
+            ['payment_reference' => ['required', 'string', 'min:4', 'max:60', 'regex:/^[A-Za-z0-9 .\-_#\/]+$/']],
+            [],
+            ['payment_reference' => 'identifiant de transaction'],
+        );
+
+        $order->update([
+            'payment_reference' => trim($data['payment_reference']),
+            'payment_declared_at' => now(),
+        ]);
+
+        return response()->json($order->fresh('items.product:id,slug'));
     }
 
     private function authorizeView(Request $request, Order $order): void

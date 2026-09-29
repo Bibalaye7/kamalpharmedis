@@ -1,12 +1,12 @@
 #!/bin/sh
 set -e
 
-# Attend que MySQL accepte les connexions avant de lancer les migrations
-echo "Attente de MySQL (${DB_HOST:-mysql}:${DB_PORT:-3306})..."
-until php -r "new PDO('mysql:host=${DB_HOST:-mysql};port=${DB_PORT:-3306}', '${DB_USERNAME:-root}', '${DB_PASSWORD:-}');" 2>/dev/null; do
+# Attend que la base de données (PostgreSQL par défaut) accepte les connexions avant de lancer les migrations
+echo "Attente de la base de données..."
+until php -r 'require "vendor/autoload.php"; $app = require "bootstrap/app.php"; $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap(); Illuminate\Support\Facades\DB::connection()->getPdo();' >/dev/null 2>&1; do
   sleep 2
 done
-echo "MySQL est prêt."
+echo "La base de données est prête."
 
 if [ ! -f .env ]; then
   cp .env.example .env

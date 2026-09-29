@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -39,6 +40,8 @@ class Product extends Model
             'stock' => 'integer',
             'is_featured' => 'boolean',
             'is_active' => 'boolean',
+            'reviews_count' => 'integer',
+            'reviews_avg_rating' => 'float',
         ];
     }
 
@@ -70,6 +73,19 @@ class Product extends Model
         return json_decode($this->getRawOriginal('images') ?? '[]', true) ?: [];
     }
 
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(ProductReview::class);
+    }
+
+    /** Ajoute la note moyenne et le nombre d'avis visibles (reviews_avg_rating, reviews_count). */
+    public function scopeWithRating(Builder $query): Builder
+    {
+        return $query
+            ->withCount(['reviews as reviews_count' => fn ($q) => $q->visible()])
+            ->withAvg(['reviews as reviews_avg_rating' => fn ($q) => $q->visible()], 'rating');
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
@@ -87,13 +103,11 @@ class Product extends Model
         // Chaque mot doit être trouvé (nom, référence, description courte ou catégorie),
         // dans n'importe quel ordre : « bande gaze » trouve « Bande de gaze extensible ».
         foreach ($words as $word) {
-            $like = '%'.addcslashes($word, '%_\\').'%';
-
-            $query->where(function (Builder $q) use ($like) {
-                $q->where('name', 'like', $like)
-                    ->orWhere('sku', 'like', $like)
-                    ->orWhere('short_description', 'like', $like)
-                    ->orWhereHas('category', fn (Builder $c) => $c->where('name', 'like', $like));
+            $query->where(function (Builder $q) use ($word) {
+                $q->whereLoose('name', $word)
+                    ->orWhereLoose('sku', $word)
+                    ->orWhereLoose('short_description', $word)
+                    ->orWhereHas('category', fn (Builder $c) => $c->whereLoose('name', $word));
             });
         }
 

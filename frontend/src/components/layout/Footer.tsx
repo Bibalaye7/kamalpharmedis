@@ -27,9 +27,17 @@ const COLUMNS = [
     links: [
       { label: "À propos de nous", href: "/a-propos" },
       { label: "Nos services", href: "/services" },
+      { label: "Devis professionnel", href: "/devis" },
       { label: "Contact", href: "/contact" },
     ],
   },
+];
+
+// Réseaux sociaux : un lien sans adresse (href vide) n'est pas affiché.
+const SOCIAL_LINKS = [
+  { label: "Facebook", short: "f", href: "https://www.facebook.com/profile.php?id=61594420457479", className: "bg-[#1877F2]" },
+  { label: "Instagram", short: "ig", href: "", className: "bg-gradient-to-br from-[#F58529] via-[#DD2A7B] to-[#8134AF]" },
+  { label: "WhatsApp", short: "wa", href: "https://wa.me/221704641281", className: "bg-[#25D366]" },
 ];
 
 export default function Footer() {
@@ -50,9 +58,19 @@ export default function Footer() {
             Votre boutique médicale en ligne au Sénégal.
           </p>
           <div className="mt-4 flex gap-2.5">
-            <span className="flex h-[34px] w-[34px] items-center justify-center rounded-[10px] bg-blue-main text-xs font-bold">f</span>
-            <span className="flex h-[34px] w-[34px] items-center justify-center rounded-[10px] bg-[#126EB5] text-xs font-bold">in</span>
-            <span className="flex h-[34px] w-[34px] items-center justify-center rounded-[10px] bg-green-main text-xs font-bold">wa</span>
+            {SOCIAL_LINKS.filter((s) => s.href).map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.label}
+                title={s.label}
+                className={`flex h-10 w-10 items-center justify-center rounded-[10px] text-sm font-bold text-white transition hover:scale-105 ${s.className}`}
+              >
+                {s.short}
+              </a>
+            ))}
           </div>
         </div>
 

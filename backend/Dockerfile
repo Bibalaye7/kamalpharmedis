@@ -11,9 +11,10 @@ RUN apk add --no-cache \
         icu-dev \
         freetype-dev \
         libjpeg-turbo-dev \
+        postgresql-dev \
         $PHPIZE_DEPS \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) pdo_mysql mbstring zip exif pcntl gd intl bcmath opcache \
+    && docker-php-ext-install -j$(nproc) pdo_pgsql pdo_mysql mbstring zip exif pcntl gd intl bcmath opcache \
     && pecl install redis \
     && docker-php-ext-enable redis \
     && apk del $PHPIZE_DEPS

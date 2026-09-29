@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import BackButton from "@/components/ui/BackButton";
 
 const TITLES: Record<string, string> = {
   "/admin": "Tableau de bord",
@@ -9,6 +10,9 @@ const TITLES: Record<string, string> = {
   "/admin/commandes": "Commandes",
   "/admin/utilisateurs": "Utilisateurs",
   "/admin/profil": "Mon profil",
+  "/admin/avis": "Avis clients",
+  "/admin/devis": "Demandes de devis",
+  "/admin/messages": "Messages de contact",
 };
 
 export default function AdminTopbar({ onMenuClick }: { onMenuClick?: () => void }) {
@@ -28,7 +32,8 @@ export default function AdminTopbar({ onMenuClick }: { onMenuClick?: () => void 
         >
           ☰
         </button>
-        <p className="text-base font-bold text-blue-deep sm:text-[19px]">{title}</p>
+        {pathname !== "/admin" && <BackButton compact />}
+        <p className="truncate text-base font-bold text-blue-deep sm:text-[19px]">{title}</p>
       </div>
       <div className="flex items-center gap-3">
         <span className="badge hidden bg-blue-mist text-blue-main sm:inline-flex">

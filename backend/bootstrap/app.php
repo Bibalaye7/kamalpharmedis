@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\NormalizeEmail;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -17,6 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'role' => RoleMiddleware::class,
         ]);
+
+        $middleware->api(append: [NormalizeEmail::class]);
 
         // API stateless : aucune redirection vers une page de login
         $middleware->redirectGuestsTo(fn () => null);

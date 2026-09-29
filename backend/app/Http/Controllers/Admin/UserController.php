@@ -18,8 +18,8 @@ class UserController extends Controller
 
         $users = User::withCount('orders')
             ->withSum(['orders as total_spent' => fn ($q) => $q->where('status', '!=', 'cancelled')], 'total')
-            ->when($search, fn ($q) => $q->where(fn ($q) => $q->where('name', 'like', "%{$search}%")
-                ->orWhere('email', 'like', "%{$search}%")))
+            ->when($search, fn ($q) => $q->where(fn ($q) => $q->whereLoose('name', $search)
+                ->orWhereLoose('email', $search)))
             ->when($request->filled('role'), fn ($q) => $q->whereHas('role', fn ($r) => $r->where('name', $request->input('role'))))
             ->latest('id')
             ->paginate(min((int) $request->input('per_page', 15), 100));

@@ -90,6 +90,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(CartItem::class);
     }
 
+    public function quoteRequests(): HasMany
+    {
+        return $this->hasMany(QuoteRequest::class);
+    }
+
     public function wishlist(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, 'wishlists')->withTimestamps();

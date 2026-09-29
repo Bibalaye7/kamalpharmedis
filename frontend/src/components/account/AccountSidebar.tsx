@@ -7,6 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 const LINKS = [
   { href: "/compte", label: "Tableau de bord", icon: "📊" },
   { href: "/compte/commandes", label: "Mes commandes", icon: "📦" },
+  { href: "/compte/devis", label: "Mes devis", icon: "🧾" },
   { href: "/compte/favoris", label: "Mes favoris", icon: "❤️" },
   { href: "/compte/profil", label: "Mon profil", icon: "👤" },
   { href: "/compte/adresses", label: "Mes adresses", icon: "📍" },

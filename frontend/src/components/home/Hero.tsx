@@ -8,6 +8,9 @@ import { Product } from "@/types";
 import { api, formatPrice } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
+import RotatingWord from "@/components/ui/RotatingWord";
+
+const HERO_WORDS = ["médicaux", "de santé", "d'hygiène", "de secours"];
 
 const TRUST_BADGES = [
   { icon: "🛡️", label: "Certifiés CE" },
@@ -106,47 +109,60 @@ function FeaturedCard({ product }: { product: Product }) {
 export default function Hero({ featuredProduct }: { featuredProduct?: Product | null }) {
   return (
     <section className="relative overflow-hidden bg-blue-deep">
-      {/* Bulles décoratives, fidèles à la maquette Figma */}
-      <div className="pointer-events-none absolute -left-32 -top-24 h-[420px] w-[420px] rounded-full bg-white/5" />
-      <div className="pointer-events-none absolute -right-16 top-32 hidden h-64 w-64 rounded-full bg-green-main/10 lg:block" />
-      <div className="pointer-events-none absolute right-1/3 -top-16 hidden h-40 w-40 rounded-full bg-white/5 lg:block" />
+      {/* Bulles décoratives, fidèles à la maquette Figma, qui dérivent lentement */}
+      <div className="pointer-events-none absolute -left-32 -top-24 h-[420px] w-[420px] animate-drift rounded-full bg-white/5" />
+      <div className="pointer-events-none absolute -right-16 top-32 hidden h-64 w-64 animate-drift-slow rounded-full bg-green-main/10 lg:block" />
+      <div className="pointer-events-none absolute right-1/3 -top-16 hidden h-40 w-40 animate-drift rounded-full bg-white/5 lg:block" />
+      <div className="pointer-events-none absolute -bottom-20 left-1/4 h-56 w-56 animate-drift-slow rounded-full bg-[#99D9A6]/10" />
 
       <div className="container-page relative grid grid-cols-1 items-center gap-12 py-16 lg:grid-cols-2 lg:py-24">
-        <div className="animate-fade-in">
-          <span className="inline-flex items-center rounded-full bg-[#334DA6] px-4 py-2 text-xs font-medium text-[#CCE0FF]">
-            🌿 Votre santé, notre priorité — Dakar, Sénégal
+        <div>
+          <span className="inline-flex animate-fade-up items-center gap-2 rounded-full bg-[#334DA6] px-4 py-2 text-xs font-medium text-[#CCE0FF]">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#99D9A6] opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#99D9A6]" />
+            </span>
+            Votre santé, notre priorité — Dakar, Sénégal
           </span>
 
-          <h1 className="mt-6 text-4xl font-extrabold leading-[1.1] text-white sm:text-5xl lg:text-[54px]">
+          <h1
+            className="mt-6 animate-fade-up text-4xl font-extrabold leading-[1.1] text-white sm:text-5xl lg:text-[54px]"
+            style={{ animationDelay: "120ms" }}
+          >
             Achetez vos produits
             <br />
-            <span className="text-[#99D9A6]">médicaux en ligne</span>
+            <RotatingWord words={HERO_WORDS} className="text-[#99D9A6]" />
+            <br className="sm:hidden" /> <span className="text-[#99D9A6]">en ligne</span>
           </h1>
 
-          <p className="mt-6 max-w-md text-[15px] leading-relaxed text-[#B8CCFF]">
+          <p className="mt-6 max-w-md animate-fade-up text-[15px] leading-relaxed text-[#B8CCFF]" style={{ animationDelay: "240ms" }}>
             Médicaments certifiés, matériel médical et produits de santé livrés rapidement partout au Sénégal.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-4">
+          <div className="mt-8 flex animate-fade-up flex-wrap gap-4" style={{ animationDelay: "360ms" }}>
             <Link
               href="/catalogue"
-              className="flex h-[52px] items-center gap-2 rounded-full bg-[#E5ED8F] px-6 text-sm font-bold text-gray-900 shadow-lifted transition hover:brightness-95"
+              className="group relative flex h-[52px] items-center gap-2 overflow-hidden rounded-full bg-[#E5ED8F] px-6 text-sm font-bold text-gray-900 shadow-lifted transition hover:-translate-y-0.5 hover:brightness-95"
             >
-              🛒 Commander maintenant
+              <span className="pointer-events-none absolute inset-y-0 left-0 w-1/3 animate-shine bg-white/50" aria-hidden />
+              <span className="relative transition group-hover:animate-wiggle">🛒</span>
+              <span className="relative">Commander maintenant</span>
             </Link>
             <Link
               href="/catalogue"
-              className="flex h-[52px] items-center gap-2 rounded-full border-2 border-[#99BFFF] bg-[#4066D9] px-6 text-sm font-semibold text-white transition hover:bg-[#3557b8]"
+              className="group flex h-[52px] items-center gap-2 rounded-full border-2 border-[#99BFFF] bg-[#4066D9] px-6 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#3557b8]"
             >
               Voir le catalogue
+              <span className="transition group-hover:translate-x-1">→</span>
             </Link>
           </div>
 
           <div className="mt-9 flex flex-wrap gap-2.5">
-            {TRUST_BADGES.map((badge) => (
+            {TRUST_BADGES.map((badge, i) => (
               <span
                 key={badge.label}
-                className="flex h-10 items-center gap-2 rounded-full bg-[#33478C] px-4 text-xs font-medium text-[#CCE0FF]"
+                className="flex h-10 animate-fade-up items-center gap-2 rounded-full bg-[#33478C] px-4 text-xs font-medium text-[#CCE0FF] transition hover:bg-[#3d55a8]"
+                style={{ animationDelay: `${480 + i * 90}ms` }}
               >
                 <span>{badge.icon}</span>
                 {badge.label}
@@ -157,12 +173,18 @@ export default function Hero({ featuredProduct }: { featuredProduct?: Product | 
 
         {/* Carte produit flottante : un vrai produit vedette, entièrement cliquable */}
         {featuredProduct && (
-          <div className="relative mx-auto hidden max-w-[374px] lg:block">
-            <FeaturedCard product={featuredProduct} />
+          <div className="relative mx-auto hidden max-w-[374px] animate-fade-up lg:block" style={{ animationDelay: "300ms" }}>
+            <div className="animate-float">
+              <FeaturedCard product={featuredProduct} />
+            </div>
 
             {/* Toast social proof (décoratif) */}
-            <div className="absolute -bottom-6 -left-8 flex items-center gap-2.5 rounded-2xl bg-white px-4 py-3 shadow-soft">
-              <span className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-green-main text-sm font-bold text-white">
+            <div
+              className="absolute -bottom-6 -left-8 flex animate-slide-in-left items-center gap-2.5 rounded-2xl bg-white px-4 py-3 shadow-soft"
+              style={{ animationDelay: "1100ms" }}
+            >
+              <span className="relative flex h-[34px] w-[34px] items-center justify-center rounded-full bg-green-main text-sm font-bold text-white">
+                <span className="absolute inset-0 animate-ping rounded-full bg-green-main opacity-30" />
                 ✓
               </span>
               <div className="text-left">

@@ -6,6 +6,7 @@ import { api, formatPrice, formatDate } from "@/lib/api";
 import { Order, OrderStatus } from "@/types";
 import { ORDER_STATUS_LABELS, ORDER_STATUS_OPTIONS, ORDER_STATUS_STYLES } from "@/lib/orderStatus";
 import { PageSpinner } from "@/components/ui/Spinner";
+import { paymentMethodLabel } from "@/lib/payment";
 
 export default function AdminOrderDetailPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -111,9 +112,22 @@ export default function AdminOrderDetailPage({ params }: { params: { id: string 
 
           <div className="rounded-[18px] bg-white p-5 shadow-soft">
             <p className="text-sm font-bold text-gray-900">Paiement</p>
-            <p className="mt-2 text-sm text-gray-600">
+            <p className="mt-2 text-sm text-gray-600">{paymentMethodLabel(order.payment_method)}</p>
+            <p className="mt-1 text-sm text-gray-600">
               Statut : <span className="font-medium">{order.payment_status === "paid" ? "Payé" : "Non payé"}</span>
             </p>
+            {order.payment_reference && (
+              <div className={`mt-3 rounded-xl p-3 text-sm ${order.payment_status === "paid" ? "bg-green-pale text-green-dark" : "bg-amber-50 text-amber-800"}`}>
+                <p className="font-semibold">{order.payment_status === "paid" ? "Transfert vérifié" : "⏳ Transfert déclaré par le client"}</p>
+                <p className="mt-0.5 text-[13px]">
+                  Transaction <strong className="break-all">{order.payment_reference}</strong>
+                  {order.payment_declared_at ? ` · le ${formatDate(order.payment_declared_at)}` : ""}
+                </p>
+                {order.payment_status !== "paid" && (
+                  <p className="mt-1 text-xs">Vérifiez sur votre téléphone Wave / Orange Money la réception de {formatPrice(order.total)}, puis marquez la commande payée.</p>
+                )}
+              </div>
+            )}
             <button onClick={handlePaymentToggle} disabled={updating} className="mt-3 w-full rounded-[13px] bg-blue-frost py-2.5 text-sm font-semibold text-blue-main">
               Marquer comme {order.payment_status === "paid" ? "non payé" : "payé"}
             </button>

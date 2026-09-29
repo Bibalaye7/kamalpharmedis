@@ -108,6 +108,9 @@ export default function AdminOrdersPage() {
                   <td className="hidden px-5 py-3.5 text-gray-500 md:table-cell">{formatDate(order.created_at)}</td>
                   <td className="px-2 py-3.5 sm:px-5">
                     <span className={`badge ${ORDER_STATUS_STYLES[order.status]}`}>{ORDER_STATUS_LABELS[order.status]}</span>
+                    {order.payment_reference && order.payment_status !== "paid" && order.status !== "cancelled" && (
+                      <span className="badge mt-1 block w-fit whitespace-nowrap bg-amber-50 text-amber-800">💳 Paiement à vérifier</span>
+                    )}
                   </td>
                   <td className="px-2 py-3.5 text-right sm:px-5">
                     <Link href={`/admin/commandes/${order.id}`} className="badge bg-blue-mist text-blue-main">Voir</Link>

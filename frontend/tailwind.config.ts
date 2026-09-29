@@ -6,6 +6,7 @@ const config: Config = {
     "./src/app/**/*.{ts,tsx}",
     "./src/components/**/*.{ts,tsx}",
     "./src/context/**/*.{ts,tsx}",
+    "./src/lib/**/*.{ts,tsx}",
   ],
   theme: {
     extend: {
@@ -54,9 +55,52 @@ const config: Config = {
           "0%": { opacity: "0", transform: "translateY(8px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        // Page d'accueil animée
+        "fade-up": {
+          "0%": { opacity: "0", transform: "translateY(24px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "slide-in-left": {
+          "0%": { opacity: "0", transform: "translateX(-24px)" },
+          "100%": { opacity: "1", transform: "translateX(0)" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-12px)" },
+        },
+        drift: {
+          "0%, 100%": { transform: "translate(0, 0) scale(1)" },
+          "50%": { transform: "translate(24px, -18px) scale(1.06)" },
+        },
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        shine: {
+          "0%, 60%": { transform: "translateX(-120%) skewX(-20deg)" },
+          "100%": { transform: "translateX(260%) skewX(-20deg)" },
+        },
+        "word-in": {
+          "0%": { opacity: "0", transform: "translateY(60%)", filter: "blur(4px)" },
+          "100%": { opacity: "1", transform: "translateY(0)", filter: "blur(0)" },
+        },
+        wiggle: {
+          "0%, 100%": { transform: "rotate(0)" },
+          "25%": { transform: "rotate(-10deg)" },
+          "75%": { transform: "rotate(10deg)" },
+        },
       },
       animation: {
         "fade-in": "fade-in 0.4s ease-out",
+        "fade-up": "fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both",
+        "slide-in-left": "slide-in-left 0.7s cubic-bezier(0.22, 1, 0.36, 1) both",
+        float: "float 5s ease-in-out infinite",
+        drift: "drift 14s ease-in-out infinite",
+        "drift-slow": "drift 22s ease-in-out infinite reverse",
+        marquee: "marquee 32s linear infinite",
+        shine: "shine 3.5s ease-in-out infinite",
+        "word-in": "word-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both",
+        wiggle: "wiggle 0.5s ease-in-out",
       },
     },
   },

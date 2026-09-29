@@ -1,4 +1,5 @@
 import Hero from "@/components/home/Hero";
+import BenefitsMarquee from "@/components/home/BenefitsMarquee";
 import Stats from "@/components/home/Stats";
 import Categories from "@/components/home/Categories";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
@@ -23,6 +24,7 @@ export default async function HomePage() {
   return (
     <>
       <Hero featuredProduct={featuredProduct} />
+      <BenefitsMarquee />
       <Stats />
       <Categories categories={categoriesRes?.data ?? []} />
       <FeaturedProducts products={productsRes?.data ?? []} />

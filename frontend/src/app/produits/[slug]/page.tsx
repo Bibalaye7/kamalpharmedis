@@ -9,6 +9,9 @@ import { Product } from "@/types";
 import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { PageSpinner } from "@/components/ui/Spinner";
+import DeliveryEstimate from "@/components/ui/DeliveryEstimate";
+import StarRating from "@/components/ui/StarRating";
+import ProductReviews from "@/components/catalog/ProductReviews";
 
 const FEATURES = [
   { icon: "🚚", label: "Livraison rapide" },
@@ -122,6 +125,14 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
         <div>
           <h1 className="text-[25px] font-bold text-blue-deep">{product.name}</h1>
           <p className="mt-2 text-[13px] text-gray-500">{product.category?.name} · {product.sku}</p>
+          {(product.reviews_count ?? 0) > 0 && (
+            <a href="#avis" className="mt-2 inline-flex items-center gap-2 text-[13px] text-gray-600 hover:text-blue-main">
+              <StarRating value={product.reviews_avg_rating ?? 0} size="sm" />
+              <span>
+                {(product.reviews_avg_rating ?? 0).toFixed(1).replace(".", ",")} · {product.reviews_count} avis
+              </span>
+            </a>
+          )}
 
           <div className="mt-4 flex items-center gap-2.5 rounded-2xl bg-blue-mist p-4">
             <span className="text-[26px] font-bold text-blue-deep">{formatPrice(product.price)}</span>
@@ -133,6 +144,8 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
           {discount && product.old_price && (
             <p className="mt-2 text-sm text-gray-400 line-through">{formatPrice(product.old_price)}</p>
           )}
+
+          <DeliveryEstimate className="mt-3" />
 
           {product.short_description && (
             <>
@@ -172,6 +185,14 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
             </button>
           </div>
 
+          <Link
+            href={`/devis?produit=${product.id}`}
+            className="mt-3 flex items-center justify-between gap-3 rounded-2xl border border-dashed border-blue-main/40 bg-blue-frost px-4 py-3 text-[13px] text-blue-deep transition hover:border-blue-main"
+          >
+            <span>🏥 <strong>Professionnel de santé ?</strong> Demandez un devis pour de grandes quantités</span>
+            <span className="shrink-0 font-semibold text-blue-main">Devis →</span>
+          </Link>
+
           {message && <p className="mt-4 rounded-lg bg-green-pale px-4 py-2 text-sm text-green-main">{message}</p>}
 
           <div className="mt-6 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
@@ -184,6 +205,8 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
           </div>
         </div>
       </div>
+
+      <ProductReviews productId={product.id} productSlug={product.slug} />
 
       {product.related && product.related.length > 0 && (
         <div className="mt-16">

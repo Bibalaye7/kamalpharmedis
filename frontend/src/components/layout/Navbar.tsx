@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: "/", label: "Accueil" },
   { href: "/catalogue", label: "Produits" },
   { href: "/services", label: "Services" },
+  { href: "/devis", label: "Devis pro" },
   { href: "/a-propos", label: "À propos" },
   { href: "/contact", label: "Contact" },
 ];

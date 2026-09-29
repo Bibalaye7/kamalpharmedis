@@ -7,18 +7,14 @@ import { useCart } from "@/context/CartContext";
 import { api, ApiError, formatPrice } from "@/lib/api";
 import { Address, Order } from "@/types";
 import EmptyState from "@/components/ui/EmptyState";
-
-const PAYMENT_METHODS = [
-  { value: "cash_on_delivery", label: "Paiement à la livraison" },
-  { value: "mobile_money", label: "Mobile Money (Orange Money, Wave...)" },
-  { value: "card", label: "Carte bancaire" },
-  { value: "bank_transfer", label: "Virement bancaire" },
-];
+import { deliveryDelayFor, isExpressDelivery } from "@/lib/delivery";
+import { getPaymentConfig, PaymentConfig, paymentMethodLabel } from "@/lib/payment";
 
 function CheckoutContent() {
   const { cart, refresh } = useCart();
   const router = useRouter();
 
+  const [paymentConfig, setPaymentConfig] = useState<PaymentConfig | null>(null);
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [addressId, setAddressId] = useState<number | null>(null);
   const [paymentMethod, setPaymentMethod] = useState("cash_on_delivery");
@@ -32,7 +28,10 @@ function CheckoutContent() {
       const defaultAddress = res.data.find((a) => a.is_default) ?? res.data[0];
       if (defaultAddress) setAddressId(defaultAddress.id);
     });
+    getPaymentConfig().then(setPaymentConfig).catch(() => {});
   }, []);
+
+  const paymentMethods = paymentConfig?.methods ?? ["cash_on_delivery"];
 
   if (cart.items.length === 0) {
     return (
@@ -65,6 +64,20 @@ function CheckoutContent() {
         notes: notes || undefined,
       });
       await refresh();
+
+      // Paiement en ligne actif : redirection vers la page de paiement sécurisée.
+      // Sinon (paiement manuel), les instructions de transfert s'affichent dans le détail de la commande.
+      if (paymentConfig?.online && (paymentMethod === "mobile_money" || paymentMethod === "card")) {
+        try {
+          const { payment_url } = await api.post<{ payment_url: string }>(`/orders/${order.id}/pay`);
+          window.location.href = payment_url;
+          return;
+        } catch {
+          // Paiement en ligne indisponible pour le moment : la commande reste enregistrée,
+          // le client pourra payer depuis le détail de sa commande ou à la livraison.
+        }
+      }
+
       router.push(`/compte/commandes/${order.id}?success=1`);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Impossible de valider la commande.");
@@ -102,6 +115,9 @@ function CheckoutContent() {
                       {address.line1}{address.line2 ? `, ${address.line2}` : ""}, {address.city}
                     </p>
                     <p className="text-sm text-gray-500">{address.phone}</p>
+                    <p className={`mt-1 text-xs ${isExpressDelivery(address.city) ? "text-green-main" : "text-gray-500"}`}>
+                      🚚 Livraison estimée : <strong className="font-semibold">{deliveryDelayFor(address.city)}</strong>
+                    </p>
                   </div>
                 </label>
               ))}
@@ -111,23 +127,33 @@ function CheckoutContent() {
           <div className="card p-6">
             <h2 className="font-semibold text-gray-900">Méthode de paiement</h2>
             <div className="mt-4 space-y-3">
-              {PAYMENT_METHODS.map((method) => (
+              {paymentMethods.map((method) => (
                 <label
-                  key={method.value}
+                  key={method}
                   className={`flex cursor-pointer items-center gap-3 rounded-lg border p-4 transition ${
-                    paymentMethod === method.value ? "border-blue-main bg-blue-main/5" : "border-gray-200"
+                    paymentMethod === method ? "border-blue-main bg-blue-main/5" : "border-gray-200"
                   }`}
                 >
                   <input
                     type="radio"
                     name="payment"
-                    checked={paymentMethod === method.value}
-                    onChange={() => setPaymentMethod(method.value)}
+                    checked={paymentMethod === method}
+                    onChange={() => setPaymentMethod(method)}
                   />
-                  <span className="text-sm font-medium text-gray-800">{method.label}</span>
+                  <span className="text-sm font-medium text-gray-800">{paymentMethodLabel(method)}</span>
                 </label>
               ))}
             </div>
+            {paymentMethod === "cash_on_delivery" && (
+              <p className="mt-3 text-xs text-gray-500">Vous réglez à la réception, en espèces ou par Wave / Orange Money au livreur.</p>
+            )}
+            {paymentMethod === "mobile_money" && paymentConfig && !paymentConfig.online && (
+              <div className="mt-3 rounded-lg bg-blue-frost p-3 text-xs text-gray-700">
+                Après validation, envoyez le montant par <strong>Wave ({paymentConfig.manual.wave})</strong> ou{" "}
+                <strong>Orange Money ({paymentConfig.manual.orange_money})</strong>, puis saisissez l&apos;identifiant de la
+                transaction dans le détail de votre commande. Nous la préparons dès réception du paiement.
+              </div>
+            )}
           </div>
 
           <div className="card p-6">

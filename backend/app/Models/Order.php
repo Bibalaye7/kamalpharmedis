@@ -32,6 +32,10 @@ class Order extends Model
         'shipping_city',
         'notes',
         'delivered_at',
+        'payment_token',
+        'payment_url',
+        'payment_reference',
+        'payment_declared_at',
     ];
 
     protected function casts(): array
@@ -41,6 +45,7 @@ class Order extends Model
             'shipping_fee' => 'integer',
             'total' => 'integer',
             'delivered_at' => 'datetime',
+            'payment_declared_at' => 'datetime',
         ];
     }
 
@@ -52,6 +57,27 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    /** Paiement en ligne (PayDunya) actif seulement si toutes ses clés sont renseignées. */
+    public static function onlinePaymentEnabled(): bool
+    {
+        return filled(config('services.paydunya.master_key'))
+            && filled(config('services.paydunya.private_key'))
+            && filled(config('services.paydunya.public_key'))
+            && filled(config('services.paydunya.token'));
+    }
+
+    /**
+     * Moyens de paiement proposés pour une nouvelle commande :
+     * à la livraison et transfert Wave / Orange Money (manuel, ou en ligne si PayDunya est configuré),
+     * plus la carte bancaire uniquement avec le paiement en ligne.
+     */
+    public static function availablePaymentMethods(): array
+    {
+        return self::onlinePaymentEnabled()
+            ? ['cash_on_delivery', 'mobile_money', 'card']
+            : ['cash_on_delivery', 'mobile_money'];
     }
 
     public static function generateReference(): string

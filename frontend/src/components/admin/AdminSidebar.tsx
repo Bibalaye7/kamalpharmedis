@@ -9,7 +9,9 @@ const LINKS = [
   { href: "/admin", label: "Tableau de bord", icon: "📊", roles: ["admin", "manager"] },
   { href: "/admin/produits", label: "Produits", icon: "📦", roles: ["admin", "manager"] },
   { href: "/admin/commandes", label: "Commandes", icon: "📋", roles: ["admin", "manager"] },
+  { href: "/admin/devis", label: "Demandes de devis", icon: "🧾", roles: ["admin", "manager"] },
   { href: "/admin/messages", label: "Messages de contact", icon: "✉️", roles: ["admin", "manager"] },
+  { href: "/admin/avis", label: "Avis clients", icon: "⭐", roles: ["admin", "manager"] },
   { href: "/admin/utilisateurs", label: "Utilisateurs", icon: "👥", roles: ["admin"] },
   { href: "/admin/profil", label: "Mon profil", icon: "👤", roles: ["admin", "manager"] },
 ];

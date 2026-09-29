@@ -32,12 +32,12 @@ class ProductController extends Controller
     {
         $staff = auth('api')->user()?->isStaff() ?? false;
 
-        $model = Product::with('category:id,name,slug')
+        $model = Product::with('category:id,name,slug')->withRating()
             ->when(! $staff, fn ($q) => $q->active())
             ->where(fn ($q) => ctype_digit($product) ? $q->where('id', $product) : $q->where('slug', $product))
             ->firstOrFail();
 
-        $related = Product::with('category:id,name,slug')
+        $related = Product::with('category:id,name,slug')->withRating()
             ->active()
             ->where('category_id', $model->category_id)
             ->where('id', '!=', $model->id)
@@ -142,7 +142,7 @@ class ProductController extends Controller
     {
         $perPage = min(max((int) $request->input('per_page', 12), 1), 100);
 
-        $query = Product::with('category:id,name,slug')->search($request->input('search'));
+        $query = Product::with('category:id,name,slug')->withRating()->search($request->input('search'));
 
         if (! $admin) {
             $query->active();

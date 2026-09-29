@@ -5,9 +5,10 @@ import { api, ApiError } from "@/lib/api";
 
 const INFO_ITEMS = [
   { icon: "📍", label: "Adresse", value: "Ouest-Foire, Cité DIOR WARÉ N°14, Dakar (Sénégal)" },
-  { icon: "📞", label: "Téléphone", value: "+221 75 661 62 62 / +221 70 464 12 81" },
-  { icon: "✉️", label: "Email", value: "kamalpharmedis@gmail.com" },
-  { icon: "💬", label: "WhatsApp", value: "+221 70 464 12 81" },
+  { icon: "📞", label: "Téléphone", value: "+221 75 661 62 62 / +221 70 464 12 81", href: "tel:+221756616262" },
+  { icon: "✉️", label: "Email", value: "kamalpharmedis@gmail.com", href: "mailto:kamalpharmedis@gmail.com" },
+  { icon: "💬", label: "WhatsApp", value: "+221 70 464 12 81", href: "https://wa.me/221704641281" },
+  { icon: "👍", label: "Facebook", value: "KamalPharMédis", href: "https://www.facebook.com/profile.php?id=61594420457479" },
 ];
 
 export default function ContactPage() {
@@ -63,7 +64,18 @@ export default function ContactPage() {
                   </span>
                   <div>
                     <p className="text-[10px] font-semibold text-gray-500">{item.label}</p>
-                    <p className="text-[13px] font-medium text-gray-900">{item.value}</p>
+                    {item.href ? (
+                      <a
+                        href={item.href}
+                        target={item.href.startsWith("http") ? "_blank" : undefined}
+                        rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                        className="text-[13px] font-medium text-gray-900 hover:text-blue-main hover:underline"
+                      >
+                        {item.value}
+                      </a>
+                    ) : (
+                      <p className="text-[13px] font-medium text-gray-900">{item.value}</p>
+                    )}
                   </div>
                 </div>
               ))}

@@ -8,6 +8,7 @@ import { useAuth } from "@/context/AuthContext";
 import { formatPrice } from "@/lib/api";
 import EmptyState from "@/components/ui/EmptyState";
 import { PageSpinner } from "@/components/ui/Spinner";
+import DeliveryEstimate from "@/components/ui/DeliveryEstimate";
 
 export default function CartPage() {
   const { cart, loading, updateItem, removeItem } = useCart();
@@ -113,7 +114,8 @@ export default function CartPage() {
                 <span>{formatPrice(cart.total)}</span>
               </div>
             </div>
-            <button onClick={() => router.push("/panier/commande")} className="btn-primary mt-6 w-full">
+            <DeliveryEstimate className="mt-3 rounded-lg bg-blue-frost px-3 py-2.5" />
+            <button onClick={() => router.push("/panier/commande")} className="btn-primary mt-4 w-full">
               Passer la commande
             </button>
             <Link href="/catalogue" className="mt-3 block text-center text-sm text-blue-main hover:underline">

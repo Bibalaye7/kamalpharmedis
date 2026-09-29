@@ -20,10 +20,10 @@ class OrderController extends Controller
         $orders = Order::with(['user:id,name,email', 'items'])
             ->when($request->filled('status'), fn ($q) => $q->where('status', $request->input('status')))
             ->when($search, fn ($q) => $q->where(function ($q) use ($search) {
-                $q->where('reference', 'like', "%{$search}%")
-                    ->orWhere('shipping_name', 'like', "%{$search}%")
-                    ->orWhereHas('user', fn ($u) => $u->where('name', 'like', "%{$search}%")
-                        ->orWhere('email', 'like', "%{$search}%"));
+                $q->whereLoose('reference', $search)
+                    ->orWhereLoose('shipping_name', $search)
+                    ->orWhereHas('user', fn ($u) => $u->whereLoose('name', $search)
+                        ->orWhereLoose('email', $search));
             }))
             ->latest('id')
             ->paginate(min((int) $request->input('per_page', 15), 100));

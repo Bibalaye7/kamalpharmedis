@@ -1,3 +1,5 @@
+import Reveal from "@/components/ui/Reveal";
+
 const TESTIMONIALS = [
   {
     initial: "A",
@@ -28,12 +30,14 @@ const TESTIMONIALS = [
 export default function Testimonials() {
   return (
     <section className="section bg-white !py-14">
-      <p className="text-[28px] font-bold text-blue-deep">Ce que disent nos clients</p>
-      <p className="mt-1 text-[13px] text-gray-500">Plus de 10 000 familles nous font confiance</p>
+      <Reveal>
+        <p className="text-[28px] font-bold text-blue-deep">Ce que disent nos clients</p>
+        <p className="mt-1 text-[13px] text-gray-500">Plus de 10 000 familles nous font confiance</p>
+      </Reveal>
 
       <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {TESTIMONIALS.map((testimonial) => (
-          <div key={testimonial.name} className="relative overflow-hidden rounded-[20px] bg-white p-5 pl-6 shadow-soft">
+        {TESTIMONIALS.map((testimonial, i) => (
+          <Reveal key={testimonial.name} delay={i * 110} className="relative overflow-hidden rounded-[20px] bg-white p-5 pl-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-lifted">
             <div className="absolute left-0 top-5 h-[180px] w-1.5 rounded-full bg-blue-main" />
             <p className="text-[38px] font-extrabold leading-none text-blue-mist">&ldquo;</p>
             <p className="-mt-2 text-xs leading-relaxed text-gray-800">{testimonial.text}</p>
@@ -48,7 +52,7 @@ export default function Testimonials() {
               </div>
               <span className="text-[11px] text-amber-400">⭐⭐⭐⭐⭐</span>
             </div>
-          </div>
+          </Reveal>
         ))}
       </div>
     </section>

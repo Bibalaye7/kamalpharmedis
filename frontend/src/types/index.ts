@@ -35,6 +35,8 @@ export interface Product {
   image: string | null;
   is_featured: boolean;
   is_active: boolean;
+  reviews_count?: number;
+  reviews_avg_rating?: number | null;
   related?: Product[];
   created_at: string;
 }
@@ -94,6 +96,8 @@ export interface Order {
   status: OrderStatus;
   payment_method: string;
   payment_status: "unpaid" | "paid" | "refunded";
+  payment_reference?: string | null;
+  payment_declared_at?: string | null;
   subtotal: number;
   shipping_fee: number;
   total: number;
@@ -141,4 +145,52 @@ export interface AdminStats {
   top_products: { product_id: number; product_name: string; sold: number; revenue: number }[];
   recent_orders: Order[];
   low_stock_products: Product[];
+}
+
+export interface ProductReview {
+  id: number;
+  rating: number;
+  comment: string | null;
+  author: string;
+  verified_purchase: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface ReviewSummary {
+  average: number;
+  count: number;
+  distribution: Record<string, number>;
+}
+
+export type QuoteStatus = "new" | "in_progress" | "sent" | "accepted" | "rejected";
+
+export interface QuoteRequestItem {
+  id: number;
+  product_id: number | null;
+  product_name: string;
+  quantity: number;
+  product?: { id: number; name: string; slug: string; price: number; stock: number } | null;
+}
+
+export interface QuoteRequest {
+  id: number;
+  reference: string;
+  company_name: string;
+  company_type: string;
+  ninea: string | null;
+  contact_name: string;
+  email: string;
+  phone: string;
+  city: string;
+  needed_by: string | null;
+  message: string | null;
+  status: QuoteStatus;
+  quoted_total: number | null;
+  admin_notes?: string | null;
+  items: QuoteRequestItem[];
+  items_count?: number;
+  user?: { id: number; name: string; email: string } | null;
+  created_at: string;
+  updated_at: string;
 }
