@@ -35,7 +35,7 @@ class ProductSeeder extends Seeder
                 'price' => 3000,
                 'stock' => 300,
                 'is_featured' => true,
-                'images' => ['sur-chaussures-1.jpg'],
+                'images' => ['sur-chaussures-1.jpg', 'sur-chaussures-2.jpg', 'sur-chaussures-3.jpg', 'sur-chaussures-4.jpg', 'sur-chaussures-5.jpg'],
             ],
             [
                 'sku' => 'KPM-RACH-003',
@@ -213,6 +213,161 @@ class ProductSeeder extends Seeder
                 'is_featured' => false,
                 'images' => ['doigtiers-latex-1.jpg'],
             ],
+            [
+                'sku' => 'KPM-KN95-019',
+                'category' => 'protection-hygiene',
+                'name' => 'Masques de protection KN95 / N95',
+                'short_description' => 'Masques filtrants pliables à 5 couches avec élastiques auriculaires.',
+                'description' => "Masques de protection respiratoire KN95 (équivalent N95 / FFP2).\n\n• Filtration élevée des particules\n• Forme pliable en bec de canard, barrette nasale ajustable\n• Élastiques auriculaires confortables\n• Usage unique, conditionnés en boîte\n\nCrédit photo : ProtoplasmaKid (Wikimedia Commons, CC BY-SA 4.0) ; dronepicr (Wikimedia Commons, CC BY 2.0)",
+                'price' => 5000,
+                'stock' => 200,
+                'is_featured' => false,
+                'images' => ['masques-kn95-libre-1.jpg', 'masques-kn95-libre-2.jpg'],
+            ],
+            [
+                'sku' => 'KPM-MASQ-020',
+                'category' => 'protection-hygiene',
+                'name' => 'Masques médicaux 3 plis (sachet de 10)',
+                'short_description' => 'Masques chirurgicaux jetables à élastiques, sachet de 10 pièces.',
+                'description' => "Masques médicaux jetables à 3 plis, en sachet de 10.\n\n• Trois couches de non-tissé avec couche filtrante\n• Élastiques auriculaires et barrette nasale\n• Pour le personnel soignant, les patients et le grand public\n• Usage unique\n\nCrédit photo : https://www.nursetogether.com/ (Wikimedia Commons, CC BY 4.0)",
+                'price' => 1000,
+                'stock' => 500,
+                'is_featured' => true,
+                'images' => ['masques-3-plis-libre-1.jpg', 'masques-3-plis-1.jpg', 'masques-3-plis-libre-2.jpg'],
+            ],
+            [
+                'sku' => 'KPM-GANT-021',
+                'category' => 'protection-hygiene',
+                'name' => "Gants d'examen en nitrile bleus (boîte de 100)",
+                'short_description' => 'Gants jetables sans latex ni poudre, ambidextres, tailles S à XL.',
+                'description' => "Gants d'examen en nitrile bleu, boîte de 100.\n\n• Sans latex : adaptés aux personnes allergiques\n• Non poudrés, ambidextres, bord roulé\n• Bonne sensibilité tactile et résistance\n• Tailles disponibles : S, M, L, XL (à préciser à la commande)\n\nCrédit photo : Praewnaaaaaam (Wikimedia Commons, CC BY-SA 4.0)",
+                'price' => 6000,
+                'stock' => 250,
+                'is_featured' => true,
+                'images' => ['gants-nitrile-libre-1.jpg', 'gants-nitrile-1.jpg'],
+            ],
+            [
+                'sku' => 'KPM-LAME-022',
+                'category' => 'chirurgie-perfusion',
+                'name' => 'Lames de bistouri stériles en inox (boîte de 100)',
+                'short_description' => 'Lames en acier inoxydable stérilisées aux rayons gamma, emballage individuel.',
+                'description' => "Boîte de 100 lames de bistouri stériles à usage unique.\n\n• Acier inoxydable, stérilisation par rayons gamma\n• Chaque lame sous sachet aluminium individuel pelable\n• Numéros disponibles : 10, 10R, 11, 12, 15, 20, 21, 22, 23, 24, 25 (à préciser à la commande)\n• Compatibles avec les manches de bistouri standard",
+                'price' => 10000,
+                'stock' => 80,
+                'is_featured' => false,
+                'images' => ['lames-bistouri-1.jpg', 'lames-bistouri-2.jpg', 'lames-bistouri-3.jpg', 'lames-bistouri-4.jpg', 'lames-bistouri-5.jpg', 'lames-bistouri-6.jpg'],
+            ],
+            [
+                'sku' => 'KPM-PERF-023',
+                'category' => 'chirurgie-perfusion',
+                'name' => 'Perfuseur stérile à usage unique',
+                'short_description' => 'Set de perfusion avec chambre compte-gouttes, régulateur à roulette et aiguille.',
+                'description' => "Perfuseur (set de perfusion) stérile à usage unique.\n\n• Perforateur avec prise d'air et chambre compte-gouttes transparente\n• Régulateur de débit à roulette\n• Tubulure souple d'environ 150 cm, raccord Luer et aiguille\n• Emballage individuel stérile\n\nCrédit photo : AfroBrazilian (Wikimedia Commons, CC BY-SA 3.0)",
+                'price' => 350,
+                'stock' => 1000,
+                'is_featured' => false,
+                'images' => ['perfuseur-1.jpg', 'perfuseur-libre-1.jpg'],
+            ],
+            [
+                'sku' => 'KPM-BURE-024',
+                'category' => 'chirurgie-perfusion',
+                'name' => 'Perfuseur avec burette graduée (pédiatrique)',
+                'short_description' => 'Set de perfusion avec burette graduée de 100/150 ml pour un dosage précis.',
+                'description' => "Perfuseur stérile avec burette (chambre) graduée, pour la perfusion de précision en pédiatrie ou en réanimation.\n\n• Burette graduée de 100 ou 150 ml avec filtre à air\n• Régulateur de débit et site d'injection\n• Aiguille et raccord Luer\n• Usage unique, emballage individuel stérile",
+                'price' => 2500,
+                'stock' => 150,
+                'is_featured' => false,
+                'images' => ['perfuseur-burette-1.jpg'],
+            ],
+            [
+                'sku' => 'KPM-CHAR-025',
+                'category' => 'protection-hygiene',
+                'name' => 'Charlottes jetables (sachet de 100)',
+                'short_description' => 'Bonnets plissés en non-tissé à bord élastique, usage unique.',
+                'description' => "Charlottes (bonnets clip) jetables en non-tissé léger.\n\n• Bord élastique, taille unique\n• Couvrent entièrement les cheveux\n• Pour blocs opératoires, laboratoires, pharmacies et agroalimentaire\n• Sachet de 100",
+                'price' => 3500,
+                'stock' => 200,
+                'is_featured' => false,
+                'images' => ['charlottes-1.jpg'],
+            ],
+            [
+                'sku' => 'KPM-CALO-026',
+                'category' => 'protection-hygiene',
+                'name' => 'Calots de chirurgien à lacets (lot de 50)',
+                'short_description' => 'Calots bleus en non-tissé à nouer derrière la tête, usage unique.',
+                'description' => "Calots de chirurgien jetables en non-tissé bleu.\n\n• Liens à nouer à l'arrière pour un maintien sûr\n• Légers et respirants\n• Pour le bloc opératoire et les soins\n• Lot de 50",
+                'price' => 5000,
+                'stock' => 150,
+                'is_featured' => false,
+                'images' => ['calots-chirurgien-libre-1.jpg', 'calots-chirurgien-1.jpg'],
+            ],
+            // Mobilier médical : le type (électrique / manuel) est indiqué en tête de la description courte
+            [
+                'sku' => 'KPM-LIT5-027',
+                'category' => 'mobilier-medical',
+                'name' => "Lit d'hôpital électrique 5 fonctions",
+                'short_description' => '⚡ Électrique — télécommande, dossier, jambes, hauteur et inclinaisons réglables.',
+                'description' => "Lit médicalisé électrique 5 fonctions avec télécommande filaire.\n\n⚡ ÉLECTRIQUE : moteurs commandés par télécommande\n• Relève-buste, relève-jambes, hauteur variable, Trendelenburg et proclive\n• Barrières latérales rabattables en ABS\n• Panneaux tête et pied en ABS amovibles\n• 4 roulettes avec freins\n• Branchement sur prise électrique 220 V",
+                'price' => 1350000,
+                'stock' => 3,
+                'is_featured' => true,
+                'images' => ['lit-electrique-5-fonctions-1.jpg', 'lit-electrique-5-fonctions-2.jpg'],
+            ],
+            [
+                'sku' => 'KPM-LIT3-028',
+                'category' => 'mobilier-medical',
+                'name' => "Lit d'hôpital électrique 3 fonctions avec matelas",
+                'short_description' => '⚡ Électrique — relève-buste, relève-jambes et hauteur réglables, matelas fourni.',
+                'description' => "Lit médicalisé électrique 3 fonctions livré avec son matelas.\n\n⚡ ÉLECTRIQUE : réglages par télécommande filaire\n• Relève-buste, relève-jambes et hauteur variable\n• Matelas médical imperméable\n• Barrières latérales rabattables en ABS\n• 4 roulettes avec freins\n• Branchement sur prise électrique 220 V",
+                'price' => 1100000,
+                'stock' => 3,
+                'is_featured' => false,
+                'images' => ['lit-electrique-matelas-1.jpg'],
+            ],
+            [
+                'sku' => 'KPM-LITB-029',
+                'category' => 'mobilier-medical',
+                'name' => "Lit d'hôpital électrique à barrières ABS",
+                'short_description' => '⚡ Électrique — dossier et jambes relevables, barrières ABS, roulettes à frein.',
+                'description' => "Lit médicalisé électrique avec barrières latérales en ABS.\n\n⚡ ÉLECTRIQUE : moteur sous le sommier\n• Relève-buste et relève-jambes simultanés\n• Barrières latérales rabattables en ABS\n• Panneaux tête et pied amovibles\n• 4 roulettes avec freins",
+                'price' => 950000,
+                'stock' => 2,
+                'is_featured' => false,
+                'images' => ['lit-electrique-3-fonctions-1.jpg'],
+            ],
+            [
+                'sku' => 'KPM-LITM-030',
+                'category' => 'mobilier-medical',
+                'name' => "Lit d'hôpital manuel 2 manivelles",
+                'short_description' => '🔧 Manuel (sans électricité) — dossier et jambes réglables par manivelles.',
+                'description' => "Lit médicalisé manuel à 2 manivelles.\n\n🔧 MANUEL : fonctionne sans électricité\n• Manivelle 1 : relève-buste\n• Manivelle 2 : relève-jambes\n• Barrières latérales en aluminium\n• Panneaux tête et pied en ABS\n• 4 roulettes avec freins",
+                'price' => 450000,
+                'stock' => 5,
+                'is_featured' => true,
+                'images' => ['lit-manuel-2-manivelles-1.jpg'],
+            ],
+            [
+                'sku' => 'KPM-LITP-031',
+                'category' => 'mobilier-medical',
+                'name' => "Lit d'hôpital plat simple",
+                'short_description' => '🔧 Manuel (sans électricité) — sommier plat perforé, sur roulettes.',
+                'description' => "Lit d'hospitalisation plat, simple et robuste.\n\n🔧 SANS ÉLECTRICITÉ : sommier fixe, sans réglage motorisé\n• Sommier en tôle perforée\n• Panneaux tête et pied en ABS\n• 4 roulettes avec freins\n• Idéal pour salles d'observation, dispensaires et cliniques",
+                'price' => 250000,
+                'stock' => 5,
+                'is_featured' => false,
+                'images' => ['lit-plat-1.jpg'],
+            ],
+            [
+                'sku' => 'KPM-TABL-032',
+                'category' => 'mobilier-medical',
+                'name' => "Table d'examen médicale",
+                'short_description' => '🔧 Sans électricité — divan d\'examen rembourré avec étagère inférieure.',
+                'description' => "Table (divan) d'examen pour cabinet médical.\n\n🔧 SANS ÉLECTRICITÉ : structure fixe\n• Plateau rembourré recouvert de similicuir bleu, facile à nettoyer\n• Structure en acier peint\n• Étagère de rangement inférieure\n• Patins antidérapants",
+                'price' => 120000,
+                'stock' => 4,
+                'is_featured' => false,
+                'images' => ['table-examen-1.jpg'],
+            ],
         ];
 
         foreach ($products as $data) {
@@ -222,20 +377,22 @@ class ProductSeeder extends Seeder
 
             $product = Product::withTrashed()->firstOrNew(['sku' => $data['sku']]);
 
-            if (! $product->exists) {
-                $product->slug = Product::uniqueSlug($data['name']);
-                $product->is_active = true;
+            // Un produit existant n'est jamais réécrit : prix, textes et photos modifiés
+            // depuis l'espace admin sont conservés. Seuls les produits manquants sont créés.
+            if ($product->exists) {
+                if (empty($product->rawImages())) {
+                    $product->images = $this->storeImages($files);
+                    $product->save();
+                }
+
+                continue;
             }
 
             $product->fill($data);
+            $product->slug = Product::uniqueSlug($data['name']);
+            $product->is_active = true;
             $product->category_id = $cat[$category];
-
-            // Les photos ne sont (ré)installées que pour un produit neuf ou sans photo,
-            // afin de ne jamais écraser celles modifiées depuis l'espace admin.
-            if (! $product->exists || empty($product->rawImages())) {
-                $product->images = $this->storeImages($files);
-            }
-
+            $product->images = $this->storeImages($files);
             $product->save();
         }
     }

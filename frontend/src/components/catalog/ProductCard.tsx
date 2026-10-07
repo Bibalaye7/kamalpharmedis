@@ -33,13 +33,16 @@ export default function ProductCard({ product, colorIndex = 0 }: { product: Prod
   const lowStock = product.stock > 0 && product.stock <= 10;
   const topColor = TOP_COLORS[colorIndex % TOP_COLORS.length];
 
+  // Disponibilité toujours signalée en haut à gauche ; promotion ou « Populaire » en haut à droite
+  const stockBadge =
+    product.stock > 0
+      ? { label: "✅ En stock", className: "bg-green-pale text-green-dark" }
+      : { label: "Rupture de stock", className: "bg-[#FFE5E5] text-status-danger" };
   const badge = discount
     ? { label: `-${discount}%`, className: "bg-green-main text-white" }
-    : lowStock
-      ? { label: "Stock limité", className: "bg-[#FFE5E5] text-status-danger" }
-      : product.is_featured
-        ? { label: "Populaire", className: "bg-blue-mist text-blue-main" }
-        : null;
+    : product.is_featured
+      ? { label: "Populaire", className: "bg-blue-mist text-blue-main" }
+      : null;
 
   async function handleAdd() {
     if (!user) {
@@ -73,7 +76,8 @@ export default function ProductCard({ product, colorIndex = 0 }: { product: Prod
         ) : (
           <span className="text-5xl">💊</span>
         )}
-        {badge && <span className={`badge absolute left-3.5 top-2.5 ${badge.className}`}>{badge.label}</span>}
+        <span className={`badge absolute left-3.5 top-2.5 shadow-soft ${stockBadge.className}`}>{stockBadge.label}</span>
+        {badge && <span className={`badge absolute right-3.5 top-2.5 shadow-soft ${badge.className}`}>{badge.label}</span>}
         <button
           onClick={handleWishlist}
           aria-label="Ajouter aux favoris"

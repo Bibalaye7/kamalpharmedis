@@ -27,13 +27,15 @@ function FeaturedCard({ product, colorClass }: { product: Product; colorClass: s
   const lowStock = product.stock > 0 && product.stock <= 10;
   const stockPercent = Math.min(100, Math.round((product.stock / 30) * 100));
 
+  const stockBadge =
+    product.stock > 0
+      ? { label: "✅ En stock", className: "bg-green-pale text-green-dark" }
+      : { label: "Rupture de stock", className: "bg-[#FFE5E5] text-status-danger" };
   const badge = discount
     ? { label: `-${discount}%`, className: "bg-green-main text-white" }
-    : lowStock
-      ? { label: "Stock limité", className: "bg-[#FFE5E5] text-status-danger" }
-      : product.is_featured
-        ? { label: "Populaire", className: "bg-blue-mist text-blue-main" }
-        : null;
+    : product.is_featured
+      ? { label: "Populaire", className: "bg-blue-mist text-blue-main" }
+      : null;
 
   async function handleAdd() {
     if (!user) {
@@ -65,7 +67,8 @@ function FeaturedCard({ product, colorClass }: { product: Product; colorClass: s
         ) : (
           <span className="text-7xl">💊</span>
         )}
-        {badge && <span className={`badge absolute left-3 top-2.5 ${badge.className}`}>{badge.label}</span>}
+        <span className={`badge absolute left-3 top-2.5 shadow-soft ${stockBadge.className}`}>{stockBadge.label}</span>
+        {badge && <span className={`badge absolute left-3 top-10 shadow-soft ${badge.className}`}>{badge.label}</span>}
       </Link>
       <button
         onClick={handleWishlist}

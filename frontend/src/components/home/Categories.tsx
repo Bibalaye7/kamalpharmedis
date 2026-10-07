@@ -12,6 +12,8 @@ const ICONS: Record<string, string> = {
   flask: "🧪",
   heart: "🫀",
   tag: "🏷️",
+  bed: "🛏️",
+  scalpel: "🔪",
 };
 
 // Palette pastel de la maquette Figma, appliquée en cycle aux catégories du catalogue
@@ -34,7 +36,7 @@ export default function Categories({ categories }: { categories: Category[] }) {
         <p className="mt-1 text-[13px] text-gray-500">Trouvez rapidement ce dont vous avez besoin</p>
       </Reveal>
 
-      <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-6">
+      <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-4">
         {categories.map((category, i) => {
           const color = COLOR_CYCLE[i % COLOR_CYCLE.length];
           return (

@@ -11,3 +11,6 @@ vendor/
 Thumbs.db
 .claude/
 .tools/
+
+# Dossier personnel de photos (originaux envoyés, copies retouchées, logos) : non publié
+photos-du-site/

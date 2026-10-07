@@ -16,10 +16,13 @@ class CategorySeeder extends Seeder
             ['Diagnostic', 'diagnostic', 'Bandelettes et consommables pour le diagnostic et l\'analyse.', 'flask'],
             ['Urgence & réanimation', 'urgence-reanimation', 'Électrodes de défibrillation et matériel d\'oxygénothérapie.', 'heart'],
             ['Identification patient', 'identification-patient', 'Bracelets d\'identification pour adultes et nouveau-nés.', 'tag'],
+            ['Chirurgie & perfusion', 'chirurgie-perfusion', 'Lames de bistouri stériles, perfuseurs et sets de perfusion.', 'scalpel'],
+            ['Mobilier médical', 'mobilier-medical', 'Lits d\'hôpital électriques et manuels, tables d\'examen.', 'bed'],
         ];
 
         foreach ($categories as [$name, $slug, $description, $icon]) {
-            Category::updateOrCreate(['slug' => $slug], compact('name', 'description', 'icon'));
+            // Catégorie existante conservée telle quelle (elle a pu être renommée depuis l'admin)
+            Category::firstOrCreate(['slug' => $slug], compact('name', 'description', 'icon'));
         }
     }
 }

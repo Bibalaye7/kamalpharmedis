@@ -88,6 +88,12 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
     { label: "Statut", value: product.is_active ? "Disponible" : "Indisponible" },
   ];
 
+  // Mobilier médical : on précise si l'article est électrique ou manuel
+  if (product.category?.slug === "mobilier-medical") {
+    const electric = /électrique/i.test(product.name);
+    specs.push({ label: "Fonctionnement", value: electric ? "⚡ Électrique" : "🔧 Manuel (sans électricité)" });
+  }
+
   return (
     <div className="container-page py-8">
       <p className="text-[13px] text-gray-500">
@@ -152,6 +158,9 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
               <p className="mt-6 text-[15px] font-bold text-blue-deep">Description</p>
               <p className="mt-2 text-[13px] leading-relaxed text-gray-600">{product.short_description}</p>
             </>
+          )}
+          {product.description && product.description !== product.short_description && (
+            <p className="mt-3 whitespace-pre-line text-[13px] leading-relaxed text-gray-600">{product.description}</p>
           )}
 
           <p className="mt-6 text-[15px] font-bold text-blue-deep">Caractéristiques</p>
