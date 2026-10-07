@@ -33,11 +33,9 @@ export default function ProductCard({ product, colorIndex = 0 }: { product: Prod
   const lowStock = product.stock > 0 && product.stock <= 10;
   const topColor = TOP_COLORS[colorIndex % TOP_COLORS.length];
 
-  // Disponibilité toujours signalée en haut à gauche ; promotion ou « Populaire » en haut à droite
+  // Seule la rupture est signalée sur la photo ; la disponibilité est indiquée sous le prix
   const stockBadge =
-    product.stock > 0
-      ? { label: "✅ En stock", className: "bg-green-pale text-green-dark" }
-      : { label: "Rupture de stock", className: "bg-[#FFE5E5] text-status-danger" };
+    product.stock === 0 ? { label: "Rupture de stock", className: "bg-[#FFE5E5] text-status-danger" } : null;
   const badge = discount
     ? { label: `-${discount}%`, className: "bg-green-main text-white" }
     : product.is_featured
@@ -76,7 +74,7 @@ export default function ProductCard({ product, colorIndex = 0 }: { product: Prod
         ) : (
           <span className="text-5xl">💊</span>
         )}
-        <span className={`badge absolute left-3.5 top-2.5 shadow-soft ${stockBadge.className}`}>{stockBadge.label}</span>
+        {stockBadge && <span className={`badge absolute left-3.5 top-2.5 shadow-soft ${stockBadge.className}`}>{stockBadge.label}</span>}
         {badge && <span className={`badge absolute right-3.5 top-2.5 shadow-soft ${badge.className}`}>{badge.label}</span>}
         <button
           onClick={handleWishlist}

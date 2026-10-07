@@ -28,9 +28,7 @@ function FeaturedCard({ product, colorClass }: { product: Product; colorClass: s
   const stockPercent = Math.min(100, Math.round((product.stock / 30) * 100));
 
   const stockBadge =
-    product.stock > 0
-      ? { label: "✅ En stock", className: "bg-green-pale text-green-dark" }
-      : { label: "Rupture de stock", className: "bg-[#FFE5E5] text-status-danger" };
+    product.stock === 0 ? { label: "Rupture de stock", className: "bg-[#FFE5E5] text-status-danger" } : null;
   const badge = discount
     ? { label: `-${discount}%`, className: "bg-green-main text-white" }
     : product.is_featured
@@ -67,8 +65,8 @@ function FeaturedCard({ product, colorClass }: { product: Product; colorClass: s
         ) : (
           <span className="text-7xl">💊</span>
         )}
-        <span className={`badge absolute left-3 top-2.5 shadow-soft ${stockBadge.className}`}>{stockBadge.label}</span>
-        {badge && <span className={`badge absolute left-3 top-10 shadow-soft ${badge.className}`}>{badge.label}</span>}
+        {stockBadge && <span className={`badge absolute left-3 top-2.5 shadow-soft ${stockBadge.className}`}>{stockBadge.label}</span>}
+        {badge && <span className={`badge absolute ${stockBadge ? "left-3 top-10" : "left-3 top-2.5"} shadow-soft ${badge.className}`}>{badge.label}</span>}
       </Link>
       <button
         onClick={handleWishlist}
