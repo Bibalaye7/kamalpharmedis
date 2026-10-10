@@ -84,11 +84,6 @@ export default function AdminLoginPage() {
             <p className="mt-1 text-[13px] text-gray-500">Accédez à votre espace de gestion</p>
           </div>
 
-          <div className="mt-6 rounded-xl bg-blue-mist p-3.5 text-[11px]">
-            <p className="font-medium text-blue-main">💡 admin@kamalpharmedis.com / Admin@2025</p>
-            <p className="mt-1 text-gray-500">manager@kamalpharmedis.com / Admin@2025</p>
-          </div>
-
           {error && <p className="mt-4 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>}
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-5">

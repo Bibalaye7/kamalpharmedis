@@ -44,13 +44,19 @@ kamalpharmedis/
 
 Au premier démarrage, le conteneur `backend` exécute automatiquement les migrations et les seeders (données de démonstration) via `docker/entrypoint.sh`.
 
-### Comptes de démonstration
+### Comptes administrateur et gestionnaire
 
-| Rôle     | Email                          | Mot de passe  |
-|----------|----------------------------------|---------------|
-| Admin    | admin@kamalpharmedis.com        | Admin@2025    |
-| Manager  | manager@kamalpharmedis.com      | Admin@2025    |
-| Client   | aminata@email.com               | Client@2025   |
+Aucun compte d'administration n'est livré avec le code (pas d'identifiants par défaut).
+Créez-les vous-même ; le mot de passe est saisi de façon masquée :
+
+```bash
+docker exec -it kpm_backend php artisan kpm:staff                 # administrateur
+docker exec -it kpm_backend php artisan kpm:staff --role=manager  # gestionnaire
+```
+
+Le portail d'administration (`/admin/connexion`) n'est lié nulle part sur le site public.
+
+Pour un environnement de développement, `SEED_DEMO_DATA=true` ajoute des clients et commandes fictifs au premier démarrage.
 
 ### Commandes utiles
 

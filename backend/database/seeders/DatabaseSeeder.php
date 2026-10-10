@@ -11,10 +11,13 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeeder::class,
-            UserSeeder::class,
             CategorySeeder::class,
             ProductSeeder::class,
-            OrderSeeder::class,
         ]);
+
+        // Clients et commandes fictifs : seulement si SEED_DEMO_DATA=true (jamais en production)
+        if (filter_var(env('SEED_DEMO_DATA', false), FILTER_VALIDATE_BOOLEAN)) {
+            $this->call([UserSeeder::class, OrderSeeder::class]);
+        }
     }
 }

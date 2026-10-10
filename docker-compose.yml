@@ -66,6 +66,7 @@ services:
       APP_ENV: local
       APP_DEBUG: "true"
       APP_URL: http://localhost:8000
+      PUBLIC_STORAGE_URL: ${PUBLIC_STORAGE_URL:-/storage}
       APP_KEY: ${APP_KEY}
       APP_LOCALE: fr
       DB_CONNECTION: pgsql
@@ -119,11 +120,11 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000/api}
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-/api}
     container_name: kpm_frontend
     restart: unless-stopped
     environment:
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000/api}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-/api}
       INTERNAL_API_URL: http://backend:8000/api
     ports:
       - "3000:3000"

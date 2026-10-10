@@ -146,10 +146,6 @@ function LoginForm() {
             Pas encore de compte ?{" "}
             <Link href="/inscription" className="font-semibold text-blue-main">Créer un compte</Link>
           </p>
-          <p className="mt-4 text-center text-xs text-gray-400">
-            Vous êtes admin ou gestionnaire ?{" "}
-            <Link href="/admin/connexion" className="font-semibold text-blue-main">Portail administrateur</Link>
-          </p>
         </div>
       </div>
     </div>

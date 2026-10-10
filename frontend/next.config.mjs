@@ -13,6 +13,10 @@ const nextConfig = {
       { protocol: "http", hostname: "localhost" },
     ],
   },
+  // Espace d'administration : jamais indexé par les moteurs de recherche
+  async headers() {
+    return [{ source: "/admin/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] }];
+  },
 };
 
 export default nextConfig;

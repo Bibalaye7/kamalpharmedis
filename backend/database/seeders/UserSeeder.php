@@ -13,9 +13,9 @@ class UserSeeder extends Seeder
     {
         $roles = Role::pluck('id', 'name');
 
+        // Clients de démonstration uniquement (développement) : les comptes admin et gestionnaire
+        // se créent avec la commande « php artisan kpm:staff », jamais avec des identifiants en dur.
         $users = [
-            ['Administrateur KamalPharMédis', 'admin@kamalpharmedis.com', 'Admin@2025', Role::ADMIN, '+221 77 000 00 01'],
-            ['Gestionnaire KamalPharMédis', 'manager@kamalpharmedis.com', 'Admin@2025', Role::MANAGER, '+221 77 000 00 02'],
             ['Aminata Diallo', 'aminata@email.com', 'Client@2025', Role::CLIENT, '+221 77 123 45 67'],
             ['Moussa Ndiaye', 'moussa@email.com', 'Client@2025', Role::CLIENT, '+221 76 234 56 78'],
             ['Fatou Sow', 'fatou@email.com', 'Client@2025', Role::CLIENT, '+221 78 345 67 89'],
