@@ -42,7 +42,9 @@ function RegisterForm() {
     email: searchParams.get("email") ?? "",
     phone: "",
     password: "",
+    passwordConfirmation: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [accepted, setAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -57,6 +59,10 @@ function RegisterForm() {
       setError("Veuillez accepter les conditions et la politique de confidentialité.");
       return;
     }
+    if (form.password !== form.passwordConfirmation) {
+      setError("Les deux mots de passe ne sont pas identiques.");
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
@@ -65,7 +71,7 @@ function RegisterForm() {
         email: form.email,
         phone: form.phone,
         password: form.password,
-        password_confirmation: form.password,
+        password_confirmation: form.passwordConfirmation,
       });
       if (result.access_token) {
         router.push(searchParams.get("redirect") || "/compte");
@@ -164,15 +170,27 @@ function RegisterForm() {
 
             <div>
               <label className="mb-1.5 block text-xs font-semibold text-gray-900">Mot de passe *</label>
-              <input
-                required
-                type="password"
-                minLength={8}
-                className="input-field"
-                placeholder="Minimum 8 caractères"
-                value={form.password}
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
-              />
+              <div className="relative">
+                <input
+                  required
+                  type={showPassword ? "text" : "password"}
+                  minLength={8}
+                  autoComplete="new-password"
+                  className="input-field pr-12"
+                  placeholder="Minimum 8 caractères"
+                  value={form.password}
+                  onChange={(e) => setForm({ ...form, password: e.target.value })}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+                  title={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+                  className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg bg-blue-frost"
+                >
+                  {showPassword ? "🙈" : "👁"}
+                </button>
+              </div>
               {form.password.length > 0 && (
                 <>
                   <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-blue-mist">
@@ -180,6 +198,25 @@ function RegisterForm() {
                   </div>
                   <p className="mt-1 text-[10px] text-gray-500">Force : {strength.label}</p>
                 </>
+              )}
+            </div>
+
+            <div>
+              <label className="mb-1.5 block text-xs font-semibold text-gray-900">Confirmer le mot de passe *</label>
+              <input
+                required
+                type={showPassword ? "text" : "password"}
+                minLength={8}
+                autoComplete="new-password"
+                className="input-field"
+                placeholder="Saisissez à nouveau le mot de passe"
+                value={form.passwordConfirmation}
+                onChange={(e) => setForm({ ...form, passwordConfirmation: e.target.value })}
+              />
+              {form.passwordConfirmation.length > 0 && (
+                <p className={`mt-1 text-[10px] ${form.password === form.passwordConfirmation ? "text-green-dark" : "text-status-danger"}`}>
+                  {form.password === form.passwordConfirmation ? "✓ Les mots de passe correspondent" : "Les mots de passe ne correspondent pas"}
+                </p>
               )}
             </div>
 
