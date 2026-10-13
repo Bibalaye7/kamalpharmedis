@@ -593,15 +593,7 @@ class ProductSeeder extends Seeder
                 'category' => 'diagnostic',
                 'name' => 'Thermomètre médical digital',
                 'short_description' => 'Thermomètre électronique à embout souple, mesure rapide, oral, axillaire ou rectal.',
-                'description' => "Thermomètre médical électronique.
-
-• Mesure rapide avec signal sonore en fin de mesure
-• Embout souple et étanche (selon modèle), facile à désinfecter
-• Utilisation orale, axillaire (sous le bras) ou rectale
-• Mémoire de la dernière mesure, alarme de fièvre
-• Pile fournie
-
-Couleur et modèle selon arrivage.",
+                'description' => "Thermomètre médical électronique.\n\n• Mesure rapide avec signal sonore en fin de mesure\n• Embout souple et étanche (selon modèle), facile à désinfecter\n• Utilisation orale, axillaire (sous le bras) ou rectale\n• Mémoire de la dernière mesure, alarme de fièvre\n• Pile fournie\n\nCouleur et modèle selon arrivage.",
                 'price' => 2500,
                 'stock' => 150,
                 'is_featured' => false,
@@ -640,8 +632,18 @@ Couleur et modèle selon arrivage.",
                 'price' => 250,
                 'stock' => 500,
                 'is_featured' => false,
-                'is_active' => false,
-                'images' => [],
+                'images' => ['clamp-ombilical-1.jpg', 'clamp-ombilical-2.jpg', 'clamp-ombilical-3.jpg'],
+            ],
+            [
+                'sku' => 'KPM-COTB-057',
+                'category' => 'pansements-bandes',
+                'name' => 'Coton hydrophile en boules (sachet de 50 g)',
+                'short_description' => 'Boules de coton 100 % hydrophile, douces et absorbantes, pour soins et désinfection.',
+                'description' => "Coton hydrophile en boules, sachet de 50 g.\n\n• 100 % coton, très absorbant\n• Boules prêtes à l'emploi, sans peluchage\n• Pour le nettoyage de la peau, la désinfection avant injection et les soins courants\n• Sachet refermable pratique",
+                'price' => 500,
+                'stock' => 400,
+                'is_featured' => false,
+                'images' => ['coton-boules-1.jpg'],
             ],
         ];
 
