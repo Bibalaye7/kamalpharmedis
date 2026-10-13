@@ -620,8 +620,7 @@ class ProductSeeder extends Seeder
                 'price' => 1000,
                 'stock' => 300,
                 'is_featured' => false,
-                'is_active' => false,
-                'images' => [],
+                'images' => ['transfuseur-1.jpg', 'transfuseur-2.jpg'],
             ],
             [
                 'sku' => 'KPM-CLAM-056',
@@ -644,6 +643,17 @@ class ProductSeeder extends Seeder
                 'stock' => 400,
                 'is_featured' => false,
                 'images' => ['coton-boules-1.jpg'],
+            ],
+            [
+                'sku' => 'KPM-EPIC-058',
+                'category' => 'aiguilles-prelevement',
+                'name' => 'Kit de prélèvement à ailettes (épicrânienne) avec adaptateur Luer (boîte de 100)',
+                'short_description' => 'Aiguille à ailettes de sécurité 21G avec tubulure et adaptateur Luer pour tubes sous vide.',
+                'description' => "Boîte de 100 kits de prélèvement sanguin à ailettes (aiguille épicrânienne / « butterfly »).\n\n• Aiguille 21G (0,8 × 19 mm) avec ailettes souples pour une bonne prise en main\n• Tubulure souple de 200 mm\n• Adaptateur Luer pour porte-tube de prélèvement sous vide\n• Système de sécurité qui recouvre l'aiguille après usage\n• Stérile, usage unique, emballage individuel\n\nAutres calibres disponibles sur demande.",
+                'price' => 15000,
+                'stock' => 50,
+                'is_featured' => false,
+                'images' => ['epicranienne-prelevement-1.jpg'],
             ],
         ];
 
