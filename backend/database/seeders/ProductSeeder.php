@@ -35,7 +35,7 @@ class ProductSeeder extends Seeder
                 'price' => 3000,
                 'stock' => 300,
                 'is_featured' => true,
-                'images' => ['sur-chaussures-1.jpg', 'sur-chaussures-2.jpg', 'sur-chaussures-3.jpg', 'sur-chaussures-4.jpg'],
+                'images' => ['sur-chaussures-1.jpg', 'sur-chaussures-2.jpg', 'sur-chaussures-3.jpg'],
             ],
             [
                 'sku' => 'KPM-RACH-003',
@@ -79,7 +79,7 @@ class ProductSeeder extends Seeder
                 'price' => 500,
                 'stock' => 500,
                 'is_featured' => false,
-                'images' => ['gaze-extensible-1.jpg', 'gaze-extensible-2.jpg'],
+                'images' => ['gaze-extensible-2.jpg', 'gaze-extensible-1.jpg'],
             ],
             [
                 'sku' => 'KPM-GBLE-007',
@@ -90,7 +90,7 @@ class ProductSeeder extends Seeder
                 'price' => 800,
                 'stock' => 400,
                 'is_featured' => false,
-                'images' => ['gaze-bords-bleus-1.jpg', 'gaze-bords-bleus-2.jpg'],
+                'images' => ['gaze-bords-bleus-2.jpg', 'gaze-bords-bleus-1.jpg'],
             ],
             [
                 'sku' => 'KPM-CREP-008',
@@ -244,7 +244,7 @@ class ProductSeeder extends Seeder
                 'price' => 6000,
                 'stock' => 250,
                 'is_featured' => true,
-                'images' => ['gants-nitrile-1.jpg', 'gants-nitrile-3.jpg', 'gants-nitrile-4.jpg'],
+                'images' => ['gants-nitrile-1.jpg', 'gants-nitrile-3.jpg'],
             ],
             [
                 'sku' => 'KPM-LAME-022',
@@ -553,7 +553,7 @@ class ProductSeeder extends Seeder
                 'price' => 5000,
                 'stock' => 200,
                 'is_featured' => false,
-                'images' => ['seringue-5ml-1.jpg', 'seringue-5ml-boite-1.jpg', 'seringue-5ml-2.jpg'],
+                'images' => ['seringue-5ml-1.jpg', 'seringue-5ml-2.jpg', 'seringue-5ml-boite-1.jpg'],
             ],
             [
                 'sku' => 'KPM-DRAP-050',
@@ -607,6 +607,42 @@ Couleur et modèle selon arrivage.",
                 'is_featured' => false,
                 'images' => ['thermometre-digital-1.jpg', 'thermometre-digital-2.jpg', 'thermometre-digital-3.jpg'],
             ],
+            [
+                'sku' => 'KPM-GLUC-054',
+                'category' => 'diagnostic',
+                'name' => 'Glucomètre (lecteur de glycémie)',
+                'short_description' => 'Lecteur de glycémie avec bandelettes et autopiqueur, résultat en quelques secondes.',
+                'description' => "Glucomètre pour l'autosurveillance de la glycémie (diabète).\n\n• Résultat en quelques secondes à partir d'une petite goutte de sang\n• Grand écran lisible, affichage en mg/dL ou mmol/L selon modèle\n• Mémoire des mesures avec date et heure\n• Livré avec autopiqueur et bandelettes de démarrage (selon modèle)\n\nMarque et modèle selon arrivage (OneTouch, Accu-Chek…) : précisez votre préférence à la commande.",
+                'price' => 20000,
+                'stock' => 40,
+                'is_featured' => true,
+                'images' => ['glucometre-2.jpg', 'glucometre-1.jpg', 'glucometre-onetouch-1.jpg', 'glucometre-accuchek-1.jpg'],
+            ],
+            // Produits en attente de photo : créés masqués, à activer depuis l'admin une fois la photo ajoutée
+            [
+                'sku' => 'KPM-TRAN-055',
+                'category' => 'chirurgie-perfusion',
+                'name' => 'Transfuseur stérile à usage unique',
+                'short_description' => 'Set de transfusion sanguine avec filtre, chambre compte-gouttes et régulateur de débit.',
+                'description' => "Transfuseur (set de transfusion) stérile à usage unique.\n\n• Perforateur pour poche de sang\n• Chambre compte-gouttes avec filtre à sang\n• Régulateur de débit à roulette\n• Tubulure souple, raccord Luer et aiguille\n• Emballage individuel stérile",
+                'price' => 1000,
+                'stock' => 300,
+                'is_featured' => false,
+                'is_active' => false,
+                'images' => [],
+            ],
+            [
+                'sku' => 'KPM-CLAM-056',
+                'category' => 'chirurgie-perfusion',
+                'name' => 'Clamp de Bahr ombilical (clamp de cordon)',
+                'short_description' => 'Clamp ombilical stérile pour le clampage du cordon du nouveau-né.',
+                'description' => "Clamp de Bahr (clamp ombilical) stérile à usage unique.\n\n• Clampage sûr du cordon ombilical à la naissance\n• Mâchoires striées et verrouillage définitif\n• Plastique médical souple\n• Emballage individuel stérile",
+                'price' => 250,
+                'stock' => 500,
+                'is_featured' => false,
+                'is_active' => false,
+                'images' => [],
+            ],
         ];
 
         foreach ($products as $data) {
@@ -629,7 +665,7 @@ Couleur et modèle selon arrivage.",
 
             $product->fill($data);
             $product->slug = Product::uniqueSlug($data['name']);
-            $product->is_active = true;
+            $product->is_active = $data['is_active'] ?? true;
             $product->category_id = $cat[$category];
             $product->images = $this->storeImages($files);
             $product->save();
