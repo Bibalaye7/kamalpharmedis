@@ -106,7 +106,9 @@ function CataloguePageInner() {
       </div>
 
       <div className="border-y border-[#E5EDFA] bg-white py-3.5">
-        <div className="container-page flex flex-wrap items-center gap-2.5">
+        <div className="container-page">
+          {/* Ligne 1 : recherche (pleine largeur) + tri */}
+          <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -114,7 +116,7 @@ function CataloguePageInner() {
               lastPushedSearch.current = term;
               updateParams({ search: term || null });
             }}
-            className="w-full sm:w-auto sm:flex-1"
+            className="w-full min-w-0 sm:flex-1"
           >
             <div className="relative">
               <input
@@ -123,10 +125,11 @@ function CataloguePageInner() {
                 autoComplete="off"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="🔍 Rechercher un produit..."
+                placeholder="Rechercher un produit (gants, seringue, lit...)"
                 aria-label="Rechercher un produit"
-                className="input-field !rounded-full pr-10"
+                className="input-field h-11 w-full !rounded-full pl-11 pr-10"
               />
+              <span aria-hidden className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">🔍</span>
               {search && (
                 <button
                   type="button"
@@ -140,9 +143,18 @@ function CataloguePageInner() {
             </div>
           </form>
 
+          <select value={sort} onChange={(e) => updateParams({ sort: e.target.value || null })} aria-label="Trier les produits" className="input-field h-11 w-full !rounded-full sm:w-56">
+            {SORT_OPTIONS.map((opt) => (
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
+            ))}
+          </select>
+          </div>
+
+          {/* Ligne 2 : catégories */}
+          <div className="-mx-4 mt-3 flex items-center gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0">
           <button
             onClick={() => updateParams({ category: null })}
-            className={`flex h-9 items-center rounded-full px-4 text-xs font-medium transition ${
+            className={`flex h-9 shrink-0 items-center whitespace-nowrap rounded-full px-4 text-xs font-medium transition ${
               !activeCategory ? "bg-blue-main text-white" : "border border-gray-300 text-gray-600 hover:border-blue-main"
             }`}
           >
@@ -152,19 +164,14 @@ function CataloguePageInner() {
             <button
               key={category.id}
               onClick={() => updateParams({ category: category.slug })}
-              className={`flex h-9 items-center rounded-full px-4 text-xs font-medium transition ${
+              className={`flex h-9 shrink-0 items-center whitespace-nowrap rounded-full px-4 text-xs font-medium transition ${
                 activeCategory === category.slug ? "bg-blue-main text-white" : "border border-gray-300 text-gray-600 hover:border-blue-main"
               }`}
             >
               {category.name}
             </button>
           ))}
-
-          <select value={sort} onChange={(e) => updateParams({ sort: e.target.value || null })} className="input-field ml-auto w-auto !rounded-full">
-            {SORT_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>{opt.label}</option>
-            ))}
-          </select>
+          </div>
         </div>
       </div>
 
