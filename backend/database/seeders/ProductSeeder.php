@@ -897,17 +897,6 @@ class ProductSeeder extends Seeder
                 'is_featured' => false,
                 'images' => ['catheter-epicranien-1.jpg', 'catheter-epicranien-boite-1.jpg'],
             ],
-            [
-                'sku' => 'KPM-CATU-081',
-                'category' => 'chirurgie-perfusion',
-                'name' => "Cathéter épicrânien à ailettes 21G (à l'unité)",
-                'short_description' => 'Microperfuseur à ailettes 21G avec tubulure souple, stérile, usage unique.',
-                'description' => "Cathéter épicrânien (microperfuseur à ailettes) 21G, vendu à l'unité.\n\n• Aiguille 21G à ailettes souples pour une pose et une fixation faciles\n• Tubulure souple transparente avec raccord Luer\n• Stérile, usage unique, emballage individuel\n\nAussi disponible en boîte de 100.",
-                'price' => 100,
-                'stock' => 500,
-                'is_featured' => false,
-                'images' => ['catheter-epicranien-1.jpg'],
-            ],
         ];
 
         foreach ($products as $data) {
