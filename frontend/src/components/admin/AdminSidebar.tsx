@@ -21,16 +21,18 @@ export default function AdminSidebar({ onNavigate }: { onNavigate?: () => void }
   const { user, logout } = useAuth();
 
   return (
-    <aside className="flex h-screen w-[260px] shrink-0 flex-col bg-ink">
+    <aside className="flex h-screen w-[260px] shrink-0 flex-col bg-gradient-to-b from-blue-deep to-[#122B6E]">
       <div className="flex items-center gap-2.5 px-[18px] pt-5">
-        <Image src="/brand/logo-icon.png" alt="KamalPharMédis" width={42} height={42} className="h-[42px] w-[42px]" />
+        <span className="flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-xl bg-white shadow-soft">
+          <Image src="/brand/logo-icon.png" alt="KamalPharMédis" width={38} height={38} className="h-[38px] w-[38px]" />
+        </span>
         <div>
           <p className="text-[13px] font-bold text-white">KamalPharMédis</p>
-          <p className="text-[10px] text-[#808CA6]">{user?.role_name === "admin" ? "Administrateur" : "Gestionnaire"}</p>
+          <p className="text-[10px] font-semibold text-[#7FD88A]">{user?.role_name === "admin" ? "Administrateur" : "Gestionnaire"}</p>
         </div>
       </div>
 
-      <hr className="mx-[18px] mt-4 border-[#2E384D]" />
+      <hr className="mx-[18px] mt-4 border-white/15" />
 
       <nav className="flex-1 space-y-1.5 px-[18px] py-4">
         {LINKS.filter((link) => user && link.roles.includes(user.role_name)).map((link) => {
@@ -41,7 +43,7 @@ export default function AdminSidebar({ onNavigate }: { onNavigate?: () => void }
               href={link.href}
               onClick={onNavigate}
               className={`flex items-center gap-3 rounded-[13px] px-3.5 py-3 text-[13px] font-medium transition ${
-                active ? "bg-blue-main text-white" : "text-[#9EABC2] hover:bg-white/5 hover:text-white"
+                active ? "bg-green-main text-white shadow-soft" : "text-[#C9D6F5] hover:bg-white/10 hover:text-white"
               }`}
             >
               <span className="text-lg">{link.icon}</span>
@@ -52,27 +54,27 @@ export default function AdminSidebar({ onNavigate }: { onNavigate?: () => void }
         <Link
           href="/"
           onClick={onNavigate}
-          className="flex items-center gap-3 rounded-[13px] px-3.5 py-3 text-[13px] font-medium text-[#9EABC2] hover:bg-white/5 hover:text-white"
+          className="flex items-center gap-3 rounded-[13px] px-3.5 py-3 text-[13px] font-medium text-[#C9D6F5] hover:bg-white/10 hover:text-white"
         >
           <span className="text-lg">🌐</span>
           Voir le site
         </Link>
       </nav>
 
-      <hr className="mx-[18px] border-[#2E384D]" />
+      <hr className="mx-[18px] border-white/15" />
       <div className="flex items-center gap-2.5 px-[18px] pt-4">
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-main text-sm font-bold text-white">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-green-main text-sm font-bold text-white">
           {user?.name.charAt(0).toUpperCase()}
         </span>
         <div className="min-w-0 flex-1">
           <p className="truncate text-xs font-semibold text-white">{user?.name}</p>
-          <p className="truncate text-[9px] text-[#738099]">{user?.email}</p>
+          <p className="truncate text-[9px] text-[#A9BBE8]">{user?.email}</p>
         </div>
       </div>
       <div className="px-[18px] py-4">
         <button
           onClick={() => logout()}
-          className="flex w-full items-center justify-center gap-2 rounded-[13px] border border-status-danger/30 bg-status-danger/10 py-2.5 text-[13px] font-semibold text-status-danger transition hover:bg-status-danger hover:text-white"
+          className="flex w-full items-center justify-center gap-2 rounded-[13px] border border-white/20 bg-white/10 py-2.5 text-[13px] font-semibold text-white transition hover:border-status-danger hover:bg-status-danger"
         >
           <span className="text-base">🚪</span>
           Déconnexion

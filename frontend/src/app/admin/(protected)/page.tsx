@@ -27,10 +27,23 @@ export default function AdminDashboardPage() {
   const { user } = useAuth();
   const router = useRouter();
   const [stats, setStats] = useState<AdminStats | null>(null);
+  const [failed, setFailed] = useState(false);
 
-  useEffect(() => {
-    api.get<AdminStats>("/admin/stats").then(setStats);
-  }, []);
+  const loadStats = () => {
+    setFailed(false);
+    api.get<AdminStats>("/admin/stats").then(setStats).catch(() => setFailed(true));
+  };
+
+  useEffect(loadStats, []);
+
+  if (failed) {
+    return (
+      <div className="rounded-[18px] bg-white p-8 text-center shadow-soft">
+        <p className="text-sm text-gray-600">Impossible de charger le tableau de bord pour le moment.</p>
+        <button onClick={loadStats} className="btn-primary mt-4">Réessayer</button>
+      </div>
+    );
+  }
 
   if (!stats) return <PageSpinner />;
 

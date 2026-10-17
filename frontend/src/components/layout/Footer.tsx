@@ -42,19 +42,21 @@ const SOCIAL_LINKS = [
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-ink text-white">
+    <footer className="relative overflow-hidden bg-gradient-to-b from-blue-deep to-[#122B6E] text-white">
       <div className="pointer-events-none absolute -left-24 -top-24 h-[600px] w-[600px] rounded-full bg-white/5" />
 
       <div className="container-page relative grid grid-cols-1 gap-10 py-16 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <Image src="/brand/logo-icon.png" alt="KamalPharMédis" width={52} height={52} className="h-[52px] w-[52px]" />
+            <span className="flex h-[56px] w-[56px] shrink-0 items-center justify-center rounded-2xl bg-white shadow-soft">
+              <Image src="/brand/logo-icon.png" alt="KamalPharMédis" width={46} height={46} className="h-[46px] w-[46px]" />
+            </span>
             <div>
               <p className="text-base font-bold text-white">KamalPharMédis</p>
-              <p className="text-[10px] text-[#8CA6D9]">Santé & Bien-être</p>
+              <p className="text-[10px] font-semibold text-[#7FD88A]">Santé & Bien-être</p>
             </div>
           </div>
-          <p className="mt-4 text-xs leading-relaxed text-[#8CA6D9]">
+          <p className="mt-4 text-xs leading-relaxed text-[#C9D6F5]">
             Votre boutique médicale en ligne au Sénégal.
           </p>
           <div className="mt-4 flex gap-2.5">
@@ -76,11 +78,11 @@ export default function Footer() {
 
         {COLUMNS.map((col) => (
           <div key={col.title}>
-            <p className="text-xs font-bold text-white">{col.title}</p>
+            <p className="text-xs font-bold text-[#7FD88A]">{col.title}</p>
             <ul className="mt-4 space-y-2.5">
               {col.links.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="inline-block py-1 text-[11px] text-[#8CA6D9] hover:text-green-main">
+                  <Link href={link.href} className="inline-block py-1 text-[11px] text-[#C9D6F5] hover:text-[#7FD88A]">
                     {link.label}
                   </Link>
                 </li>
@@ -90,8 +92,8 @@ export default function Footer() {
         ))}
 
         <div>
-          <p className="text-xs font-bold text-white">Contact</p>
-          <ul className="mt-4 space-y-2.5 text-[11px] text-[#8CA6D9]">
+          <p className="text-xs font-bold text-[#7FD88A]">Contact</p>
+          <ul className="mt-4 space-y-2.5 text-[11px] text-[#C9D6F5]">
             <li>kamalpharmedis@gmail.com</li>
             <li>+221 75 661 62 62</li>
             <li>+221 70 464 12 81</li>
@@ -100,8 +102,8 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="relative border-t border-[#334266]">
-        <div className="container-page flex flex-col items-center justify-between gap-3 py-5 text-[11px] text-[#6680B2] sm:flex-row">
+      <div className="relative border-t border-white/15">
+        <div className="container-page flex flex-col items-center justify-between gap-3 py-5 text-[11px] text-[#A9BBE8] sm:flex-row">
           <p>© {new Date().getFullYear()} KamalPharMédis · Tous droits réservés</p>
           <div className="flex gap-5">
             <span>Conditions</span>

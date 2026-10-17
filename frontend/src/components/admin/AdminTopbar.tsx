@@ -23,7 +23,7 @@ export default function AdminTopbar({ onMenuClick }: { onMenuClick?: () => void 
     TITLES[pathname] ?? (pathname.startsWith("/admin/commandes/") ? "Détail de la commande" : "KamalPharMédis");
 
   return (
-    <div className="flex h-[62px] items-center justify-between border-b border-blue-soft bg-white px-4 sm:px-6">
+    <div className="flex h-[62px] items-center justify-between border-b-2 border-green-main/40 bg-white px-4 sm:px-6">
       <div className="flex items-center gap-3">
         <button
           onClick={onMenuClick}
@@ -39,7 +39,7 @@ export default function AdminTopbar({ onMenuClick }: { onMenuClick?: () => void 
         <span className="badge hidden bg-blue-mist text-blue-main sm:inline-flex">
           🔑 {user?.role_name === "admin" ? "Admin" : "Manager"}
         </span>
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-blue-main text-sm font-bold text-white">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-green-main text-sm font-bold text-white">
           {user?.name.charAt(0).toUpperCase()}
         </span>
       </div>

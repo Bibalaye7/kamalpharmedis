@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { api, ApiError, getToken, setToken } from "@/lib/api";
+import { api, ApiError, getToken, setToken, SESSION_EXPIRED_EVENT } from "@/lib/api";
 import { User } from "@/types";
 
 export interface AuthResponse {
@@ -64,6 +64,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     loadUser();
   }, [loadUser]);
+
+  // Session impossible à renouveler : on déconnecte, RequireAuth renvoie vers la page de connexion.
+  useEffect(() => {
+    const onExpired = () => setUser(null);
+    window.addEventListener(SESSION_EXPIRED_EVENT, onExpired);
+    return () => window.removeEventListener(SESSION_EXPIRED_EVENT, onExpired);
+  }, []);
 
   const login = useCallback(async (email: string, password: string) => {
     const data = await api.post<AuthResponse>("/auth/login", { email, password }, { auth: false });

@@ -33,7 +33,28 @@ interface RequestOptions extends RequestInit {
   json?: unknown;
 }
 
-async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
+/** Émis quand la session ne peut pas être renouvelée : l'AuthContext déconnecte et les pages protégées renvoient à la connexion. */
+export const SESSION_EXPIRED_EVENT = "kpm:session-expired";
+
+// Un seul renouvellement à la fois, partagé par les requêtes qui reçoivent un 401 en même temps.
+let refreshing: Promise<string | null> | null = null;
+
+function refreshToken(): Promise<string | null> {
+  const token = getToken();
+  if (!token) return Promise.resolve(null);
+  refreshing ??= fetch(`${API_URL}/auth/refresh`, {
+    method: "POST",
+    headers: { Accept: "application/json", Authorization: `Bearer ${token}` },
+  })
+    .then(async (res) => (res.ok ? ((await res.json()) as { access_token?: string }).access_token ?? null : null))
+    .catch(() => null)
+    .finally(() => {
+      refreshing = null;
+    });
+  return refreshing;
+}
+
+async function request<T>(path: string, options: RequestOptions = {}, retried = false): Promise<T> {
   const { auth = true, json, headers, ...rest } = options;
   const finalHeaders: Record<string, string> = {
     Accept: "application/json",
@@ -59,7 +80,18 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   const data = isJson ? await response.json().catch(() => null) : null;
 
   if (!response.ok) {
-    if (response.status === 401) setToken(null);
+    // Jeton expiré (durée de 60 min) : renouvellement silencieux puis nouvel essai de la requête.
+    if (response.status === 401 && auth && finalHeaders.Authorization && !/^\/auth\/(login|register|refresh|logout)/.test(path)) {
+      const fresh = retried ? null : await refreshToken();
+      if (fresh) {
+        setToken(fresh);
+        return request<T>(path, options, true);
+      }
+      setToken(null);
+      window.dispatchEvent(new Event(SESSION_EXPIRED_EVENT));
+    } else if (response.status === 401) {
+      setToken(null);
+    }
     throw new ApiError(data?.message || "Une erreur est survenue.", response.status, data?.errors, data);
   }
 
