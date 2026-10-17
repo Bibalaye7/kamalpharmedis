@@ -30,7 +30,6 @@ export default function ProductCard({ product, colorIndex = 0 }: { product: Prod
     product.old_price && product.old_price > product.price
       ? Math.round(100 - (product.price / product.old_price) * 100)
       : null;
-  const lowStock = product.stock > 0 && product.stock <= 10;
   const topColor = TOP_COLORS[colorIndex % TOP_COLORS.length];
 
   // Seule la rupture est signalée sur la photo ; la disponibilité est indiquée sous le prix
@@ -105,8 +104,8 @@ export default function ProductCard({ product, colorIndex = 0 }: { product: Prod
           )}
         </div>
 
-        <p className={`mt-1.5 text-[10px] ${lowStock ? "text-status-danger" : "text-green-dark"}`}>
-          {product.stock === 0 ? "Rupture de stock" : lowStock ? `Stock limité (${product.stock})` : `En stock (${product.stock})`}
+        <p className={`mt-1.5 text-[11px] font-semibold ${product.stock === 0 ? "text-status-danger" : "text-green-dark"}`}>
+          {product.stock === 0 ? "Rupture de stock" : "✅ En stock"}
         </p>
 
         <div className="mt-3 flex gap-2">

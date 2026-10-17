@@ -24,7 +24,6 @@ function FeaturedCard({ product, colorClass }: { product: Product; colorClass: s
     product.old_price && product.old_price > product.price
       ? Math.round(100 - (product.price / product.old_price) * 100)
       : null;
-  const lowStock = product.stock > 0 && product.stock <= 10;
   const stockPercent = Math.min(100, Math.round((product.stock / 30) * 100));
 
   const stockBadge =
@@ -98,12 +97,12 @@ function FeaturedCard({ product, colorClass }: { product: Product; colorClass: s
 
         <div className="mt-3 h-1 w-full rounded-full bg-blue-mist">
           <div
-            className={`h-1 rounded-full ${lowStock ? "bg-status-danger" : "bg-blue-main"}`}
+            className={`h-1 rounded-full ${product.stock === 0 ? "bg-status-danger" : "bg-blue-main"}`}
             style={{ width: `${Math.max(stockPercent, 8)}%` }}
           />
         </div>
-        <p className={`mt-1.5 text-[10px] ${lowStock ? "text-status-danger" : "text-green-dark"}`}>
-          {product.stock === 0 ? "Rupture de stock" : lowStock ? `Stock limité : ${product.stock}u` : `En stock (${product.stock}u)`}
+        <p className={`mt-1.5 text-[11px] font-semibold ${product.stock === 0 ? "text-status-danger" : "text-green-dark"}`}>
+          {product.stock === 0 ? "Rupture de stock" : "✅ En stock"}
         </p>
 
         <button

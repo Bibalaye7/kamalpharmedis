@@ -1,8 +1,10 @@
 "use client";
 
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { api } from "@/lib/api";
+import { api, formatPrice } from "@/lib/api";
 import { Category, PaginatedResponse, Product } from "@/types";
 import ProductCard from "@/components/catalog/ProductCard";
 import EmptyState from "@/components/ui/EmptyState";
@@ -15,6 +17,19 @@ const SORT_OPTIONS = [
   { value: "name", label: "Nom (A-Z)" },
 ];
 
+// Comparaison sans accents ni majuscules : « catheter » trouve « Cathéters ».
+const normalize = (text: string) => text.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+// Tous les produits visibles (nom, photo, prix) pour les suggestions de la barre de recherche.
+async function fetchAllProducts(): Promise<Product[]> {
+  const all: Product[] = [];
+  for (let page = 1; ; page++) {
+    const res = await api.get<PaginatedResponse<Product>>(`/products?sort=name&per_page=100&page=${page}`, { auth: false });
+    all.push(...res.data);
+    if (page >= res.last_page) return all;
+  }
+}
+
 function CataloguePageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -25,6 +40,9 @@ function CataloguePageInner() {
   const urlSearch = searchParams.get("search") ?? "";
   const [search, setSearch] = useState(urlSearch);
   const lastPushedSearch = useRef(urlSearch);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [suggestOpen, setSuggestOpen] = useState(false);
+  const [highlight, setHighlight] = useState(-1);
 
   const activeCategory = searchParams.get("category") ?? "";
   const sort = searchParams.get("sort") ?? "";
@@ -67,7 +85,24 @@ function CataloguePageInner() {
 
   useEffect(() => {
     api.get<{ data: Category[] }>("/categories", { auth: false }).then((res) => setCategories(res.data));
+    fetchAllProducts().then(setAllProducts).catch(() => setAllProducts([]));
   }, []);
+
+  // Noms proposés sous la barre : tous les produits, filtrés par chaque mot tapé.
+  const suggestions = useMemo(() => {
+    const words = normalize(search.trim()).split(/\s+/).filter(Boolean);
+    return allProducts.filter((p) => {
+      const name = normalize(p.name);
+      return words.every((w) => name.includes(w));
+    });
+  }, [allProducts, search]);
+
+  useEffect(() => setHighlight(-1), [search]);
+
+  const goToProduct = (product: Product) => {
+    setSuggestOpen(false);
+    router.push(`/produits/${product.slug}`);
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -112,8 +147,13 @@ function CataloguePageInner() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
+              if (suggestOpen && highlight >= 0 && suggestions[highlight]) {
+                goToProduct(suggestions[highlight]);
+                return;
+              }
               const term = search.trim();
               lastPushedSearch.current = term;
+              setSuggestOpen(false);
               updateParams({ search: term || null });
             }}
             className="w-full min-w-0 sm:flex-1"
@@ -123,12 +163,65 @@ function CataloguePageInner() {
                 type="text"
                 enterKeyHint="search"
                 autoComplete="off"
+                role="combobox"
+                aria-expanded={suggestOpen}
+                aria-controls="suggestions-produits"
+                aria-autocomplete="list"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setSuggestOpen(true);
+                }}
+                onFocus={() => setSuggestOpen(true)}
+                onBlur={() => setSuggestOpen(false)}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") setSuggestOpen(false);
+                  if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+                    e.preventDefault();
+                    setSuggestOpen(true);
+                    const step = e.key === "ArrowDown" ? 1 : -1;
+                    setHighlight((h) => Math.max(-1, Math.min(suggestions.length - 1, h + step)));
+                  }
+                }}
                 placeholder="Rechercher un produit (gants, seringue, lit...)"
                 aria-label="Rechercher un produit"
                 className="input-field h-11 w-full !rounded-full pl-11 pr-10"
               />
+              {suggestOpen && allProducts.length > 0 && (
+                <div
+                  id="suggestions-produits"
+                  role="listbox"
+                  // mousedown bloqué : le champ garde le focus le temps du clic sur une suggestion
+                  onMouseDown={(e) => e.preventDefault()}
+                  className="absolute left-0 right-0 top-full z-30 mt-2 overflow-hidden rounded-2xl border border-[#E5EDFA] bg-white shadow-lg"
+                >
+                  <p className="border-b border-[#E5EDFA] px-4 py-2 text-[11px] font-semibold text-gray-500">
+                    {suggestions.length > 0
+                      ? `${suggestions.length} produit(s)${search.trim() ? ` pour « ${search.trim()} »` : " au catalogue"}`
+                      : `Aucun nom de produit ne contient « ${search.trim()} »`}
+                  </p>
+                  <ul className="max-h-80 overflow-y-auto py-1">
+                    {suggestions.map((p, i) => (
+                      <li key={p.id} role="option" aria-selected={i === highlight}>
+                        <Link
+                          href={`/produits/${p.slug}`}
+                          onClick={() => setSuggestOpen(false)}
+                          onMouseEnter={() => setHighlight(i)}
+                          className={`flex items-center gap-3 px-4 py-2 ${i === highlight ? "bg-[#F0F5FF]" : ""}`}
+                        >
+                          {p.image ? (
+                            <Image src={p.image} alt="" width={36} height={36} className="h-9 w-9 shrink-0 rounded-md border border-gray-100 object-contain" />
+                          ) : (
+                            <span className="h-9 w-9 shrink-0 rounded-md bg-gray-100" />
+                          )}
+                          <span className="line-clamp-2 min-w-0 flex-1 text-sm leading-snug text-blue-deep">{p.name}</span>
+                          <span className="shrink-0 text-xs font-semibold text-green-main">{formatPrice(p.price)}</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               <span aria-hidden className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400">🔍</span>
               {search && (
                 <button

@@ -142,10 +142,11 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
 
           <div className="mt-4 flex items-center gap-2.5 rounded-2xl bg-blue-mist p-4">
             <span className="text-[26px] font-bold text-blue-deep">{formatPrice(product.price)}</span>
-            {product.old_price && product.old_price > product.price && (
+            {product.stock > 0 ? (
               <span className="ml-auto badge bg-green-pale text-green-dark">✅ En stock</span>
+            ) : (
+              <span className="ml-auto badge bg-[#FFE5E5] text-status-danger">Rupture de stock</span>
             )}
-            {!product.old_price && <span className="ml-auto badge bg-green-pale text-green-dark">✅ En stock</span>}
           </div>
           {discount && product.old_price && (
             <p className="mt-2 text-sm text-gray-400 line-through">{formatPrice(product.old_price)}</p>
