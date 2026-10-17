@@ -68,7 +68,7 @@ class ProductSeeder extends Seeder
                 'price' => 15000,
                 'stock' => 80,
                 'is_featured' => false,
-                'images' => ['aiguille-securite-1.jpg'],
+                'images' => ['aiguille-securite-1.jpg', 'aiguille-securite-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-GAZE-006',
@@ -101,7 +101,7 @@ class ProductSeeder extends Seeder
                 'price' => 1200,
                 'stock' => 300,
                 'is_featured' => false,
-                'images' => ['crepe-bords-bleus-1.jpg'],
+                'images' => ['crepe-bords-bleus-1.jpg', 'crepe-bords-bleus-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-ELAS-009',
@@ -112,7 +112,7 @@ class ProductSeeder extends Seeder
                 'price' => 1800,
                 'stock' => 250,
                 'is_featured' => false,
-                'images' => ['bande-elastique-1.jpg'],
+                'images' => ['bande-elastique-1.jpg', 'bande-elastique-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-PLAT-010',
@@ -145,7 +145,7 @@ class ProductSeeder extends Seeder
                 'price' => 6000,
                 'stock' => 100,
                 'is_featured' => false,
-                'images' => ['bracelets-nouveau-ne-1.jpg'],
+                'images' => ['bracelets-nouveau-ne-1.jpg', 'bracelets-nouveau-ne-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-BAND-013',
@@ -167,7 +167,7 @@ class ProductSeeder extends Seeder
                 'price' => 1500,
                 'stock' => 200,
                 'is_featured' => true,
-                'images' => ['lunettes-oxygene-1.jpg'],
+                'images' => ['lunettes-oxygene-1.jpg', 'lunettes-oxygene-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-DEFA-015',
@@ -178,7 +178,7 @@ class ProductSeeder extends Seeder
                 'price' => 45000,
                 'stock' => 25,
                 'is_featured' => true,
-                'images' => ['electrodes-defibrillation-adulte-1.jpg'],
+                'images' => ['electrodes-defibrillation-adulte-1.jpg', 'electrodes-defibrillation-adulte-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-DEFP-016',
@@ -189,7 +189,7 @@ class ProductSeeder extends Seeder
                 'price' => 48000,
                 'stock' => 20,
                 'is_featured' => false,
-                'images' => ['electrodes-defibrillation-pediatriques-1.jpg'],
+                'images' => ['electrodes-defibrillation-pediatriques-1.jpg', 'electrodes-defibrillation-pediatriques-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-COTO-017',
@@ -200,7 +200,7 @@ class ProductSeeder extends Seeder
                 'price' => 6500,
                 'stock' => 100,
                 'is_featured' => true,
-                'images' => ['coton-hydrophile-1.jpg'],
+                'images' => ['coton-hydrophile-1.jpg', 'coton-hydrophile-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-DOIG-018',
@@ -211,7 +211,7 @@ class ProductSeeder extends Seeder
                 'price' => 2500,
                 'stock' => 150,
                 'is_featured' => false,
-                'images' => ['doigtiers-latex-1.jpg'],
+                'images' => ['doigtiers-latex-1.jpg', 'doigtiers-latex-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-KN95-019',
@@ -277,7 +277,7 @@ class ProductSeeder extends Seeder
                 'price' => 2500,
                 'stock' => 150,
                 'is_featured' => false,
-                'images' => ['perfuseur-burette-1.jpg'],
+                'images' => ['perfuseur-burette-1.jpg', 'perfuseur-burette-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-CHAR-025',
@@ -322,7 +322,7 @@ class ProductSeeder extends Seeder
                 'price' => 1100000,
                 'stock' => 3,
                 'is_featured' => false,
-                'images' => ['lit-electrique-matelas-1.jpg'],
+                'images' => ['lit-electrique-matelas-1.jpg', 'lit-electrique-matelas-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-LITB-029',
@@ -333,7 +333,7 @@ class ProductSeeder extends Seeder
                 'price' => 950000,
                 'stock' => 2,
                 'is_featured' => false,
-                'images' => ['lit-electrique-3-fonctions-1.jpg'],
+                'images' => ['lit-electrique-3-fonctions-1.jpg', 'lit-electrique-3-fonctions-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-LITM-030',
@@ -344,7 +344,7 @@ class ProductSeeder extends Seeder
                 'price' => 450000,
                 'stock' => 5,
                 'is_featured' => true,
-                'images' => ['lit-manuel-2-manivelles-1.jpg'],
+                'images' => ['lit-manuel-2-manivelles-1.jpg', 'lit-manuel-2-manivelles-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-LITP-031',
@@ -355,7 +355,7 @@ class ProductSeeder extends Seeder
                 'price' => 250000,
                 'stock' => 5,
                 'is_featured' => false,
-                'images' => ['lit-plat-1.jpg'],
+                'images' => ['lit-plat-1.jpg', 'lit-plat-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-TABL-032',
@@ -366,7 +366,7 @@ class ProductSeeder extends Seeder
                 'price' => 120000,
                 'stock' => 4,
                 'is_featured' => false,
-                'images' => ['table-examen-1.jpg'],
+                'images' => ['table-examen-1.jpg', 'table-examen-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-JERS-033',
@@ -388,7 +388,7 @@ class ProductSeeder extends Seeder
                 'price' => 2000,
                 'stock' => 300,
                 'is_featured' => true,
-                'images' => ['compresses-gaze-1.jpg'],
+                'images' => ['compresses-gaze-1.jpg', 'compresses-gaze-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-COLL-035',
@@ -399,7 +399,7 @@ class ProductSeeder extends Seeder
                 'price' => 2500,
                 'stock' => 150,
                 'is_featured' => false,
-                'images' => ['collecteur-aiguilles-1.jpg'],
+                'images' => ['collecteur-aiguilles-1.jpg', 'collecteur-aiguilles-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-GLAT-036',
@@ -410,7 +410,7 @@ class ProductSeeder extends Seeder
                 'price' => 5000,
                 'stock' => 200,
                 'is_featured' => false,
-                'images' => ['gants-latex-1.jpg'],
+                'images' => ['gants-latex-1.jpg', 'gants-latex-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-GVIN-037',
@@ -421,7 +421,7 @@ class ProductSeeder extends Seeder
                 'price' => 4500,
                 'stock' => 200,
                 'is_featured' => false,
-                'images' => ['gants-vinyle-1.jpg'],
+                'images' => ['gants-vinyle-1.jpg', 'gants-vinyle-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-MOXY-038',
@@ -432,7 +432,7 @@ class ProductSeeder extends Seeder
                 'price' => 2500,
                 'stock' => 100,
                 'is_featured' => false,
-                'images' => ['masque-oxygene-reservoir-1.jpg'],
+                'images' => ['masque-oxygene-reservoir-1.jpg', 'masque-oxygene-reservoir-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-NEBU-039',
@@ -443,7 +443,7 @@ class ProductSeeder extends Seeder
                 'price' => 3000,
                 'stock' => 100,
                 'is_featured' => false,
-                'images' => ['kit-nebulisation-1.jpg'],
+                'images' => ['kit-nebulisation-1.jpg', 'kit-nebulisation-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-PROL-040',
@@ -454,7 +454,7 @@ class ProductSeeder extends Seeder
                 'price' => 500,
                 'stock' => 500,
                 'is_featured' => false,
-                'images' => ['prolongateur-seringue-1.jpg'],
+                'images' => ['prolongateur-seringue-1.jpg', 'prolongateur-seringue-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-SPZO-041',
@@ -476,7 +476,7 @@ class ProductSeeder extends Seeder
                 'price' => 1500,
                 'stock' => 300,
                 'is_featured' => false,
-                'images' => ['sparadrap-tissu-1.jpg'],
+                'images' => ['sparadrap-tissu-1.jpg', 'sparadrap-tissu-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-AIGH-043',
@@ -487,7 +487,7 @@ class ProductSeeder extends Seeder
                 'price' => 3500,
                 'stock' => 200,
                 'is_featured' => false,
-                'images' => ['aiguilles-hypodermiques-1.jpg'],
+                'images' => ['aiguilles-hypodermiques-1.jpg', 'aiguilles-hypodermiques-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-STET-044',
@@ -498,7 +498,7 @@ class ProductSeeder extends Seeder
                 'price' => 15000,
                 'stock' => 40,
                 'is_featured' => true,
-                'images' => ['stethoscope-1.jpg'],
+                'images' => ['stethoscope-1.jpg', 'stethoscope-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-OTOS-045',
@@ -564,7 +564,7 @@ class ProductSeeder extends Seeder
                 'price' => 4000,
                 'stock' => 150,
                 'is_featured' => false,
-                'images' => ['drap-examen-1.jpg'],
+                'images' => ['drap-examen-1.jpg', 'drap-examen-2.jpg', 'drap-examen-3.jpg'],
             ],
             [
                 'sku' => 'KPM-THFR-051',
@@ -575,7 +575,7 @@ class ProductSeeder extends Seeder
                 'price' => 15000,
                 'stock' => 50,
                 'is_featured' => true,
-                'images' => ['thermometre-frontal-1.jpg'],
+                'images' => ['thermometre-frontal-1.jpg', 'thermometre-frontal-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-THIR-052',
@@ -642,7 +642,7 @@ class ProductSeeder extends Seeder
                 'price' => 500,
                 'stock' => 400,
                 'is_featured' => false,
-                'images' => ['coton-boules-1.jpg'],
+                'images' => ['coton-boules-1.jpg', 'coton-boules-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-EPIC-058',
@@ -653,7 +653,7 @@ class ProductSeeder extends Seeder
                 'price' => 15000,
                 'stock' => 50,
                 'is_featured' => false,
-                'images' => ['epicranienne-prelevement-1.jpg'],
+                'images' => ['epicranienne-prelevement-1.jpg', 'epicranienne-prelevement-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-MOUC-059',
@@ -664,7 +664,7 @@ class ProductSeeder extends Seeder
                 'price' => 2500,
                 'stock' => 40,
                 'is_featured' => false,
-                'images' => ['mouche-bebe-1.jpg'],
+                'images' => ['mouche-bebe-1.jpg', 'mouche-bebe-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-PLAT-060',
@@ -675,7 +675,7 @@ class ProductSeeder extends Seeder
                 'price' => 7500,
                 'stock' => 20,
                 'is_featured' => false,
-                'images' => ['plateau-inox-1.jpg'],
+                'images' => ['plateau-inox-1.jpg', 'plateau-inox-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-HARI-061',
@@ -686,7 +686,7 @@ class ProductSeeder extends Seeder
                 'price' => 3500,
                 'stock' => 30,
                 'is_featured' => false,
-                'images' => ['haricot-inox-1.jpg'],
+                'images' => ['haricot-inox-1.jpg', 'haricot-inox-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-TAMB-062',
@@ -697,7 +697,7 @@ class ProductSeeder extends Seeder
                 'price' => 25000,
                 'stock' => 10,
                 'is_featured' => false,
-                'images' => ['tambour-inox-1.jpg'],
+                'images' => ['tambour-inox-1.jpg', 'tambour-inox-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-SASP-063',
@@ -708,7 +708,7 @@ class ProductSeeder extends Seeder
                 'price' => 12000,
                 'stock' => 300,
                 'is_featured' => false,
-                'images' => ['sondes-aspiration-1.jpg'],
+                'images' => ['sondes-aspiration-1.jpg', 'sondes-aspiration-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-POUB-064',
@@ -719,7 +719,7 @@ class ProductSeeder extends Seeder
                 'price' => 12000,
                 'stock' => 15,
                 'is_featured' => false,
-                'images' => ['poubelle-pedale-1.jpg'],
+                'images' => ['poubelle-pedale-1.jpg', 'poubelle-pedale-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-TGYN-065',
@@ -730,7 +730,7 @@ class ProductSeeder extends Seeder
                 'price' => 350000,
                 'stock' => 2,
                 'is_featured' => false,
-                'images' => ['table-gynecologique-1.jpg'],
+                'images' => ['table-gynecologique-1.jpg', 'table-gynecologique-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-LPOB-066',
@@ -763,7 +763,7 @@ class ProductSeeder extends Seeder
                 'price' => 9000,
                 'stock' => 30,
                 'is_featured' => false,
-                'images' => ['kit-champ-operatoire-1.jpg'],
+                'images' => ['kit-champ-operatoire-1.jpg', 'kit-champ-operatoire-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-CHTR-069',
@@ -785,7 +785,7 @@ class ProductSeeder extends Seeder
                 'price' => 2000,
                 'stock' => 100,
                 'is_featured' => false,
-                'images' => ['champ-de-table-1.jpg'],
+                'images' => ['champ-de-table-1.jpg', 'champ-de-table-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-CHAC-071',
@@ -807,7 +807,7 @@ class ProductSeeder extends Seeder
                 'price' => 85000,
                 'stock' => 5,
                 'is_featured' => false,
-                'images' => ['aspirateur-mucosites-1.jpg'],
+                'images' => ['aspirateur-mucosites-1.jpg', 'aspirateur-mucosites-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-CAT2-073',
@@ -829,7 +829,7 @@ class ProductSeeder extends Seeder
                 'price' => 3000,
                 'stock' => 50,
                 'is_featured' => false,
-                'images' => ['catgut-3-0-1.jpg'],
+                'images' => ['catgut-3-0-1.jpg', 'catgut-3-0-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-GSTE-075',
@@ -840,7 +840,7 @@ class ProductSeeder extends Seeder
                 'price' => 9000,
                 'stock' => 30,
                 'is_featured' => false,
-                'images' => ['gants-steriles-1.jpg'],
+                'images' => ['gants-steriles-1.jpg', 'gants-steriles-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-THCG-076',
@@ -851,7 +851,7 @@ class ProductSeeder extends Seeder
                 'price' => 9000,
                 'stock' => 30,
                 'is_featured' => false,
-                'images' => ['test-grossesse-hcg-1.jpg'],
+                'images' => ['test-grossesse-hcg-1.jpg', 'test-grossesse-hcg-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-MANO-077',
@@ -873,7 +873,7 @@ class ProductSeeder extends Seeder
                 'price' => 60000,
                 'stock' => 5,
                 'is_featured' => false,
-                'images' => ['debitmetre-oxygene-1.jpg'],
+                'images' => ['debitmetre-oxygene-1.jpg', 'debitmetre-oxygene-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-ALCO-079',
@@ -884,7 +884,7 @@ class ProductSeeder extends Seeder
                 'price' => 9000,
                 'stock' => 20,
                 'is_featured' => false,
-                'images' => ['alcool-70-1.jpg'],
+                'images' => ['alcool-70-1.jpg', 'alcool-70-1-detail.jpg'],
             ],
             [
                 'sku' => 'KPM-CATH-080',

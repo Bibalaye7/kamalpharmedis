@@ -111,7 +111,7 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
             )}
           </div>
           {images.length > 1 && (
-            <div className="mt-4 flex gap-3">
+            <div className="mt-4 flex flex-wrap gap-3">
               {images.map((img, i) => (
                 <button
                   key={i}
