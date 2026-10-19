@@ -1,11 +1,11 @@
 import Reveal from "@/components/ui/Reveal";
 
 const REASONS = [
-  { icon: "🏆", title: "Certifiés CE/ISO", description: "Produits vérifiés par nos pharmaciens." },
-  { icon: "🚀", title: "Livraison express", description: "24-48h Dakar · 3-5j national." },
-  { icon: "💬", title: "Support 7j/7", description: "Disponibles de 8h à 22h." },
-  { icon: "🔒", title: "Paiement sécurisé", description: "Orange Money, Wave, carte." },
-  { icon: "↩️", title: "Retour 30 jours", description: "Remboursement immédiat garanti." },
+  { icon: "🏆", title: "Matériel de qualité", description: "Sélectionné auprès de fournisseurs reconnus." },
+  { icon: "🚀", title: "Livraison rapide", description: "24-48h à Dakar · 3 à 5 jours ailleurs." },
+  { icon: "💬", title: "Conseils WhatsApp", description: "Une question ? Écrivez-nous ou appelez-nous." },
+  { icon: "💵", title: "Paiement à la livraison", description: "Espèces, Wave ou Orange Money au livreur." },
+  { icon: "↩️", title: "Retour 7 jours", description: "Produit non ouvert · défaut signalé sous 48h." },
 ];
 
 export default function WhyUs() {
@@ -17,7 +17,7 @@ export default function WhyUs() {
       <div className="container-page relative">
         <Reveal>
           <p className="text-[30px] font-bold text-white">Pourquoi choisir KamalPharMédis ?</p>
-          <p className="mt-2 text-[13px] text-[#A6C7FF]">Des milliers de sénégalais nous font confiance.</p>
+          <p className="mt-2 text-[13px] text-[#A6C7FF]">Particuliers, professionnels et établissements de santé.</p>
         </Reveal>
 
         <div className="mt-9 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">

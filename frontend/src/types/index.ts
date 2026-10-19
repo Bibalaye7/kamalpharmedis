@@ -194,3 +194,12 @@ export interface QuoteRequest {
   created_at: string;
   updated_at: string;
 }
+
+/** Chiffres réels publiés sur l'accueil et « À propos » (GET /stats). */
+export interface PublicStats {
+  products: number;
+  categories: number;
+  clients: number;
+  reviews: { count: number; average: number };
+  testimonials: { author: string; rating: number; comment: string; product: { name: string | null; slug: string | null } }[];
+}

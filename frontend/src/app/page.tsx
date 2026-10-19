@@ -7,16 +7,17 @@ import WhyUs from "@/components/home/WhyUs";
 import Testimonials from "@/components/home/Testimonials";
 import CTA from "@/components/home/CTA";
 import { serverGet } from "@/lib/serverApi";
-import { Category, PaginatedResponse, Product } from "@/types";
+import { Category, PaginatedResponse, Product, PublicStats } from "@/types";
 
 // Le backend n'est pas joignable pendant `docker build` (réseau Compose non actif à ce stade) :
 // on force le rendu à la requête pour éviter de figer une page d'accueil sans données.
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [categoriesRes, productsRes] = await Promise.all([
+  const [categoriesRes, productsRes, stats] = await Promise.all([
     serverGet<{ data: Category[] }>("/categories"),
     serverGet<PaginatedResponse<Product>>("/products?featured=1&per_page=8"),
+    serverGet<PublicStats>("/stats"),
   ]);
 
   const featuredProduct = productsRes?.data?.[0] ?? null;
@@ -25,11 +26,11 @@ export default async function HomePage() {
     <>
       <Hero featuredProduct={featuredProduct} />
       <BenefitsMarquee />
-      <Stats />
+      <Stats stats={stats} />
       <Categories categories={categoriesRes?.data ?? []} />
       <FeaturedProducts products={productsRes?.data ?? []} />
       <WhyUs />
-      <Testimonials />
+      <Testimonials testimonials={stats?.testimonials ?? []} />
       <CTA />
     </>
   );

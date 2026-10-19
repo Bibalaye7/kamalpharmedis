@@ -40,20 +40,18 @@ export default function CgvPage() {
         <li>La commande nécessite un compte client et une adresse de livraison au Sénégal.</li>
         <li>Après validation, une référence de commande est attribuée et la commande apparaît dans « Mes commandes ».</li>
         <li>
-          {LEGAL.companyName} peut refuser ou annuler une commande en cas de rupture de stock, d&apos;erreur manifeste de
-          prix ou de paiement non reçu ; le client est alors prévenu et, s&apos;il a payé, intégralement remboursé.
+          {LEGAL.companyName} peut refuser ou annuler une commande en cas de rupture de stock ou d&apos;erreur manifeste
+          de prix ; le client en est alors prévenu.
         </li>
         <li>Les établissements et professionnels peuvent demander un devis pour les grandes quantités via la page « Devis pro ».</li>
       </ul>
 
       <h2>5. Paiement</h2>
-      <ul>
-        <li><strong>Paiement à la livraison</strong> : en espèces, à la remise du colis.</li>
-        <li>
-          <strong>Wave ou Orange Money</strong> : le client envoie le montant au numéro indiqué lors de la commande, puis
-          déclare la référence de son transfert dans son espace. La commande est préparée après vérification du paiement.
-        </li>
-      </ul>
+      <p>
+        Le paiement s&apos;effectue <strong>à la livraison</strong>, à la remise du colis : en espèces, ou par Wave ou
+        Orange Money directement au livreur. Le paiement en ligne n&apos;est pas encore proposé ; les moyens de paiement
+        disponibles sont toujours indiqués au moment de la commande.
+      </p>
       <p>Aucune donnée de carte bancaire n&apos;est enregistrée par le site.</p>
 
       <h2>6. Livraison</h2>
@@ -75,8 +73,7 @@ export default function CgvPage() {
       <h2>7. Annulation</h2>
       <p>
         Le client peut annuler sa commande depuis son espace tant qu&apos;elle est « en attente » ou « confirmée ». Une
-        fois expédiée, elle ne peut plus être annulée ; les règles de retour ci-dessous s&apos;appliquent. Un paiement déjà
-        reçu pour une commande annulée est remboursé.
+        fois expédiée, elle ne peut plus être annulée ; les règles de retour ci-dessous s&apos;appliquent.
       </p>
 
       <h2>8. Retours et remboursements</h2>
@@ -93,7 +90,7 @@ export default function CgvPage() {
           Pour des raisons d&apos;hygiène et de sécurité, les produits stériles, à usage unique ou d&apos;hygiène dont
           l&apos;emballage a été ouvert ne sont ni repris ni échangés.
         </li>
-        <li>Le remboursement est effectué par le moyen de paiement utilisé (ou Wave / Orange Money) sous 14 jours.</li>
+        <li>Le remboursement est effectué en espèces, par Wave ou par Orange Money, sous 14 jours.</li>
       </ul>
 
       <h2>9. Garantie</h2>

@@ -69,15 +69,19 @@ class Order extends Model
     }
 
     /**
-     * Moyens de paiement proposés pour une nouvelle commande :
-     * à la livraison et transfert Wave / Orange Money (manuel, ou en ligne si PayDunya est configuré),
-     * plus la carte bancaire uniquement avec le paiement en ligne.
+     * Moyens de paiement proposés pour une nouvelle commande : toujours à la livraison ;
+     * Wave / Orange Money et carte en ligne si PayDunya est configuré ; sinon transfert
+     * Wave / Orange Money manuel seulement s'il est activé (MOBILE_MONEY_ENABLED).
      */
     public static function availablePaymentMethods(): array
     {
-        return self::onlinePaymentEnabled()
-            ? ['cash_on_delivery', 'mobile_money', 'card']
-            : ['cash_on_delivery', 'mobile_money'];
+        if (self::onlinePaymentEnabled()) {
+            return ['cash_on_delivery', 'mobile_money', 'card'];
+        }
+
+        return config('services.manual_payment.enabled')
+            ? ['cash_on_delivery', 'mobile_money']
+            : ['cash_on_delivery'];
     }
 
     public static function generateReference(): string

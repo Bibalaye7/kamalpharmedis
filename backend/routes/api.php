@@ -11,6 +11,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\QuoteController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\StatsController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +49,8 @@ Route::get('/categories/{category}', [CategoryController::class, 'show']);
 Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{product}', [ProductController::class, 'show']);
 Route::get('/products/{product}/reviews', [ReviewController::class, 'index'])->whereNumber('product');
+// Chiffres réels du site (produits, clients inscrits, avis) pour l'accueil et « À propos »
+Route::get('/stats', [StatsController::class, 'public']);
 Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:10,1');
 // Demande de devis professionnel (ouverte à tous, rattachée au compte si connecté)
 Route::post('/quotes', [QuoteController::class, 'store'])->middleware('throttle:10,1');

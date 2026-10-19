@@ -19,7 +19,7 @@ export default function CTA() {
 
       <Reveal className="container-page relative">
         <p className="max-w-2xl text-[34px] font-extrabold leading-tight text-blue-deep">
-          Rejoignez 10 000+ clients satisfaits
+          Rejoignez les clients de KamalPharMédis
         </p>
         <p className="mt-3 max-w-2xl text-[15px] text-gray-600">
           Créez votre compte gratuitement et commandez vos produits de santé dès aujourd&apos;hui.

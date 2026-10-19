@@ -55,7 +55,12 @@ return [
     | Utilisé tant que le paiement en ligne n'est pas configuré. Le client envoie
     | le montant à ces numéros puis déclare l'identifiant de sa transaction.
     */
+    // Clients déjà servis hors du site (boutique, téléphone) ajoutés au compteur public : nombre réel uniquement
+    'clients_base' => (int) env('CLIENTS_BASE', 0),
+
     'manual_payment' => [
+        // false : seul le paiement à la livraison est proposé (le client peut payer le livreur par Wave / OM)
+        'enabled' => filter_var(env('MOBILE_MONEY_ENABLED', true), FILTER_VALIDATE_BOOLEAN),
         'account_name' => env('MANUAL_PAYMENT_NAME', 'KamalPharMédis'),
         'wave' => env('MANUAL_PAYMENT_WAVE', '+221 70 464 12 81'),
         'orange_money' => env('MANUAL_PAYMENT_ORANGE_MONEY', '+221 75 661 62 62'),

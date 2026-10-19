@@ -25,8 +25,8 @@ export default function ConfidentialitePage() {
         <li><strong>Livraison</strong> : nom du destinataire, téléphone, adresse et ville.</li>
         <li><strong>Commandes</strong> : produits, montants, mode de paiement, historique et statut.</li>
         <li>
-          <strong>Paiement Wave / Orange Money</strong> : la référence du transfert que vous déclarez. Aucune donnée de
-          carte bancaire n&apos;est enregistrée par le site.
+          <strong>Paiement</strong> : le mode de paiement choisi et, si vous payez par transfert Wave / Orange Money
+          lorsque ce mode est proposé, la référence du transfert. Aucune donnée de carte bancaire n&apos;est enregistrée.
         </li>
         <li><strong>Avis clients</strong> : note et commentaire, publiés sous votre prénom suivi de l&apos;initiale de votre nom.</li>
         <li><strong>Demandes de devis et messages</strong> : établissement, nom du contact, email, téléphone et contenu de la demande.</li>
@@ -36,7 +36,7 @@ export default function ConfidentialitePage() {
       <h2>3. Utilisation des données</h2>
       <ul>
         <li>créer et gérer votre compte ;</li>
-        <li>traiter, livrer et suivre vos commandes, vérifier vos paiements ;</li>
+        <li>traiter, livrer et suivre vos commandes et leurs paiements ;</li>
         <li>répondre à vos demandes de devis et messages ;</li>
         <li>vous envoyer les emails liés à votre compte (confirmation d&apos;adresse, mot de passe oublié, commandes) ;</li>
         <li>protéger le site contre la fraude et les abus ;</li>

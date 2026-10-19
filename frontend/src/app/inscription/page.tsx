@@ -105,7 +105,7 @@ function RegisterForm() {
           KamalPharMédis
         </h1>
         <p className="relative mt-6 max-w-md text-sm text-[#B8CCFF]">
-          Plus de 10 000 clients nous font confiance pour leur santé.
+          Commandez en quelques clics et suivez vos livraisons depuis votre espace.
         </p>
         <div className="relative mt-3 h-[3px] w-20 rounded-full bg-green-main" />
 

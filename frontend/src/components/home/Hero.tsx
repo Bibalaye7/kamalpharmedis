@@ -13,10 +13,10 @@ import RotatingWord from "@/components/ui/RotatingWord";
 const HERO_WORDS = ["médicaux", "de santé", "d'hygiène", "de secours"];
 
 const TRUST_BADGES = [
-  { icon: "🛡️", label: "Certifiés CE" },
-  { icon: "🚀", label: "Livraison 24h" },
-  { icon: "🔄", label: "Retour 30j" },
-  { icon: "💳", label: "Paiement sécurisé" },
+  { icon: "🛡️", label: "Matériel de qualité" },
+  { icon: "🚀", label: "Livraison à Dakar et partout au Sénégal" },
+  { icon: "🔄", label: "Retour 7 jours" },
+  { icon: "💵", label: "Paiement à la livraison" },
 ];
 
 function FeaturedCard({ product }: { product: Product }) {
@@ -136,7 +136,7 @@ export default function Hero({ featuredProduct }: { featuredProduct?: Product | 
           </h1>
 
           <p className="mt-6 max-w-md animate-fade-up text-[15px] leading-relaxed text-[#B8CCFF]" style={{ animationDelay: "240ms" }}>
-            Médicaments certifiés, matériel médical et produits de santé livrés rapidement partout au Sénégal.
+            Matériel et consommables médicaux livrés rapidement partout au Sénégal.
           </p>
 
           <div className="mt-8 flex animate-fade-up flex-wrap gap-4" style={{ animationDelay: "360ms" }}>

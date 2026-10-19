@@ -1,11 +1,10 @@
 const BENEFITS = [
-  "🚚 Livraison 24-48h à Dakar",
-  "📱 Paiement Wave & Orange Money",
+  "🚚 Livraison à Dakar et partout au Sénégal",
+  "📱 Wave & Orange Money au livreur",
   "💵 Paiement à la livraison",
-  "✅ Produits certifiés",
+  "✅ Matériel médical de qualité",
   "🏥 Devis pour les professionnels de santé",
   "💬 Conseils sur WhatsApp",
-  "🇸🇳 Livraison partout au Sénégal",
 ];
 
 /** Bande d'avantages qui défile en continu sous le haut de page (se met en pause au survol). */
