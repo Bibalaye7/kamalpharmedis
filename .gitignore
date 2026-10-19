@@ -14,3 +14,6 @@ Thumbs.db
 
 # Dossier personnel de photos (originaux envoyés, copies retouchées, logos) : non publié
 photos-du-site/
+
+# Sauvegardes de la base et des photos (serveur de production) : jamais publiées
+sauvegardes/

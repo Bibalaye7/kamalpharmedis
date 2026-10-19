@@ -104,8 +104,7 @@ services:
       MOBILE_MONEY_ENABLED: ${MOBILE_MONEY_ENABLED:-false}
       MANUAL_PAYMENT_WAVE: ${MANUAL_PAYMENT_WAVE:-+221 70 464 12 81}
       MANUAL_PAYMENT_ORANGE_MONEY: ${MANUAL_PAYMENT_ORANGE_MONEY:-+221 75 661 62 62}
-    ports:
-      - "8000:8000"
+    # PHP-FPM (port 9000) : joignable uniquement par nginx sur le réseau Docker
     volumes:
       - backend_storage:/var/www/html/storage/app/public
     depends_on:
@@ -127,7 +126,8 @@ services:
     restart: unless-stopped
     environment:
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-/api}
-      INTERNAL_API_URL: http://backend:8000/api
+      # Pages générées côté serveur : API jointe via le port interne de nginx
+      INTERNAL_API_URL: http://nginx:8000/api
     ports:
       - "3000:3000"
     depends_on:
@@ -142,8 +142,12 @@ services:
     restart: unless-stopped
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/snippets:/etc/nginx/snippets:ro
+      - backend_storage:/var/www/storage:ro
     ports:
       - "80:80"
+      # API en direct pour le développement : http://localhost:8000/api/health
+      - "8000:8000"
     depends_on:
       - frontend
       - backend

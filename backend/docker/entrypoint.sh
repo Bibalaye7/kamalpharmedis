@@ -36,4 +36,8 @@ php artisan storage:link || true
 php artisan config:cache
 php artisan route:cache
 
+# Les commandes ci-dessus tournent en root ; PHP-FPM tourne en www-data et doit pouvoir
+# écrire les journaux, le cache et les photos envoyées depuis l'administration.
+chown -R www-data:www-data storage bootstrap/cache
+
 exec "$@"

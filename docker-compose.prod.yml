@@ -4,13 +4,15 @@
 #
 # Différences avec le développement :
 # - mode production : APP_DEBUG désactivé (aucune erreur interne affichée au public) ;
-# - seul nginx est exposé sur Internet ; PostgreSQL, Redis, l'API et Next.js
-#   restent sur le réseau Docker interne ;
-# - Adminer ne démarre pas (profil « outils », voir plus bas) ;
-# - adresse publique du site (SITE_URL) utilisée pour CORS et les liens des emails.
+# - seul nginx est exposé sur Internet (ports 80 et 443) ; PostgreSQL, Redis, l'API et
+#   Next.js restent sur le réseau Docker interne ;
+# - HTTPS par Let's Encrypt : certificat obtenu une fois par scripts/activer-https.sh,
+#   puis renouvelé automatiquement (service certbot) ;
+# - sauvegarde automatique chaque nuit de la base et des photos (service sauvegarde) ;
+# - Adminer ne démarre pas (profil « outils », voir plus bas).
 #
-# Variables obligatoires dans le .env du serveur : SITE_URL, DB_PASSWORD, APP_KEY,
-# JWT_SECRET (scripts/generer-secrets.sh les crée). Voir .env.production.example.
+# Variables obligatoires dans le .env du serveur : SITE_DOMAIN, DB_PASSWORD, APP_KEY,
+# JWT_SECRET (scripts/generer-secrets.sh crée les trois dernières). Voir .env.production.example.
 
 services:
   postgres:
@@ -28,14 +30,13 @@ services:
       - "127.0.0.1:8080:8080"
 
   backend:
-    ports: !reset []
     environment:
       APP_ENV: production
       APP_DEBUG: "false"
       LOG_LEVEL: warning
-      APP_URL: ${SITE_URL:?SITE_URL manquant dans .env (ex. https://kamalpharmedis.sn)}
-      FRONTEND_URL: ${SITE_URL}
-      CORS_ALLOWED_ORIGINS: ${SITE_URL}
+      APP_URL: https://${SITE_DOMAIN:?SITE_DOMAIN manquant dans .env (ex. kamalpharmedis.sn)}
+      FRONTEND_URL: https://${SITE_DOMAIN}
+      CORS_ALLOWED_ORIGINS: https://${SITE_DOMAIN}
       DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD manquant dans .env}
       APP_KEY: ${APP_KEY:?APP_KEY manquant dans .env}
       JWT_SECRET: ${JWT_SECRET:?JWT_SECRET manquant dans .env}
@@ -46,3 +47,57 @@ services:
 
   nginx:
     restart: always
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN}
+    ports: !override
+      - "80:80"
+      - "443:443"
+    volumes: !override
+      - ./nginx/production.conf.template:/etc/nginx/templates/default.conf.template:ro
+      - ./nginx/snippets:/etc/nginx/snippets:ro
+      - backend_storage:/var/www/storage:ro
+      - certbot_www:/var/www/certbot:ro
+      - letsencrypt:/etc/letsencrypt:ro
+    # Recharge nginx toutes les 6 heures pour prendre en compte un certificat renouvelé
+    command: ["/bin/sh", "-c", "while :; do sleep 21600; nginx -s reload; done & exec /docker-entrypoint.sh nginx -g 'daemon off;'"]
+
+  # Renouvellement automatique du certificat HTTPS (valable 90 jours, renouvelé 30 jours avant)
+  certbot:
+    image: certbot/certbot:v2.11.0
+    container_name: kpm_certbot
+    restart: unless-stopped
+    entrypoint: ["/bin/sh", "-c", "trap exit TERM; while :; do certbot renew --webroot -w /var/www/certbot --quiet; sleep 43200 & wait $${!}; done"]
+    volumes:
+      - certbot_www:/var/www/certbot
+      - letsencrypt:/etc/letsencrypt
+    networks:
+      - kpm_network
+
+  # Sauvegarde chaque nuit à 3 h : base de données + photos produits, dans ./sauvegardes
+  # (14 derniers jours conservés). Sauvegarde immédiate :
+  #   docker compose -f docker-compose.yml -f docker-compose.prod.yml exec sauvegarde sh /scripts/sauvegarde.sh
+  sauvegarde:
+    image: postgres:16-alpine
+    container_name: kpm_sauvegarde
+    restart: unless-stopped
+    entrypoint: ["/bin/sh", "/scripts/sauvegarde.sh", "--chaque-nuit"]
+    environment:
+      PGHOST: postgres
+      PGUSER: ${DB_USERNAME:-kamalpharmedis}
+      PGPASSWORD: ${DB_PASSWORD}
+      PGDATABASE: ${DB_DATABASE:-kamalpharmedis}
+      SAUVEGARDE_HEURE: ${SAUVEGARDE_HEURE:-03:00}
+      SAUVEGARDE_JOURS: ${SAUVEGARDE_JOURS:-14}
+    volumes:
+      - ./scripts/sauvegarde.sh:/scripts/sauvegarde.sh:ro
+      - ./sauvegardes:/sauvegardes
+      - backend_storage:/photos:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - kpm_network
+
+volumes:
+  certbot_www:
+  letsencrypt:

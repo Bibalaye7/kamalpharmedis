@@ -1,0 +1,55 @@
+# Reverse proxy KamalPharMédis en PRODUCTION (HTTPS Let's Encrypt).
+# Modèle : nginx remplace ${SITE_DOMAIN} au démarrage (variable du .env du serveur).
+
+include /etc/nginx/snippets/upstreams.conf;
+
+# HTTP : validation Let's Encrypt, puis redirection permanente vers HTTPS
+server {
+    listen 80;
+    server_name ${SITE_DOMAIN} www.${SITE_DOMAIN};
+    server_tokens off;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://${SITE_DOMAIN}$request_uri;
+    }
+}
+
+# www.domaine -> domaine (une seule adresse officielle)
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name www.${SITE_DOMAIN};
+    server_tokens off;
+    include /etc/nginx/snippets/ssl.conf;
+    return 301 https://${SITE_DOMAIN}$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name ${SITE_DOMAIN};
+    client_max_body_size 20M;
+
+    include /etc/nginx/snippets/ssl.conf;
+    # Le navigateur n'utilise plus que HTTPS pour ce site pendant 1 an
+    add_header Strict-Transport-Security "max-age=31536000" always;
+
+    include /etc/nginx/snippets/securite.conf;
+    include /etc/nginx/snippets/api.conf;
+    include /etc/nginx/snippets/frontend.conf;
+}
+
+# Toute autre adresse (IP du serveur, domaine inconnu) : connexion fermée
+server {
+    listen 80 default_server;
+    listen 443 ssl default_server;
+    server_name _;
+    include /etc/nginx/snippets/ssl.conf;
+    return 444;
+}
+
+include /etc/nginx/snippets/interne.conf;

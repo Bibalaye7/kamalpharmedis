@@ -1,98 +1,105 @@
 # KamalPharMédis
 
-Plateforme e-commerce de vente de matériel médical et de promotion des médicaments et produits de santé.
+Boutique en ligne de matériel et de consommables médicaux, livrés à Dakar et partout au Sénégal.
 
-## Stack technique
+## Technologies utilisées
 
-| Composant       | Technologie                          |
-|-----------------|---------------------------------------|
-| Frontend        | Next.js 14 (App Router) + TypeScript + Tailwind CSS |
-| Backend         | Laravel 11 (API REST) + JWT (php-open-source-saver/jwt-auth) |
-| Base de données | PostgreSQL 16                         |
-| Cache           | Redis 7                               |
-| Reverse proxy   | Nginx                                 |
-| Admin BDD       | Adminer                               |
+| Rôle                              | Technologie                                                   |
+|-----------------------------------|---------------------------------------------------------------|
+| Site (pages vues par les clients) | Next.js 14 + TypeScript + Tailwind CSS                        |
+| Serveur (API)                     | Laravel 11, PHP-FPM, authentification par jetons JWT          |
+| Base de données                   | PostgreSQL 16                                                 |
+| Mémoire cache                     | Redis 7                                                       |
+| Serveur web (point d'entrée)      | Nginx (HTTPS en production)                                   |
+| Consultation de la base           | Adminer                                                       |
 
-## Structure du projet
+Le tout tourne dans des conteneurs Docker.
+
+## Organisation des dossiers
 
 ```
 kamalpharmedis/
-├── backend/          # API Laravel 11
-├── frontend/          # Application Next.js 14
-├── nginx/              # Configuration du reverse proxy
-├── docker-compose.yml
-└── .env.example       # Variables pour docker-compose
+├── backend/                   # API Laravel (produits, commandes, comptes, avis...)
+├── frontend/                  # Site Next.js
+├── nginx/                     # Configuration du serveur web (développement et production)
+├── scripts/                   # Secrets, HTTPS, sauvegarde et restauration
+├── docker-compose.yml         # Lancement de tous les services
+├── docker-compose.prod.yml    # Compléments pour le serveur de production
+├── .env.example               # Modèle de configuration (développement)
+└── .env.production.example    # Modèle de configuration (production)
 ```
 
-## Démarrage avec Docker (recommandé)
+## Démarrage sur l'ordinateur (avec Docker)
 
-1. Copier le fichier d'environnement racine :
+1. Copier le fichier de configuration :
    ```bash
    cp .env.example .env
    ```
-2. Lancer l'ensemble des services :
+2. Lancer tous les services :
    ```bash
    docker compose up -d --build
    ```
-3. Accéder à l'application :
-   - **Site public** : http://localhost (via Nginx)
-   - **Frontend direct** : http://localhost:3000
-   - **API backend** : http://localhost:8000/api/health
-   - **Adminer** : http://localhost:8080 (système « PostgreSQL », serveur `postgres`)
+3. Ouvrir :
+   - **le site** : http://localhost
+   - **le site sans passer par nginx** : http://localhost:3000
+   - **l'API** : http://localhost:8000/api/health
+   - **Adminer** (consultation de la base) : http://localhost:8080 (système « PostgreSQL », serveur `postgres`)
    - **PostgreSQL** : localhost:5432
    - **Redis** : localhost:6379
 
-Au premier démarrage, le conteneur `backend` exécute automatiquement les migrations et les seeders (données de démonstration) via `docker/entrypoint.sh`.
+Au premier démarrage, la base de données est créée et remplie automatiquement (catégories, produits et
+leurs photos), par le script `backend/docker/entrypoint.sh`.
 
 ### Comptes administrateur et gestionnaire
 
-Aucun compte d'administration n'est livré avec le code (pas d'identifiants par défaut).
-Créez-les vous-même ; le mot de passe est saisi de façon masquée :
+Aucun compte d'administration n'est fourni avec le code (pas de mot de passe par défaut).
+Créez-les vous-même ; le mot de passe est saisi sans s'afficher à l'écran :
 
 ```bash
 docker exec -it kpm_backend php artisan kpm:staff                 # administrateur
 docker exec -it kpm_backend php artisan kpm:staff --role=manager  # gestionnaire
 ```
 
-Le portail d'administration (`/admin/connexion`) n'est lié nulle part sur le site public.
+L'espace d'administration (`/admin/connexion`) n'a aucun lien sur le site public.
 
-Pour un environnement de développement, `SEED_DEMO_DATA=true` ajoute des clients et commandes fictifs au premier démarrage.
+Pour faire des essais, `SEED_DEMO_DATA=true` dans `.env` ajoute des clients et des commandes fictifs au
+premier démarrage (jamais en production).
 
 ### Commandes utiles
 
 ```bash
-# Voir les logs
+# Voir le journal de l'API
 docker compose logs -f backend
 
-# Relancer les seeders manuellement
+# Relancer le remplissage de la base (n'écrase pas les produits existants)
 docker compose exec backend php artisan db:seed --force
 
-# Ouvrir un shell dans le backend
+# Ouvrir un terminal dans le conteneur de l'API
 docker compose exec backend sh
 
-# Arrêter les services
+# Arrêter le site
 docker compose down
 
-# Arrêter et supprimer les volumes (réinitialise la base de données)
+# Arrêter le site ET effacer toutes les données (base remise à zéro)
 docker compose down -v
 ```
 
-## Développement local (sans Docker)
+## Développement sans Docker
 
-### Backend (Laravel)
+### API (Laravel)
 
 ```bash
 cd backend
 composer install
 cp .env.example .env
-# Adapter DB_HOST=127.0.0.1 et REDIS_HOST=127.0.0.1 dans .env pour un usage hors Docker
+# Mettre DB_HOST=127.0.0.1 et REDIS_HOST=127.0.0.1 dans .env
 php artisan key:generate
 php artisan jwt:secret
 php artisan migrate --seed
 php artisan serve
 ```
 
-### Frontend (Next.js)
+### Site (Next.js)
 
 ```bash
 cd frontend
@@ -101,37 +108,102 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Le frontend attend l'API sur `NEXT_PUBLIC_API_URL` (par défaut `http://localhost:8000/api`).
+Le site appelle l'API à l'adresse `NEXT_PUBLIC_API_URL` (par défaut `http://localhost:8000/api`).
 
-## Mise en production (serveur)
+## Mise en ligne (serveur de production)
 
-`docker-compose.prod.yml` s'ajoute à `docker-compose.yml` : mode production (debug désactivé), seul nginx
-est exposé sur Internet, Adminer ne démarre qu'à la demande et uniquement en local sur le serveur.
+`docker-compose.prod.yml` complète `docker-compose.yml` pour le serveur :
+- mode production : aucun message d'erreur technique montré aux visiteurs ;
+- HTTPS (cadenas) avec un certificat Let's Encrypt gratuit ;
+- sauvegarde automatique chaque nuit ;
+- seul nginx est accessible depuis Internet (ports 80 et 443) : la base, Redis, l'API et Next.js restent
+  invisibles de l'extérieur ; Adminer ne démarre qu'à la demande, uniquement depuis le serveur.
+
+**Prérequis** : un serveur Linux (VPS) avec Docker, le nom de domaine **et** `www.` pointant vers l'adresse
+IP du serveur, les ports 80 et 443 ouverts.
 
 ```bash
+git clone <adresse du dépôt> kamalpharmedis && cd kamalpharmedis
 cp .env.production.example .env
-sh scripts/generer-secrets.sh          # DB_PASSWORD, APP_KEY, JWT_SECRET (jamais remplacés s'ils existent)
-nano .env                              # SITE_URL, MAIL_PASSWORD (mot de passe d'application Gmail)
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+sh scripts/generer-secrets.sh          # crée DB_PASSWORD, APP_KEY, JWT_SECRET (jamais remplacés s'ils existent)
+nano .env                              # SITE_DOMAIN, LETSENCRYPT_EMAIL, MAIL_PASSWORD (mot de passe d'application Gmail)
+sh scripts/activer-https.sh            # démarre le site et obtient le certificat HTTPS (une seule fois)
 docker compose -f docker-compose.yml -f docker-compose.prod.yml exec backend php artisan kpm:staff --role=admin
 ```
 
-Avant l'ouverture au public : compléter les informations légales (NINEA, RCCM, forme juridique, hébergeur,
-responsable de la publication) dans `frontend/src/lib/legal.ts`. Elles s'affichent « à compléter » sur les pages
-Mentions légales, Conditions de vente, Confidentialité et Cookies tant qu'elles sont vides.
+**Mises à jour** du site ensuite :
 
-## Palette de couleurs
+```bash
+git pull
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+```
+
+Le fichier `.env` du serveur contient les clés secrètes du site : il ne doit jamais être envoyé sur GitHub
+(il est exclu par `.gitignore`).
+
+### Serveur PHP
+
+L'API tourne sous **PHP-FPM** : plusieurs demandes traitées en même temps, code PHP gardé en mémoire
+(OPcache). Nginx lui transmet les appels `/api/` et envoie lui-même les photos des produits (`/storage/`),
+gardées 30 jours par les navigateurs. Réglages : `backend/docker/php/`.
+
+### HTTPS
+
+Le certificat Let's Encrypt est obtenu une seule fois par `scripts/activer-https.sh`, puis renouvelé
+automatiquement par le service `certbot` (vérification toutes les 12 heures ; nginx le prend en compte
+toutes les 6 heures). Les adresses `http://` et `www.` sont redirigées vers `https://SITE_DOMAIN`.
+
+### Sauvegardes
+
+Le service `sauvegarde` enregistre chaque nuit à 3 h la base de données (`base_*.dump`) et les photos des
+produits (`photos_*.tar.gz`) dans le dossier `sauvegardes/` du serveur. Les 14 derniers jours sont gardés.
+
+```bash
+# Faire une sauvegarde tout de suite
+docker compose -f docker-compose.yml -f docker-compose.prod.yml exec sauvegarde sh /scripts/sauvegarde.sh
+
+# Remettre une sauvegarde (demande confirmation et sauvegarde d'abord l'état actuel)
+sh scripts/restaurer.sh sauvegardes/base_2026-10-20_030000.dump
+sh scripts/restaurer.sh sauvegardes/photos_2026-10-20_030000.tar.gz
+```
+
+Ces sauvegardes restent sur le serveur : en copier régulièrement une sur un autre support (ordinateur,
+disque, Google Drive) pour être protégé en cas de perte du serveur, par exemple :
+
+```bash
+scp utilisateur@serveur:kamalpharmedis/sauvegardes/* .
+```
+
+### Avant l'ouverture au public
+
+- [ ] Informations légales (forme juridique, NINEA, RCCM, adresse, responsable de la publication,
+      hébergeur) dans `frontend/src/lib/legal.ts` : elles s'affichent « à compléter » sur les pages Mentions
+      légales, Conditions de vente, Confidentialité et Cookies tant qu'elles sont vides.
+- [ ] Mot de passe d'application Gmail dans `MAIL_PASSWORD` (emails de confirmation d'inscription, de mot de
+      passe oublié et de suivi de commande).
+- [ ] Déclaration du traitement des données personnelles à la CDP (Commission de protection des données
+      personnelles du Sénégal).
+- [ ] Création du compte administrateur sur le serveur.
+
+## Couleurs du site
 
 | Nom         | Code       |
 |-------------|------------|
-| Blue Deep   | `#1A3A8F`  |
-| Blue Main   | `#2454C7`  |
-| Green Main  | `#2EA138`  |
-| Green Pale  | `#E0F3E5`  |
+| Bleu foncé  | `#1A3A8F`  |
+| Bleu        | `#2454C7`  |
+| Vert        | `#2EA138`  |
+| Vert clair  | `#E0F3E5`  |
 
-## Fonctionnalités principales
+## Fonctionnalités
 
-- **Public** : accueil, catalogue filtrable, fiche produit, services, contact.
-- **Espace client** : inscription/connexion (JWT), tableau de bord, commandes, favoris, adresses, profil.
-- **Panel admin/manager** : statistiques, CRUD produits (avec images), gestion des commandes (statuts, paiement), gestion des utilisateurs et rôles (admin uniquement).
-- **API** : rôles `admin` / `manager` / `client` via middleware dédié, panier persistant en base, gestion transactionnelle du stock à la commande, cache Redis sur le catalogue.
+- **Site public** : accueil (chiffres réels, vrais avis clients), catalogue avec filtres et recherche avec
+  suggestions, fiches produits avec photos, services, contact, demande de devis, pages légales.
+- **Commande** : panier, livraison à Dakar et partout au Sénégal (2 000 FCFA, gratuite dès 50 000 FCFA),
+  paiement à la livraison (espèces, Wave ou Orange Money au livreur).
+- **Espace client** : inscription et connexion, commandes et leur suivi, annulation, favoris, adresses,
+  profil, avis sur les produits reçus.
+- **Administration** (administrateur et gestionnaire) : statistiques, produits et photos, stock, commandes
+  (statuts, paiements), demandes de devis, messages de contact, avis, utilisateurs et rôles (administrateur
+  uniquement).
+- **Sécurité** : rôles `admin` / `manager` / `client`, session renouvelée automatiquement, limitation des
+  tentatives, en-têtes de protection du navigateur, aucune clé secrète dans le code.

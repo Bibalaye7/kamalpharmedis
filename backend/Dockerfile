@@ -1,6 +1,6 @@
-# Image PHP pour l'API Laravel KamalPharMédis (servie directement sur le port 8000,
-# Nginx se charge du reverse proxy global devant frontend + backend).
-FROM php:8.3-cli-alpine
+# Image PHP pour l'API Laravel KamalPharMédis : PHP-FPM (serveur PHP de production) sur le
+# port 9000, interrogé par nginx en FastCGI. Nginx sert aussi directement les photos produits.
+FROM php:8.3-fpm-alpine
 
 RUN apk add --no-cache \
         git \
@@ -33,10 +33,13 @@ RUN composer dump-autoload --optimize \
     && mkdir -p storage/framework/{cache,sessions,views} storage/logs bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache
 
+COPY docker/php/production.ini /usr/local/etc/php/conf.d/zz-kamalpharmedis.ini
+COPY docker/php/www.conf /usr/local/etc/php-fpm.d/zz-www.conf
+
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-EXPOSE 8000
+EXPOSE 9000
 
 ENTRYPOINT ["entrypoint.sh"]
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD ["php-fpm"]
