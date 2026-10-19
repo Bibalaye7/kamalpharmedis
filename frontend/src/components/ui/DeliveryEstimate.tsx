@@ -31,8 +31,8 @@ export default function DeliveryEstimate({ className = "" }: { className?: strin
   if (!user) {
     return (
       <p className={`text-xs leading-relaxed text-gray-500 ${className}`}>
-        🚚 Livraison <strong className="font-semibold text-gray-700">24 à 48h à Dakar</strong>, 3 à 5 jours dans les
-        autres régions.
+        🚚 Livraison <strong className="font-semibold text-gray-700">24 à 48h à Dakar</strong>, 2 à 6 jours ouvrés dans
+        les autres villes.
       </p>
     );
   }

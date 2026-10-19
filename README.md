@@ -176,10 +176,10 @@ scp utilisateur@serveur:kamalpharmedis/sauvegardes/* .
 
 ### Avant l'ouverture au public
 
-- [ ] Informations légales (forme juridique, NINEA, RCCM, adresse, responsable de la publication,
-      hébergeur) dans `frontend/src/lib/legal.ts` : elles s'affichent « à compléter » sur les pages Mentions
-      légales, Conditions de vente, Confidentialité et Cookies tant qu'elles sont vides.
-- [ ] Mot de passe d'application Gmail dans `MAIL_PASSWORD` (emails de confirmation d'inscription, de mot de
+- [x] Informations légales (forme juridique, NINEA, RCCM, adresse) dans `frontend/src/lib/legal.ts`.
+- [ ] Hébergeur (nom, adresse, site web) dans `frontend/src/lib/legal.ts` : il s'affiche « à compléter » sur la
+      page Mentions légales tant qu'il est vide.
+- [ ] Mot de passe d'application Gmail recopié dans `MAIL_PASSWORD` du `.env` du serveur (emails de confirmation d'inscription, de mot de
       passe oublié et de suivi de commande).
 - [ ] Déclaration du traitement des données personnelles à la CDP (Commission de protection des données
       personnelles du Sénégal).

@@ -16,7 +16,7 @@ const DELAYS: Record<string, string> = {
   touba: "3 à 5 jours ouvrés",
 };
 
-const DEFAULT_DELAY = "3 à 5 jours ouvrés";
+const DEFAULT_DELAY = "3 à 6 jours ouvrés";
 
 function normalize(city: string): string {
   return city

@@ -18,7 +18,6 @@ export default function MentionsLegalesPage() {
         <li>RCCM : <ToComplete value={LEGAL.rccm} label="numéro RCCM" /></li>
         <li>Email : <a href={`mailto:${LEGAL.email}`}>{LEGAL.email}</a></li>
         <li>Téléphone : {LEGAL.phones.join(" / ")}</li>
-        <li>Responsable de la publication : <ToComplete value={LEGAL.publicationDirector} label="nom du responsable" /></li>
       </ul>
 
       <h2>Hébergement</h2>

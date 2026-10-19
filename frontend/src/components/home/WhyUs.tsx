@@ -2,7 +2,7 @@ import Reveal from "@/components/ui/Reveal";
 
 const REASONS = [
   { icon: "🏆", title: "Matériel de qualité", description: "Sélectionné auprès de fournisseurs reconnus." },
-  { icon: "🚀", title: "Livraison rapide", description: "24-48h à Dakar · 3 à 5 jours ailleurs." },
+  { icon: "🚀", title: "Livraison rapide", description: "24-48h à Dakar · 2 à 6 jours ailleurs." },
   { icon: "💬", title: "Conseils WhatsApp", description: "Une question ? Écrivez-nous ou appelez-nous." },
   { icon: "💵", title: "Paiement à la livraison", description: "Espèces, Wave ou Orange Money au livreur." },
   { icon: "↩️", title: "Retour 7 jours", description: "Produit non ouvert · défaut signalé sous 48h." },

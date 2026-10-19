@@ -5,13 +5,12 @@
  */
 export const LEGAL = {
   companyName: "KamalPharMédis",
-  legalForm: null as string | null, // ex. « SARL au capital de 1 000 000 FCFA » ou « Entreprise individuelle »
-  ninea: null as string | null,
-  rccm: null as string | null, // ex. « SN-DKR-2026-A-12345 »
+  legalForm: "SUARL au capital de 250 000 FCFA" as string | null,
+  ninea: "0128572672Y2" as string | null,
+  rccm: "SN.DKR.2026.B.7669" as string | null,
   address: "Ouest-Foire, Cité DIOR WARÉ N°14, Dakar, Sénégal",
   email: "kamalpharmedis@gmail.com",
   phones: ["+221 75 661 62 62", "+221 70 464 12 81"],
-  publicationDirector: null as string | null, // nom du responsable de la publication
   host: null as string | null, // hébergeur du site : nom, adresse, site web (après le choix du serveur)
   updatedAt: "19 octobre 2026",
 };

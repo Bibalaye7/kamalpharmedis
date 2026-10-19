@@ -14,10 +14,10 @@ import StarRating from "@/components/ui/StarRating";
 import ProductReviews from "@/components/catalog/ProductReviews";
 
 const FEATURES = [
-  { icon: "🚚", label: "Livraison rapide" },
-  { icon: "✅", label: "Certifié CE" },
-  { icon: "↩️", label: "Retour 30j" },
-  { icon: "🔒", label: "Paiement sécurisé" },
+  { icon: "🚚", label: "Livraison partout au Sénégal" },
+  { icon: "✅", label: "Matériel de qualité" },
+  { icon: "↩️", label: "Retour 7 jours" },
+  { icon: "💵", label: "Paiement à la livraison" },
 ];
 
 export default function ProductDetailPage({ params }: { params: { slug: string } }) {
