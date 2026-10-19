@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# KamalPharMédis : le site (Next.js)
 
-## Getting Started
+Ce dossier contient les pages du site vues par les clients et l'espace d'administration.
+Il est construit avec Next.js 14, TypeScript et Tailwind CSS.
 
-First, run the development server:
+Le site ne contient aucune donnée lui-même : produits, commandes et comptes viennent de l'API Laravel
+(dossier `backend/`). Pour lancer tout le projet d'un coup avec Docker, voir le README à la racine du dépôt.
+
+## Lancer le site seul, pour développer
 
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Puis ouvrir http://localhost:3000 dans le navigateur. Les pages se mettent à jour à chaque modification
+d'un fichier.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+L'API doit tourner en même temps : le site l'appelle à l'adresse `NEXT_PUBLIC_API_URL` du fichier `.env.local`
+(par défaut `http://localhost:8000/api`).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Commandes
 
-## Learn More
+| Commande        | Rôle                                                       |
+|-----------------|------------------------------------------------------------|
+| `npm run dev`   | lance le site en mode développement                        |
+| `npm run build` | prépare la version optimisée pour la mise en ligne         |
+| `npm run start` | lance la version préparée par `npm run build`              |
+| `npm run lint`  | vérifie le code (erreurs et mauvaises pratiques)           |
 
-To learn more about Next.js, take a look at the following resources:
+## Organisation des fichiers
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+src/
+├── app/           # une page par dossier : catalogue, produits, panier, compte, admin, pages légales...
+├── components/    # éléments réutilisés : accueil, catalogue, compte, administration, en-tête, pied de page...
+├── context/       # données partagées entre les pages : client connecté, panier
+├── lib/           # appels à l'API, livraison, paiement, statuts des commandes, informations légales
+└── types/         # description des données (produit, commande, client...)
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Fichiers à connaître :
+- `src/lib/legal.ts` : informations légales de l'entreprise (NINEA, RCCM, forme juridique, hébergeur...).
+  Tant qu'elles sont vides, les pages légales affichent « à compléter ».
+- `src/lib/api.ts` : appels à l'API depuis le navigateur, avec renouvellement automatique de la session.
+- `src/lib/serverApi.ts` : appels à l'API faits par le serveur avant d'envoyer la page.
+- `tailwind.config.ts` : couleurs du site (bleu et vert du logo).
 
-## Deploy on Vercel
+## Variables de configuration
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Variable              | Rôle                                                                                     |
+|-----------------------|------------------------------------------------------------------------------------------|
+| `NEXT_PUBLIC_API_URL` | adresse de l'API utilisée par le navigateur (`/api` en production, derrière nginx)        |
+| `INTERNAL_API_URL`    | adresse de l'API utilisée par le serveur Next.js dans Docker (`http://nginx:8000/api`)     |
