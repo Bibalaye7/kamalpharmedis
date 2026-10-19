@@ -103,6 +103,23 @@ npm run dev
 
 Le frontend attend l'API sur `NEXT_PUBLIC_API_URL` (par défaut `http://localhost:8000/api`).
 
+## Mise en production (serveur)
+
+`docker-compose.prod.yml` s'ajoute à `docker-compose.yml` : mode production (debug désactivé), seul nginx
+est exposé sur Internet, Adminer ne démarre qu'à la demande et uniquement en local sur le serveur.
+
+```bash
+cp .env.production.example .env
+sh scripts/generer-secrets.sh          # DB_PASSWORD, APP_KEY, JWT_SECRET (jamais remplacés s'ils existent)
+nano .env                              # SITE_URL, MAIL_PASSWORD (mot de passe d'application Gmail)
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+docker compose -f docker-compose.yml -f docker-compose.prod.yml exec backend php artisan kpm:staff --role=admin
+```
+
+Avant l'ouverture au public : compléter les informations légales (NINEA, RCCM, forme juridique, hébergeur,
+responsable de la publication) dans `frontend/src/lib/legal.ts`. Elles s'affichent « à compléter » sur les pages
+Mentions légales, Conditions de vente, Confidentialité et Cookies tant qu'elles sont vides.
+
 ## Palette de couleurs
 
 | Nom         | Code       |

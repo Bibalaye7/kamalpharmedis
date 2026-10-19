@@ -33,6 +33,13 @@ const COLUMNS = [
   },
 ];
 
+const LEGAL_LINKS = [
+  { label: "Mentions légales", href: "/mentions-legales" },
+  { label: "Conditions de vente", href: "/conditions-generales-de-vente" },
+  { label: "Confidentialité", href: "/confidentialite" },
+  { label: "Cookies", href: "/cookies" },
+];
+
 // Réseaux sociaux : un lien sans adresse (href vide) n'est pas affiché.
 const SOCIAL_LINKS = [
   { label: "Facebook", short: "f", href: "https://www.facebook.com/profile.php?id=61594420457479", className: "bg-[#1877F2]" },
@@ -105,10 +112,12 @@ export default function Footer() {
       <div className="relative border-t border-white/15">
         <div className="container-page flex flex-col items-center justify-between gap-3 py-5 text-[11px] text-[#A9BBE8] sm:flex-row">
           <p>© {new Date().getFullYear()} KamalPharMédis · Tous droits réservés</p>
-          <div className="flex gap-5">
-            <span>Conditions</span>
-            <span>Confidentialité</span>
-            <span>Cookies</span>
+          <div className="flex flex-wrap justify-center gap-x-5 gap-y-2">
+            {LEGAL_LINKS.map((link) => (
+              <Link key={link.href} href={link.href} className="hover:text-[#7FD88A]">
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

@@ -1,0 +1,48 @@
+# Surcharge de PRODUCTION, à combiner avec docker-compose.yml sur le serveur :
+#
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+#
+# Différences avec le développement :
+# - mode production : APP_DEBUG désactivé (aucune erreur interne affichée au public) ;
+# - seul nginx est exposé sur Internet ; PostgreSQL, Redis, l'API et Next.js
+#   restent sur le réseau Docker interne ;
+# - Adminer ne démarre pas (profil « outils », voir plus bas) ;
+# - adresse publique du site (SITE_URL) utilisée pour CORS et les liens des emails.
+#
+# Variables obligatoires dans le .env du serveur : SITE_URL, DB_PASSWORD, APP_KEY,
+# JWT_SECRET (scripts/generer-secrets.sh les crée). Voir .env.production.example.
+
+services:
+  postgres:
+    ports: !reset []
+
+  redis:
+    ports: !reset []
+
+  # Adminer n'est lancé qu'à la demande, accessible uniquement depuis le serveur
+  # (tunnel SSH : ssh -L 8080:127.0.0.1:8080 utilisateur@serveur) :
+  #   docker compose -f docker-compose.yml -f docker-compose.prod.yml --profile outils up -d adminer
+  adminer:
+    profiles: ["outils"]
+    ports: !override
+      - "127.0.0.1:8080:8080"
+
+  backend:
+    ports: !reset []
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      LOG_LEVEL: warning
+      APP_URL: ${SITE_URL:?SITE_URL manquant dans .env (ex. https://kamalpharmedis.sn)}
+      FRONTEND_URL: ${SITE_URL}
+      CORS_ALLOWED_ORIGINS: ${SITE_URL}
+      DB_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD manquant dans .env}
+      APP_KEY: ${APP_KEY:?APP_KEY manquant dans .env}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET manquant dans .env}
+      SEED_DEMO_DATA: "false"
+
+  frontend:
+    ports: !reset []
+
+  nginx:
+    restart: always

@@ -228,6 +228,11 @@ function RegisterForm() {
             <button type="submit" disabled={loading} className="flex h-[50px] w-full items-center justify-center rounded-full bg-blue-main text-sm font-bold text-white shadow-lifted">
               {loading ? "Création..." : "Créer mon compte gratuitement →"}
             </button>
+            <p className="text-center text-[11px] leading-relaxed text-gray-500">
+              En créant un compte, vous acceptez nos{" "}
+              <Link href="/conditions-generales-de-vente" className="font-semibold text-blue-main underline">conditions de vente</Link> et notre{" "}
+              <Link href="/confidentialite" className="font-semibold text-blue-main underline">politique de confidentialité</Link>.
+            </p>
           </form>
 
           <p className="mt-6 text-center text-sm text-gray-500">

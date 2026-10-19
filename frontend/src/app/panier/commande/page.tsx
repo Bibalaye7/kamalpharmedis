@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import RequireAuth from "@/components/auth/RequireAuth";
 import { useCart } from "@/context/CartContext";
@@ -199,6 +200,10 @@ function CheckoutContent() {
           <button onClick={handleSubmit} disabled={loading || !addressId} className="btn-primary mt-6 w-full">
             {loading ? "Validation..." : "Confirmer la commande"}
           </button>
+          <p className="mt-3 text-center text-[11px] leading-relaxed text-gray-500">
+            En confirmant, vous acceptez nos{" "}
+            <Link href="/conditions-generales-de-vente" className="font-semibold text-blue-main underline">conditions générales de vente</Link>.
+          </p>
         </div>
       </div>
     </div>

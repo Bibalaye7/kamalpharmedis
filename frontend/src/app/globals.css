@@ -36,6 +36,24 @@ body {
     @apply rounded-xl2 border border-gray-100 bg-white shadow-card;
   }
 
+  /* Texte des pages légales (CGV, confidentialité, cookies, mentions légales) */
+  .legal-content {
+    @apply text-sm leading-relaxed text-gray-700;
+  }
+  .legal-content h2 {
+    @apply mb-3 mt-8 text-lg font-bold text-blue-deep first:mt-0;
+  }
+  .legal-content p,
+  .legal-content ul {
+    @apply mb-3;
+  }
+  .legal-content ul {
+    @apply list-disc space-y-1.5 pl-5;
+  }
+  .legal-content a {
+    @apply font-medium text-blue-main underline underline-offset-2;
+  }
+
   .section {
     @apply mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8;
   }
