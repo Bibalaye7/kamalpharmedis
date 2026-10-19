@@ -9,11 +9,11 @@ const inter = localFont({ src: "./fonts/inter-latin-wght-normal.woff2", weight: 
 
 export const metadata: Metadata = {
   title: {
-    default: "KamalPharMédis — Matériel médical & produits de santé",
+    default: "KamalPharMédis — Matériel et consommables médicaux",
     template: "%s | KamalPharMédis",
   },
   description:
-    "Vente de matériel médical et promotion des médicaments et produits de santé. Livraison rapide au Sénégal.",
+    "Vente de matériel et de consommables médicaux. Livraison à Dakar et partout au Sénégal, paiement à la livraison.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

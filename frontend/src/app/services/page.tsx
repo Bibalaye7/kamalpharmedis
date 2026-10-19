@@ -5,62 +5,94 @@ export const metadata: Metadata = { title: "Nos services" };
 
 const SERVICES = [
   {
-    icon: "💊",
-    iconBg: "bg-category-blue-bg",
-    title: "Vente de médicaments",
-    description: "Promotion et distribution de médicaments de qualité, approuvés et certifiés.",
-    tag: "Pharmacie",
-    tagClass: "bg-category-blue-bg text-category-blue-text",
-  },
-  {
     icon: "🩺",
     iconBg: "bg-category-green-bg",
     title: "Matériel médical",
-    description: "Tensiomètres, glucomètres, stéthoscopes et dispositifs de soins professionnels.",
+    href: "/catalogue",
+    description: "Tensiomètres, glucomètres, matériel de diagnostic, mobilier médical et équipements d'urgence.",
     tag: "Équipements",
     tagClass: "bg-category-green-bg text-category-green-text",
   },
   {
-    icon: "🌿",
+    icon: "🧤",
     iconBg: "bg-category-blue-bg",
-    title: "Produits naturels",
-    description: "Compléments alimentaires, vitamines et produits bien-être certifiés.",
-    tag: "Bien-être",
+    title: "Consommables médicaux",
+    href: "/catalogue",
+    description: "Gants, seringues, compresses, pansements, perfuseurs et produits de protection et d'hygiène.",
+    tag: "Consommables",
     tagClass: "bg-category-blue-bg text-category-blue-text",
   },
   {
     icon: "🚚",
     iconBg: "bg-category-green-bg",
-    title: "Livraison & distribution",
-    description: "Service fiable pour cliniques, hôpitaux et particuliers partout au Sénégal.",
+    title: "Livraison",
+    href: "/conditions-generales-de-vente",
+    description: "Livraison à Dakar et partout au Sénégal, pour les particuliers comme pour les établissements de santé.",
     tag: "Logistique",
     tagClass: "bg-category-green-bg text-category-green-text",
   },
   {
-    icon: "📋",
+    icon: "💬",
     iconBg: "bg-category-blue-bg",
-    title: "Conseil médical",
-    description: "Notre équipe vous conseille sur les produits adaptés à vos besoins.",
+    title: "Conseil sur les produits",
+    href: "/contact",
+    description: "Notre équipe vous aide par téléphone et WhatsApp à choisir le produit adapté à votre besoin.",
     tag: "Conseil",
     tagClass: "bg-category-blue-bg text-category-blue-text",
   },
   {
     icon: "🤝",
     iconBg: "bg-category-green-bg",
-    title: "Partenariats B2B",
-    description: "Approvisionnements réguliers pour pharmacies et professionnels de santé.",
-    tag: "B2B",
+    title: "Devis pour professionnels",
+    href: "/devis",
+    description: "Cliniques, cabinets, pharmacies, hôpitaux : devis personnalisé pour vos commandes en volume.",
+    tag: "Professionnels",
     tagClass: "bg-category-green-bg text-category-green-text",
+  },
+  {
+    icon: "💊",
+    iconBg: "bg-category-blue-bg",
+    title: "Médicaments et produits de santé",
+    description: "Bientôt disponibles sur KamalPharMédis, dès l'obtention de notre agrément.",
+    tag: "Bientôt",
+    tagClass: "bg-category-blue-bg text-category-blue-text",
   },
 ];
 
 const TRUST = [
-  { icon: "🏆", label: "Certifiés" },
-  { icon: "🚀", label: "Livraison 24h" },
-  { icon: "💬", label: "Support 7j/7" },
-  { icon: "🔒", label: "Sécurisé" },
-  { icon: "↩️", label: "Retour 30j" },
+  { icon: "✅", label: "Matériel de qualité" },
+  { icon: "🚚", label: "Livraison à Dakar et partout au Sénégal" },
+  { icon: "💬", label: "Conseils par WhatsApp" },
+  { icon: "💵", label: "Paiement à la livraison" },
+  { icon: "↩️", label: "Retour 7 jours" },
 ];
+
+type Service = (typeof SERVICES)[number] & { href?: string };
+
+function ServiceCard({ service }: { service: Service }) {
+  const content = (
+    <>
+      <span className={`flex h-[58px] w-[58px] items-center justify-center rounded-2xl text-2xl ${service.iconBg}`}>
+        {service.icon}
+      </span>
+      <h3 className="mt-4 text-[15px] font-bold text-blue-deep">{service.title}</h3>
+      <p className="mt-3 text-xs leading-relaxed text-gray-500">{service.description}</p>
+      <div className="mt-6 flex items-center justify-between">
+        <span className={`badge ${service.tagClass}`}>{service.tag}</span>
+        {service.href && <span className="text-sm font-semibold text-blue-main">→</span>}
+      </div>
+    </>
+  );
+
+  if (!service.href) {
+    return <div className="rounded-[22px] bg-white p-6 shadow-soft">{content}</div>;
+  }
+  return (
+    <Link href={service.href} className="block rounded-[22px] bg-white p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-md">
+      {content}
+    </Link>
+  );
+}
 
 export default function ServicesPage() {
   return (
@@ -78,17 +110,7 @@ export default function ServicesPage() {
       <div className="container-page py-14">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.map((service) => (
-            <div key={service.title} className="rounded-[22px] bg-white p-6 shadow-soft">
-              <span className={`flex h-[58px] w-[58px] items-center justify-center rounded-2xl text-2xl ${service.iconBg}`}>
-                {service.icon}
-              </span>
-              <h3 className="mt-4 text-[15px] font-bold text-blue-deep">{service.title}</h3>
-              <p className="mt-3 text-xs leading-relaxed text-gray-500">{service.description}</p>
-              <div className="mt-6 flex items-center justify-between">
-                <span className={`badge ${service.tagClass}`}>{service.tag}</span>
-                <span className="text-sm font-semibold text-blue-main">→</span>
-              </div>
-            </div>
+            <ServiceCard key={service.title} service={service} />
           ))}
         </div>
 
