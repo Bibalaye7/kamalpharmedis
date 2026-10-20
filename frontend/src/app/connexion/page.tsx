@@ -8,10 +8,10 @@ import { useAuth } from "@/context/AuthContext";
 import { api, ApiError } from "@/lib/api";
 
 const BENEFITS = [
-  { icon: "🎁", label: "10% de réduction membre" },
-  { icon: "📦", label: "Suivi commandes temps réel" },
-  { icon: "❤️", label: "Vos favoris synchronisés" },
-  { icon: "🔔", label: "Alertes prix exclusives" },
+  { icon: "📦", label: "Suivi de vos commandes" },
+  { icon: "❤️", label: "Vos produits favoris" },
+  { icon: "📍", label: "Adresses de livraison enregistrées" },
+  { icon: "💵", label: "Paiement à la livraison" },
 ];
 
 function LoginForm() {
@@ -124,7 +124,7 @@ function LoginForm() {
                   className="input-field pr-12"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
+                  placeholder="Votre mot de passe"
                 />
                 <button type="button" onClick={() => setShowPassword((v) => !v)} className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-lg bg-blue-frost">
                   👁

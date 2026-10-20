@@ -43,7 +43,7 @@ export default function CTA() {
         </form>
 
         <p className="mt-4 text-xs text-gray-500">
-          ✓ Gratuit &nbsp;·&nbsp; ✓ Sans engagement &nbsp;·&nbsp; ✓ 10% de réduction à l&apos;inscription
+          ✓ Gratuit &nbsp;·&nbsp; ✓ Sans engagement &nbsp;·&nbsp; ✓ Suivi de vos commandes
         </p>
       </Reveal>
     </section>

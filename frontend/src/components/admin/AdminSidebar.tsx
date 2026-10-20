@@ -34,7 +34,7 @@ export default function AdminSidebar({ onNavigate }: { onNavigate?: () => void }
 
       <hr className="mx-[18px] mt-4 border-white/15" />
 
-      <nav className="flex-1 space-y-1.5 px-[18px] py-4">
+      <nav className="min-h-0 flex-1 space-y-1.5 overflow-y-auto px-[18px] py-4">
         {LINKS.filter((link) => user && link.roles.includes(user.role_name)).map((link) => {
           const active = pathname === link.href;
           return (
@@ -61,23 +61,26 @@ export default function AdminSidebar({ onNavigate }: { onNavigate?: () => void }
         </Link>
       </nav>
 
-      <hr className="mx-[18px] border-white/15" />
-      <div className="flex items-center gap-2.5 px-[18px] pt-4">
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-green-main text-sm font-bold text-white">
-          {user?.name.charAt(0).toUpperCase()}
-        </span>
-        <div className="min-w-0 flex-1">
-          <p className="truncate text-xs font-semibold text-white">{user?.name}</p>
-          <p className="truncate text-[9px] text-[#A9BBE8]">{user?.email}</p>
+      <div className="m-[18px] rounded-2xl bg-white/[0.07] p-3 ring-1 ring-white/10">
+        <div className="flex items-center gap-2.5">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-green-main text-sm font-bold text-white">
+            {user?.name.charAt(0).toUpperCase()}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-[13px] font-semibold text-white">{user?.name}</p>
+            <p className="truncate text-[11px] text-[#A9BBE8]">{user?.email}</p>
+          </div>
         </div>
-      </div>
-      <div className="px-[18px] py-4">
         <button
           onClick={() => logout()}
-          className="flex w-full items-center justify-center gap-2 rounded-[13px] border border-white/20 bg-white/10 py-2.5 text-[13px] font-semibold text-white transition hover:border-status-danger hover:bg-status-danger"
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-[#E5484D] py-2.5 text-[13px] font-semibold text-white shadow-sm transition hover:bg-[#CC3D42] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
         >
-          <span className="text-base">🚪</span>
-          Déconnexion
+          <svg aria-hidden viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <path d="M16 17l5-5-5-5" />
+            <path d="M21 12H9" />
+          </svg>
+          Se déconnecter
         </button>
       </div>
     </aside>

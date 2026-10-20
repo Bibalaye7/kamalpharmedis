@@ -100,9 +100,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // le token est peut-être déjà invalide, on nettoie quand même
     }
+    const wasStaff = user?.role_name === "admin" || user?.role_name === "manager";
     setToken(null);
     setUser(null);
-  }, []);
+    // Retour à la page de connexion (rechargement complet : panier et données du compte effacés)
+    window.location.replace(wasStaff ? "/admin/connexion" : "/connexion");
+  }, [user]);
 
   const value = useMemo<AuthContextValue>(
     () => ({

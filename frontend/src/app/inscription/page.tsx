@@ -7,12 +7,12 @@ import { useAuth } from "@/context/AuthContext";
 import { api, ApiError } from "@/lib/api";
 
 const BENEFITS = [
-  { icon: "🎁", label: "10% sur votre 1ère commande" },
   { icon: "📦", label: "Livraison offerte dès 50 000 FCFA" },
-  { icon: "🔔", label: "Alertes prix et nouveautés" },
-  { icon: "📋", label: "Suivi commandes en temps réel" },
-  { icon: "❤️", label: "Liste de favoris personnalisée" },
-  { icon: "🎯", label: "Recommandations personnalisées" },
+  { icon: "📋", label: "Suivi de vos commandes" },
+  { icon: "❤️", label: "Liste de favoris" },
+  { icon: "📍", label: "Adresses de livraison enregistrées" },
+  { icon: "⭐", label: "Avis sur les produits reçus" },
+  { icon: "💵", label: "Paiement à la livraison" },
 ];
 
 function passwordStrength(password: string): { percent: number; label: string; color: string } {

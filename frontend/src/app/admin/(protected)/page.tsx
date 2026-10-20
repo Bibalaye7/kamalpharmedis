@@ -81,15 +81,18 @@ export default function AdminDashboardPage() {
                 onClick={() => router.push(`/admin/commandes/${order.id}`)}
                 className={`flex w-full items-center gap-3 rounded-xl p-3 text-left text-sm transition hover:bg-blue-frost ${i % 2 === 1 ? "bg-blue-frost" : "bg-white"}`}
               >
-                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-main text-xs font-bold text-white">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-main text-xs font-bold text-white">
                   {order.user?.name.charAt(0).toUpperCase()}
                 </span>
-                <div className="flex-1">
-                  <p className="font-semibold text-gray-900">{order.user?.name}</p>
-                  <p className="text-[10px] text-gray-500">{order.reference}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-semibold text-gray-900">{order.user?.name}</p>
+                  <p className="truncate text-[10px] text-gray-500">{order.reference}</p>
                 </div>
-                <p className="font-bold text-gray-900">{formatPrice(order.total)}</p>
-                <span className={`badge ${ORDER_STATUS_STYLES[order.status]}`}>{ORDER_STATUS_LABELS[order.status]}</span>
+                {/* Mobile : montant et statut empilés à droite ; écran large : côte à côte */}
+                <div className="flex shrink-0 flex-col items-end gap-1 sm:flex-row sm:items-center sm:gap-3">
+                  <p className="whitespace-nowrap font-bold text-gray-900">{formatPrice(order.total)}</p>
+                  <span className={`badge whitespace-nowrap ${ORDER_STATUS_STYLES[order.status]}`}>{ORDER_STATUS_LABELS[order.status]}</span>
+                </div>
               </button>
             ))}
           </div>
