@@ -2,6 +2,7 @@
 # Modèle : nginx remplace ${SITE_DOMAIN} au démarrage (variable du .env du serveur).
 
 include /etc/nginx/snippets/upstreams.conf;
+include /etc/nginx/snippets/cache.conf;
 
 # HTTP : validation Let's Encrypt, puis redirection permanente vers HTTPS
 server {

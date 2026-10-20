@@ -43,27 +43,36 @@ class OrderController extends Controller
             'payment_status' => ['sometimes', 'required', Rule::in(Order::PAYMENT_STATUSES)],
         ]);
 
-        $newStatus = $data['status'] ?? $order->status;
+        $refused = DB::transaction(function () use ($order, $data) {
+            // Commande verrouillée et statut relu : une annulation faite au même moment par le client
+            // ou un autre membre de l'équipe ne remet jamais le stock en vente deux fois.
+            $locked = Order::whereKey($order->id)->lockForUpdate()->first();
+            $newStatus = $data['status'] ?? $locked->status;
 
-        if ($order->status === 'cancelled' && $newStatus !== 'cancelled') {
-            return response()->json(['message' => 'Une commande annulée ne peut pas être réactivée.'], 422);
-        }
+            if ($locked->status === 'cancelled' && $newStatus !== 'cancelled') {
+                return 'Une commande annulée ne peut pas être réactivée.';
+            }
 
-        DB::transaction(function () use ($order, $data, $newStatus) {
             // Annulation : le stock est remis en vente
-            if ($newStatus === 'cancelled' && $order->status !== 'cancelled') {
-                foreach ($order->items as $item) {
+            if ($newStatus === 'cancelled' && $locked->status !== 'cancelled') {
+                foreach ($locked->items->sortBy('product_id') as $item) {
                     Product::withTrashed()->whereKey($item->product_id)->increment('stock', $item->quantity);
                 }
             }
 
-            if ($newStatus === 'delivered' && $order->status !== 'delivered') {
+            if ($newStatus === 'delivered' && $locked->status !== 'delivered') {
                 $data['delivered_at'] = now();
                 $data['payment_status'] ??= 'paid'; // encaissement à la livraison
             }
 
-            $order->update($data);
-        });
+            $locked->update($data);
+
+            return null;
+        }, 3);
+
+        if ($refused) {
+            return response()->json(['message' => $refused], 422);
+        }
 
         Cache::tags(['catalog'])->flush();
 

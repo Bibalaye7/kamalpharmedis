@@ -30,12 +30,32 @@ class ProductController extends Controller
 
     public function show(Request $request, string $product): JsonResponse
     {
-        $staff = auth('api')->user()?->isStaff() ?? false;
+        // Produit actif : réponse identique pour tous, mise en cache Redis (le cache « catalog » est
+        // vidé à chaque changement : produit, stock après commande, avis).
+        $data = Cache::tags(['catalog'])->remember('product:'.md5($product), 300, fn () => $this->showPayload($product, false));
 
+        if ($data !== null) {
+            return response()->json($data);
+        }
+
+        // Produit désactivé : visible uniquement par l'équipe (aperçu depuis l'administration)
+        $staff = auth('api')->user()?->isStaff() ?? false;
+        abort_unless($staff && ($data = $this->showPayload($product, true)), 404);
+
+        return response()->json($data);
+    }
+
+    /** Fiche produit et produits associés de la même catégorie (null si introuvable). */
+    private function showPayload(string $product, bool $withInactive): ?array
+    {
         $model = Product::with('category:id,name,slug')->withRating()
-            ->when(! $staff, fn ($q) => $q->active())
+            ->when(! $withInactive, fn ($q) => $q->active())
             ->where(fn ($q) => ctype_digit($product) ? $q->where('id', $product) : $q->where('slug', $product))
-            ->firstOrFail();
+            ->first();
+
+        if (! $model) {
+            return null;
+        }
 
         $related = Product::with('category:id,name,slug')->withRating()
             ->active()
@@ -45,7 +65,7 @@ class ProductController extends Controller
             ->take(4)
             ->get();
 
-        return response()->json($model->toArray() + ['related' => $related]);
+        return $model->toArray() + ['related' => $related->toArray()];
     }
 
     public function store(Request $request): JsonResponse

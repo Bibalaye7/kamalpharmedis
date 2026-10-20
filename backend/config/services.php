@@ -58,6 +58,12 @@ return [
     // Clients déjà servis hors du site (boutique, téléphone) ajoutés au compteur public : nombre réel uniquement
     'clients_base' => (int) env('CLIENTS_BASE', 0),
 
+    // Emails de commande : alerte à la boutique à chaque nouvelle commande, coordonnées rappelées au client
+    'orders' => [
+        'notify_email' => env('ORDERS_NOTIFY_EMAIL', 'kamalpharmedis@gmail.com'),
+        'contact_phones' => env('ORDERS_CONTACT_PHONES', '+221 75 661 62 62 / +221 70 464 12 81'),
+    ],
+
     'manual_payment' => [
         // false : seul le paiement à la livraison est proposé (le client peut payer le livreur par Wave / OM)
         'enabled' => filter_var(env('MOBILE_MONEY_ENABLED', true), FILTER_VALIDATE_BOOLEAN),

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewOrderAlertMail;
+use App\Mail\OrderConfirmationMail;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\Product;
@@ -9,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
@@ -76,9 +79,11 @@ class OrderController extends Controller
         }
 
         $order = DB::transaction(function () use ($user, $data, $shipping, $lines, $fromCart) {
-            // Verrouille les produits pour éviter la survente
+            // Verrouille les produits pour éviter la survente. Toujours dans l'ordre des id : deux
+            // commandes simultanées des mêmes produits ne peuvent pas se bloquer mutuellement.
             $products = Product::active()
                 ->whereIn('id', collect($lines)->pluck('product_id'))
+                ->orderBy('id')
                 ->lockForUpdate()
                 ->get()
                 ->keyBy('id');
@@ -134,11 +139,47 @@ class OrderController extends Controller
             }
 
             return $order;
-        });
+        }, 3); // rejouée automatiquement (3 tentatives) si la base signale un conflit entre commandes simultanées
 
         Cache::tags(['catalog'])->flush(); // le stock a changé
 
+        $this->sendOrderEmails($order);
+
         return response()->json($order->load('items'), 201);
+    }
+
+    /**
+     * Confirmation au client et alerte à la boutique, envoyées après la réponse : le client n'attend
+     * pas Gmail, et un échec d'envoi n'annule jamais la commande (il est seulement journalisé).
+     */
+    private function sendOrderEmails(Order $order): void
+    {
+        $orderId = $order->id;
+
+        dispatch(function () use ($orderId) {
+            $order = Order::with(['items', 'user'])->find($orderId);
+
+            if (! $order) {
+                return;
+            }
+
+            $mails = [
+                [$order->user?->email, new OrderConfirmationMail($order)],
+                [config('services.orders.notify_email'), new NewOrderAlertMail($order)],
+            ];
+
+            foreach ($mails as [$to, $mail]) {
+                if (! $to) {
+                    continue;
+                }
+
+                try {
+                    Mail::to($to)->send($mail);
+                } catch (\Throwable $e) {
+                    report($e);
+                }
+            }
+        })->afterResponse();
     }
 
     /** Le client peut annuler tant que la commande n'est pas expédiée. */
@@ -146,17 +187,27 @@ class OrderController extends Controller
     {
         abort_unless($order->user_id === $request->user()->id, 404);
 
-        if (! in_array($order->status, ['pending', 'confirmed'], true)) {
-            return response()->json(['message' => 'Cette commande ne peut plus être annulée.'], 422);
-        }
+        $cancelled = DB::transaction(function () use ($order) {
+            // Commande verrouillée et statut revérifié : deux annulations simultanées (double clic,
+            // client et équipe en même temps) ne remettent le stock en vente qu'une seule fois.
+            $locked = Order::whereKey($order->id)->lockForUpdate()->first();
 
-        DB::transaction(function () use ($order) {
-            foreach ($order->items as $item) {
+            if (! in_array($locked->status, ['pending', 'confirmed'], true)) {
+                return false;
+            }
+
+            foreach ($locked->items->sortBy('product_id') as $item) {
                 Product::withTrashed()->whereKey($item->product_id)->increment('stock', $item->quantity);
             }
 
-            $order->update(['status' => 'cancelled']);
-        });
+            $locked->update(['status' => 'cancelled']);
+
+            return true;
+        }, 3);
+
+        if (! $cancelled) {
+            return response()->json(['message' => 'Cette commande ne peut plus être annulée.'], 422);
+        }
 
         Cache::tags(['catalog'])->flush();
 

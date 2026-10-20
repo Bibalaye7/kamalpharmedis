@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Illuminate\Support\ServiceProvider;
 use Mailtrap\Bridge\Transport\MailtrapSdkTransportFactory;
 use Symfony\Component\Mailer\Transport\Dsn;
@@ -31,6 +35,14 @@ class AppServiceProvider extends ServiceProvider
 
             return (new MailtrapSdkTransportFactory())->create($dsn);
         });
+
+        // Connexion : 10 essais par minute pour un même compte (bloque qui devine un mot de passe),
+        // 200 par minute par adresse IP. Au Sénégal, les opérateurs mobiles font passer beaucoup
+        // d'abonnés par la même IP publique : une limite par IP seule bloquerait de vrais clients.
+        RateLimiter::for('login', fn (Request $request) => [
+            Limit::perMinute(10)->by('compte:'.Str::lower((string) $request->input('email')).'|'.$request->ip()),
+            Limit::perMinute(200)->by('ip:'.$request->ip()),
+        ]);
 
         // Identifiants numériques dans les URL : sous PostgreSQL, « /orders/abc » ferait une erreur SQL
         // (texte comparé à un entier) ; avec ce filtre la route renvoie simplement 404.

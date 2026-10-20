@@ -111,7 +111,10 @@ export default function Footer() {
 
       <div className="relative border-t border-white/15">
         <div className="container-page flex flex-col items-center justify-between gap-3 py-5 text-[11px] text-[#A9BBE8] sm:flex-row">
-          <p>© {new Date().getFullYear()} KamalPharMédis · Tous droits réservés</p>
+          <p className="text-center sm:text-left">
+            © {new Date().getFullYear()} KamalPharMédis · Tous droits réservés · Créé par{" "}
+            <span className="font-semibold text-[#7FD88A]">XajaleTech</span>
+          </p>
           <div className="flex flex-wrap justify-center gap-x-5 gap-y-2">
             {LEGAL_LINKS.map((link) => (
               <Link key={link.href} href={link.href} className="hover:text-[#7FD88A]">
