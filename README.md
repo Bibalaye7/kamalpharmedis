@@ -122,6 +122,33 @@ Le site appelle l'API à l'adresse `NEXT_PUBLIC_API_URL` (par défaut `http://lo
 **Prérequis** : un serveur Linux (VPS) avec Docker, le nom de domaine **et** `www.` pointant vers l'adresse
 IP du serveur, les ports 80 et 443 ouverts.
 
+### Sécuriser le serveur (à faire en premier)
+
+1. **Compte de l'hébergeur** : activer la double authentification (code à 6 chiffres de Google
+   Authenticator) dans les paramètres de sécurité du compte. Quiconque prend ce compte peut supprimer le serveur.
+2. **Clé SSH**, une seule fois, sur le PC (PowerShell) :
+   ```powershell
+   ssh-keygen -t ed25519 -C "kamalpharmedis"
+   Get-Content $env:USERPROFILE\.ssh\id_ed25519.pub
+   ```
+   Le fichier `id_ed25519` (sans `.pub`) est la clé privée : il ne quitte jamais le PC et n'est jamais envoyé
+   à personne. Copier la ligne affichée (clé publique, `ssh-ed25519 AAAA...`) dans le champ « clé SSH » du
+   formulaire de commande du VPS, système **Ubuntu 24.04**.
+3. **Sécurisation**, à la première connexion (`ssh root@IP`) :
+   ```bash
+   curl -fsSLO https://raw.githubusercontent.com/Bibalaye7/kamalpharmedis/main/scripts/securiser-serveur.sh
+   bash securiser-serveur.sh kpm
+   ```
+   `scripts/securiser-serveur.sh` crée l'utilisateur administrateur `kpm` (mot de passe demandé pour `sudo`),
+   n'accepte plus que la clé SSH (mots de passe et connexion `root` refusés), ferme tous les ports sauf 22, 80
+   et 443 (pare-feu UFW), bannit les adresses qui essaient de deviner l'accès (fail2ban : 5 échecs = 1 h,
+   récidive = 1 semaine), active les mises à jour de sécurité automatiques et installe Docker. Sans clé SSH en
+   place, il s'arrête sans rien modifier.
+   **Garder la session ouverte** et vérifier dans une seconde fenêtre que `ssh kpm@IP` fonctionne avant de la fermer.
+4. Toutes les commandes suivantes se font ensuite en `kpm` (`ssh kpm@IP`).
+
+### Installer le site
+
 ```bash
 git clone <adresse du dépôt> kamalpharmedis && cd kamalpharmedis
 cp .env.production.example .env
